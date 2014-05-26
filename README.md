@@ -1,4 +1,4 @@
-# flock-comment
+# SNPcontam
 
 This is an R package with some code implementing methods under development
 to detect contaminated samples from SNP genotyes sampled in molecular
