@@ -1,0 +1,12 @@
+
+*~
+*.blg
+*.aux
+*.bbl
+*.log
+*synctex.gz
+*.fls
+*.dvi
+*.fdb_latexmk
+snp-contam-main.pdf
+

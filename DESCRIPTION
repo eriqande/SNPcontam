@@ -1,0 +1,15 @@
+Package: SNPcontam
+Type: Package
+Title: Detecting contaminated samples from SNP genotypes
+Version: 0.0
+Date: 2014-05-25
+Author: Elena Venables, Eric C. Anderson, Anthony Clemento
+Maintainer: Eric C. Anderson <eric.anderson@noaa.gov>
+Description: More later
+License: Public Domain
+LazyData: true
+Roxygen: list(wrap = FALSE)
+Suggests:
+    testthat,
+    knitr
+VignetteBuilder: knitr
