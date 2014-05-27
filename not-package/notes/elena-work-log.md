@@ -16,6 +16,7 @@
   * `git push origin master` pushes my local changes to SNPcontam repository
 * Trying to get password caching to work
   * We tried this: `git config --global credential.helper osxkeychain`
+  * Then we committed and pushed, and we are still not sure if it worked
 
 ### Work in Rstudio
 * Downloaded packages needed for SNPcontam project
