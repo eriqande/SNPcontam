@@ -14,7 +14,9 @@
 * Other important git commands
   * `git status` 
   * `git push origin master` pushes my local changes to SNPcontam repository
-  
+* Trying to get password caching to work
+  * We tried this: `git config --global credential.helper osxkeychain`
+
 ### Work in Rstudio
 * Downloaded packages needed for SNPcontam project
   * `knitr`, `devtools`, and `roxygen2`
