@@ -1,4 +1,14 @@
-# Elena's Worklog
+---
+title: "Elena's Worklog"
+author: "Elena Venable"
+output:
+  html_document:
+    toc: true
+    theme: united
+  pdf_document:
+    toc: true
+---
+
 ## 5/27/14
 ### Setting up Git Repository
 * Set up a Github account under the username "evenable".
@@ -28,3 +38,22 @@
   * the function: `likelihood(gt,af)`
   * `gt` is genotypes as 0s, 1s, and 2s, where 1s and 2s are homozygous and 1s are heterozygous
   * `af` is the allele frequencies of the loci
+  
+## 5/28/14
+### Work Plan
+* Began to formulate Work Plan
+  * Likelihood Ratio Test
+    * $\Lambda= log(\frac{p(\theta|con)}{p(\theta | noncon)})$ 
+    * Question: How much better is a likelihood ratio test than heterozygousity test?
+      * Evaluate using the Area Under the Curve (AUC) of a Receiver Operator Characteristic curve (ROC)
+      * ROC Curve: True Positives (1 - False Negatives) vs. False Positives
+  * Lab experiment with DNA
+
+### Work in R
+* To do list
+  * Code multiplying together loci to get one number of likelihood prob. for each individual.
+  * Code calculating likelihood ratio for individual
+  * Code to randomly generate contaminated and non contaminated distribution
+  * Code to determine heterozygousity ratio
+  * Plot True + vs. False + (ROC curve)
+  * Find AUC of ROC
