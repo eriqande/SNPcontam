@@ -92,3 +92,12 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ```
 * Appeared as if likelihood not better than heterozygousity, which makes me question if codes are working correctly
 * Also above 45 randomly generated alleles, the likelihood ratios (and heterozygousity proportions as well) of the contaminated and non contaminated do not overlap.
+
+### Plans for Next Week
+* Document and comment code
+* Literature Review of Genotyping/contaminated samples
+    * Search for info on how others have dealt with contamination problems and identifiying contamination, etc.
+* Begin learning about MCMC methods
+    * Eric's notes can be found here : http://users.soe.ucsc.edu/~eriq/dokuwiki/doku.php?id=sisg:sisg
+* Think about how I would like to write up the results
+    
