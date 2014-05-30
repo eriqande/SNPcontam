@@ -23,7 +23,7 @@ The list componenets contam and clean are Null because no genotype was entered.
 The `random_gene` can next be used to generate genotypes based on the genotype frequencies computed usking `likelihood`.
 
 ```{r}
-# generates five random genotypes
+# generates 5 random genotypes
 Ran <- random_gene(5,af)
 ```
 
@@ -44,7 +44,7 @@ LC will have a similar output to L, but for the contaminated assumption.
 The function `lratio` can be used to compute the likelihood ratio for each individual.
 ```{r}
 # ratios for the non contaminated individuals
-ratio <- lratio(L$clean, LC$contam,af)
+ratio <- lratio(L$clean, L$contam,af)
 ratio
 
 # ratios for the contaminated individuals
@@ -86,5 +86,25 @@ hist(ratio_c[[1]],col=rgb(0,0,1,0.5),add=T)
 
 # heterozygousity proportions
 hist(hetero[[1]],col=rgb(1,0,0,0.5),xlim = c(0,1),main="Heterozygousity Proportion Histogram")
+hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
+```
+
+## Example of Output
+Below is code that synthesizes the steps above.  There are 20 randomly generated alle frequencies and 1000 randomly generated individuals.
+```{r}
+af <- runif(20,0,1)
+Ran <- random_gene(1000,af)
+L <- likelihood(af,Ran$rclean)
+LC <- likelihood(af, Ran$rcontam)
+ratio <- lratio(L$clean, L$contam,af)
+ratio_c <- lratio(LC$clean, LC$contam,af)
+hetero <- hetero(Ran$rclean,af)
+hetero_c <- hetero(Ran$rcontam, af)
+par(mfrow=c(2,2))
+ROC(100,ratio[[1]], ratio_c[[1]])
+hist(ratio[[1]],col=rgb(1,0,0,0.5),xlim = c(-40,20),main="Likelihood Ratio Histogram")
+hist(ratio_c[[1]],col=rgb(0,0,1,0.5),add=T)
+ROC(100,hetero[[1]],hetero_c[[1]])
+hist(hetero[[1]],col=rgb(1,0,0,0.5),xlim = c(0,1),main="Heterozygousity Histogram")
 hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ```
