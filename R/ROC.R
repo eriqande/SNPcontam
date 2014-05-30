@@ -28,12 +28,16 @@
 #' # x-values from 0 to 1 with steps of 0.1
 #' ROC(10,ratio[[1]],ratio_c[[1]])
 ROC <- function(n, dtr0, dtr1){
-  fp <- seq(0,1,1/n)
-  tp <- rep(0,n)
+  fp <- seq(0,1,1/n) # values of false positives proportion
+  tp <- rep(0,n) # empty vector for true positives to be recorded
   for (i in 1:n+1){
+    # calss threshold fucntion to determine threshold for false positives
     thresh <- threshold(dtr0, dtr1, fp[i])
+    # vector containing all values less than the threshold
+    # these are false negatives because they are contaminated but test says they are not
     below <- dtr1[dtr1 < thresh$threshold]
+    # true positives proportion are equal to 1 - false negatives proportion
     tp[i] <- 1 - length(below)/length(dtr1)
 }
-plot(fp,tp)
+plot(fp,tp) # plots true positives vs. false positives
 }

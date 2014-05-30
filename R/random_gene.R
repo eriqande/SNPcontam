@@ -19,14 +19,18 @@
 #' # generates 5 different genotypes
 #' random_gene(5,af = c(SNP1 = .1, SNP2 = .2))
 random_gene <- function(n,af) {
-  L <- likelihood(af)
-  l = length(af)
-  g1 <- matrix(0, l, n)
-  g2 <- g1
-  for (i in 1:l)
-  {
+  L <- likelihood(af) # calls likelihood function which contans genotype probability
+  l = length(af) # number of loci
+  # for g matrices: columns are individuals and rows are loci
+  g1 <- matrix(0, l, n) # matrix for non contamined
+  g2 <- g1 # matrix for contamined individuals
+  # loop cycles through each locus
+  for (i in 1:l){
+    # stores genotype at locus in all individuals
+    #L$clean_prob is matrix fo genotype probabilities or each locus
     g1[i,] = sample(0:2, n, TRUE, prob = L$clean_prob[,i])
-    g2[i,] = sample(0:2, n, TRUE, prob = L$contam_prob[,i])
+    # same as above but for contaminated
+    g2[i,] = sample(0:2, n, TRUE, prob = L$contam_prob[,i]) 
   }
-  list(rclean = g1, rcontam = g2)
+  list(rclean = g1, rcontam = g2) # output the two random groups of genotypes as list
 }

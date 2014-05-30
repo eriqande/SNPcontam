@@ -22,9 +22,12 @@
 #' genes <- random_gene(5,af)
 #' hetero(genes$rclean,af)
 hetero <- function(gt,af){
-  nc <- length(af)
-  gt <- matrix(gt, nrow=nc)
-  heteros <- colSums (gt == 1)
-  por <- heteros/nrow(gt)
-  list(p_hetero = por)
+  nc <- length(af) # number of loci
+  # makes the genotypes into matrix with individuals in columns and genotype probs in case gt is vector
+  geno <- matrix(gt, nrow=nc) 
+  # vector containing number of heterozygous loci in each column/each individual
+  heteros <- colSums (geno == 1)
+  # calculates proportion of heterozygous loci for each individual
+  por <- heteros/nrow(geno) 
+  list(p_hetero = por) # output proportion as list
 }

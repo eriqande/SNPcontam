@@ -25,11 +25,11 @@
 #' like <- likelihood(af = c(SNP1 = .1, SNP2 = .2), c(0,0,0,1,1,1,1,1,1,2))
 #' lratio(like$clean, like$contam,af)
 lratio <- function(like_h, like_hc,af) {
-  nc <- length(af)
-  lh <- matrix(like_h, nrow=nc)
-  lhc <- matrix(like_hc, nrow=nc)
-  lc <- apply(lhc,2,prod)
-  lnc <- apply(lh,2,prod)
-  rat <- 2*log(lc/lnc)
-  list(ratio = rat)
+  nc <- length(af) # nc is number of loci
+  lh <- matrix(like_h, nrow=nc) # makes the likehoods into a matrix in case they are input as vectors
+  lhc <- matrix(like_hc, nrow=nc) # does same as above for contaminated likelihoods
+  lc <- apply(lhc,2,prod) # multplies all elements in the columns, corresponds with individual likelihood
+  lnc <- apply(lh,2,prod) # does same as above but for contaminated individuals
+  rat <- 2*log(lc/lnc) # calculates test statistic = likelihood ratio
+  list(ratio = rat) # output ratio as list
 }
