@@ -5,7 +5,7 @@ output:
   html_document:
     toc: true
     theme: united
-  pdf_document:-
+  pdf_document:
     toc: true
 ---
 
@@ -67,4 +67,28 @@ output:
     + `hetero`: calculating proportion of heterozygous loci
     + `random_gene`: creates n random genotypes using genotype frequencies
 * R Documention
-    + Wrote the documentation for `lratio`, `random_gene` 
+    + Wrote the documentation for `lratio`, `random_gene`, and `hetero`
+    
+## 5/30/14
+### Work in R
+* Documentation of `ROC` and `threshold` although not sure if they work properly
+* Wrote code to run all functions with random genes to build ROC curves and histograms
+```
+af <- runif(20,0,1)
+Ran <- random_gene(1000,af)
+L <- likelihood(af,Ran$rclean)
+LC <- likelihood(af, Ran$rcontam)
+ratio <- lratio(L$clean, L$contam,af)
+ratio_c <- lratio(LC$clean, LC$contam,af)
+hetero <- hetero(Ran$rclean,af)
+hetero_c <- hetero(Ran$rcontam, af)
+par(mfrow=c(2,2))
+ROC(100,ratio[[1]], ratio_c[[1]])
+hist(ratio[[1]],col=rgb(1,0,0,0.5),xlim = c(-40,20),main="Likelihood Ratio Histogram")
+hist(ratio_c[[1]],col=rgb(0,0,1,0.5),add=T)
+ROC(100,hetero[[1]],hetero_c[[1]])
+hist(hetero[[1]],col=rgb(1,0,0,0.5),xlim = c(0,1),main="Heterozygousity Histogram")
+hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
+```
+* Appeared as if likelihood not better than heterozygousity, which makes me question if codes are working correctly
+* Also above 45 randomly generated alleles, the likelihood ratios (and heterozygousity proportions as well) of the contaminated and non contaminated do not overlap.
