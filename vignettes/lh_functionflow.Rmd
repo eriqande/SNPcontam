@@ -1,0 +1,67 @@
+---
+title: "Running Likelihood Ratio Test"
+author: "Elena Venable"
+output:
+  html_document:
+    toc: true
+    theme: united
+  pdf_document:
+    toc: true
+---
+## 1. Use Likelihood to Generate Genotype Probabilities
+The `likelihood` can be used to only calculate genotype probabilities if the gt is omitted as shown below.
+
+```{r}
+# generates likelihood probabilities given allele frequencies
+library(SNPcontam)
+af = c(SNP1 = .2, SNP2 = .1, SNP3 = .25)
+likelihood(af)
+```
+The list componenets contam and clean are Null because no genotype was entered.
+
+## 2. Use Function to Randomly Generate Genotypes
+The `random_gene` can next be used to generate genotypes based on the genotype frequencies computed usking `likelihood`.
+
+```{r}
+# generates five random genotypes
+Ran <- random_gene(5,af)
+```
+
+`rclean` includes genotypes generated assuming no contamination while `rcontam` includes those generated assuming contamination.
+
+## 3. Use Function to Compute Lilkelihoods of Random Genotypes
+The `likehood` function can be used to compute the likelihoods of genotypes.
+```{r}
+# likelihood for the non contaminated samples
+L <- likelihood(af,Ran$rclean)
+L
+# likelihood for the contaminated samples
+LC <- likelihood(af, Ran$rcontam)
+```
+LC will have a similar output to L, but for the contaminated assumption.
+
+## 4. Use Function to Compute Likelihood Ration
+The function `lratio` can be used to compute the likelihood ratio for each individual.
+```{r}
+# ratios for the non contaminated individuals
+ratio <- lratio(L$clean, LC$contam,af)
+ratio
+
+# ratios for the contaminated individuals
+ratio_c <- lratio(LC$clean, LC$contam,af)
+ratio_c
+```
+
+## 5. Use Function to Compute Heterozygousity
+The function `hetero` can be used to compute the proportion of heterozygous loci in an individual.
+```{r}
+# proportion for non contaminated individuals
+hetero <- hetero(Ran$rclean,af)
+hetero
+
+# proportion of contamintated individuals
+hetero_c <- hetero(Ran$rcontam, af)
+hetero_c
+```
+
+## 6. Use Function to Plot ROC Curves
