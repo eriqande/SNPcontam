@@ -1,11 +1,11 @@
 #' Likelihood ratio of genotype
 #' 
 #' Computes the likelihodd ratio of a genotype using the formula 
-#' \eqn{\Lambda = -2*log(L(\theta_A|x)/L(\theta|x)$} where \eqn{L(\theta|x)} is the likelihood udner the assumption
-#' that the sample is contaminated (DNA of two randomly sampled individuals is present)
-#' and \eqn{L(\theta_0|x)} is the likelihood under the assumption that the sample is not
-#' contaminated (DNA of only one individual is represented).
-#' @param like_h A vector of likelihoods of the genotype at each loci undert he assumption.
+#' \eqn{\Lambda = 2*log(L(\theta_A|x)/L(\theta|x)} where \eqn{L(\theta|x)} is the likelihood 
+#' udner the assumption that the sample is contaminated (DNA of two randomly sampled 
+#' individuals is present), and \eqn{L(\theta_0|x)} is the likelihood under the assumption 
+#' that the sample is not contaminated (DNA of only one individual is represented).
+#' @param like_h A vector of likelihoods of the genotype at each loci undert the assumption
 #' that the sample is not contaminated. More than one individual can be included in lh.
 #' For example, if there are L loci sampled, then the first L elements of lh are 
 #' likelihoods of loci of individual 1 and the next L elements of lh are likelihoods 
@@ -20,10 +20,21 @@
 #' }
 #' @export
 #' @examples
-#' # call it after likelihood function to likelihood ratios
+#' # call it after likelihood function to get likelihood ratios
 #' # generates ratio for 5 individuals
 #' like <- likelihood(af = c(SNP1 = .1, SNP2 = .2), c(0,0,0,1,1,1,1,1,1,2))
 #' lratio(like$clean, like$contam,af)
+#' 
+#' # call after calculating ratios for simulated genotypes
+#' # gets likelihood ratio for non-contaminated and contaminated genotypes
+#' af <- runif(6,0,1)
+#' Ran <- random_gene(5,af)
+#' L <- likelihood(af,Ran$rclean)
+#' LC <- likelihood(af, Ran$rcontam)
+#' ratio <- lratio(L$clean, L$contam,af)
+#' ratio_c <- lratio(LC$clean, LC$contam,af)
+#' ratio
+#' ratio_c
 lratio <- function(like_h, like_hc,af) {
   nc <- length(af) # nc is number of loci
   lh <- matrix(like_h, nrow=nc) # makes the likehoods into a matrix in case they are input as vectors
