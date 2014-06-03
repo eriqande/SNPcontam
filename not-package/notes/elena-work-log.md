@@ -103,3 +103,39 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
     * Eric's notes can be found here : http://users.soe.ucsc.edu/~eriq/dokuwiki/doku.php?id=sisg:sisg
 * Think about how I would like to write up the results
     
+## 6/2/14
+### Literature Review
+* ***Fluidigm SNPtrace Panel***
+    * 96 SNP panel used to detect sample contamination and distinguish related samples
+    * 6 gender SNPs divided evenly between X and Y chromosomes used to identify contamination
+* ***Detecting and Estimating Contamination of Human DNA Samples in Sequencing and Array-Based Genotype Data***
+    * Likelihood-based methods with sequence data and array-based genotype data
+        * maximizing likelihood of base reading for a value between 0 and 1 of contamination level
+        * set of genotypes for each sequence sample is known and authors investigated whether sequencing reads all originated from the targeted sample
+    * Likelihood-based methods using just sequence data
+        * similar method but prior genotype data unknown
+    * Likelihood-based methods just using array-based data
+        * used Illumina Infinium florecense
+        * Guassian distribution of A and b allele intensity data
+        * Maximized likelihood using a grid search on interval [0,1/2] followed by Brent's algorithm
+    * Regression-Based method using just array-based data
+        * Linear regression of BAF (B allele frequency)
+    * Compared their study to heterozyogosity and HET/HOM ratio used to find contaminated DNA in type 2 diabetes study
+        * found that the results of methods were consistent but likelihood-based methods and regression-based methods were more sensitive than heterozygosity-based methods
+* ***A Novel Method for Detecting Contaminated Samples Based on Illumina Sequencing Data***
+    * Also mention HET/HOM but state that populations with recent admixture will skew towards heterozygosity while populations with inbreeding will skew towards homozygosity
+    * develop Mappability score
+    * compare SNP sites on X and Y chromosome to test for contaminationn
+    * use data from unique SNP sites to find contamination
+    * I think this paper was translated into English; I had a really hard time understanding what they were tyring to say
+* ***ContEst: estimating cross-contamination of humnan samples next-generation sequencing data***
+    * General population frequency info and sequencing data in BAM format
+    * Bayesian approah to calculate the posterior prob. of the contamination level and determine maximum a posteriori probability (MAP) estsimate of contamination level
+        * Indentified homozygous SNPs
+        * Bayes law to calculate posterior probability
+        * Used uniform prior on contaminatinon fraction
+        * Quality of bases typically represented using a Phred-like Q-score (auality = probability of read being incorrect)
+
+### Other
+* Also did some work trying to mathematically relate likelihood ratio to the heterozygousity proportion.  No significant break through yet.
+    
