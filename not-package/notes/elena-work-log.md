@@ -138,4 +138,5 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 
 ### Other
 * Also did some work trying to mathematically relate likelihood ratio to the heterozygousity proportion.  No significant break through yet.
+* Began reading the MCMC notes (read section 1)
     
