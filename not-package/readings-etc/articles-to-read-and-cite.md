@@ -14,3 +14,7 @@ http://bioinformatics.oxfordjournals.org/content/27/18/2601  As the title says t
 * *A Novel Method for Detecting Contaminated Samples Based on Illumina Sequencing Data*
 http://www.ijbbb.org/papers/322-E0014.pdf  Model for detecting contamination using mappability of sites and SNP sites on the X and Y chromosomes.
 
+
+* *Source-Sink Estimates of Genetic Introgression Show Influence of Hatchery Strays on Wild Chum Salmon Populations in Prince William Sound, Alaska*
+http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0081916#pone-0081916-t002  Study from the Alaska Department of Fish and Game. They used an MCMC model and microsatellites to identify contaminated samples.  The two methods were not very consistent. The methods were used for quality control, so they did not run simulations or test to determine the accuracy of either method.
+
