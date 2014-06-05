@@ -138,7 +138,7 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 
 ### Other
 * Also did some work trying to mathematically relate likelihood ratio to the heterozygousity proportion.  No significant break through yet.
-* Began reading the MCMC notes (read section 1)
+* Began reading the MCMC notes (read sections 1 and 2)
 
 ## 6/3/14
 ### Some more literature review
@@ -151,11 +151,15 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
         * 55.2% of old samples tested positive for contamination, but the microsatellite method identified much more contamination than the HWE method
         
 ### Learning about MCMC
-* Sections 2 - 5
+* Sections 3 - 5
 * had some difficulty understanding Gibbs Sampling
-    *this site helped me understand better: http://pareto.uab.es/mcreel/IDEA2014/MCMC/mcmc.pdf
+    * this site helped me understand better: http://pareto.uab.es/mcreel/IDEA2014/MCMC/mcmc.pdf
 
 ### Editing Code
 * added input for a title of the ROC graph in the `ROC` function
 * added and edited documentation in all functions except `likelihood1
 * added examples to `ROC`, `lratio`, and `hetero`
+
+## 6/4/14
+### Learning about MCMC
+* Finished reading the notes on MCMC
