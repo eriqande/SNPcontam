@@ -163,3 +163,21 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ## 6/4/14
 ### Learning about MCMC
 * Finished reading the notes on MCMC
+
+## 6/5/14
+* Read about mixture models
+
+## 6/6/14
+* Read more about misture models and MCMC
+
+## 6/9/14
+### MCMC Model
+* wrote down the full conditional probabilities and the Direct Acyclic Graph (DAG) for an MCMC model to find probability of contamination and allele frequencies
+    * Equations and graph written down in my notebook
+* wrote code to implement MCMC method
+    * using function `contam_MCMC` for algorithm
+    * function `full_z` used to calculate full conditional distribution of z
+
+### Plans for Tomorrow
+* input some of the equation derivation into the `main-body-text.tex` manuscript
+* continue commenting and documenting MCMC equations
