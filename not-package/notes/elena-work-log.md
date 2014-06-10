@@ -181,3 +181,11 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ### Plans for Tomorrow
 * input some of the equation derivation into the `main-body-text.tex` manuscript
 * continue commenting and documenting MCMC equations
+
+## 6/10/14
+### Manuscript
+* began to write down the derivation of the MCMC equations in `main-body-text.tex`
+
+### MCMC code
+* wrote some of the documentation for `contam_MCMC` and `full_z`
+  * still need to include examples and some description
