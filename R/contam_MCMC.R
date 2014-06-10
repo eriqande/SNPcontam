@@ -1,36 +1,41 @@
 #' MCMC function for determing contamination probability and allele frequencies
 #' 
-#' Describtion
-#' @param data 
-#' @param inters 
-#' @param ro_start
-#' @param alpha
-#' @param beta
-#' @param lamda
+#' Description
+#' @param data A matrix containing the genotype of data of individuals in the form of 
+#' A,C,G, and T.
+#' @param inters  A number representing the total of number of interations for the MCMC model.
+#' @param rho_start The start value for the probability of contamination within the entire
+#' sample.
+#' @param alpha The alpha parameter for the prior distribution of rho, the probability
+#' of contamination.  The prior of rho is assumed to be a beta distribution.
+#' @param beta The beta parameter for the prior distribution of rho, which is assumed to be
+#' a beta distribution.
+#' @param lambda The alpha and beta parameter for the prior distribution of the allele
+#' frequencies at each locus, which is assumed to be a beta distribution.
 #' 
 #' @return Returns a list of two named components:
 #' \describe{
-#'  \item{prob_contam}{}
-#'  \item{allele_freq}{}
+#'  \item{prob_contam}{A vector containing the rho value, which is the probability of 
+#'  contamination, for each interation. The vector has 1 plus the total number of iterations.}
+#'  \item{allele_freq}{A matrix containing the allele frequencies at each locus for each
+#'  iteration. The matrix has columns equal to the number loci and rows equal to the 1 plus
+#'  total number of iterations.}
 #' }
 #' @export
-#' @examples
-#'
-#' @export
-contam_MCMC<-function(data,inters,ro_start,alpha,beta,lamda){
+contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
   library(fullsniplings)
   snp_genos <- get_snp_genos(data) # Converts data from alleles of A,C,G,T to genotypes of 0, 1, or 2
   N <- ncol(snp_genos$mat) # Number of individuals
   L <- nrow(snp_genos$mat) # Number of loci
-  ro <- rep(0,inters+1) # Creates array for ro values
-  ro[1] <- ro_start 
+  rho <- rep(0,inters+1) # Creates array for rho values
+  rho[1] <- rho_start 
   allele_f <- matrix(0,inters+1,L) # Matrix for allele frequencies
-  allele_f[1,] <- rbeta(L,lamda,lamda)
+  allele_f[1,] <- rbeta(L,lambda,lambda)
   z <- matrix(0,inters,N) # Matrix for z's
   
   for(k in 1:inters){
   # update z
-  prob <- full_z(snp_genos$mat,allele_f[k,],ro[k]) # full_z gives the prob of contamination for each individual
+  prob <- full_z(snp_genos$mat,allele_f[k,],rho[k]) # full_z gives the prob of contamination for each individual
   z[k,] <- c(runif(N) <= prob$prob)*1 # sets zi's to be 1 or 0 dependent on prob of contamination
   
   # update allele frequency
@@ -45,19 +50,19 @@ contam_MCMC<-function(data,inters,ro_start,alpha,beta,lamda){
   x2 <- rowSums(gene_2,na.rm=TRUE) # total 2 genotype
   # updates allele frequency using derived beta distribution
   for (i in 1:L){
-    t_alpha <- 2*x2[i] + x1[i] + lamda # alpha parameter
-    t_beta <- 2*x0[i] + x1[i] +lamda # beta paramenter
+    t_alpha <- 2*x2[i] + x1[i] + lambda # alpha parameter
+    t_beta <- 2*x0[i] + x1[i] +lambda # beta paramenter
     allele_f[k+1,i] <- rbeta(1,t_alpha,t_beta) # allele frequency for 1 allele
   }
 
-  # update ro
+  # update rho
   sum_z <- sum(z[k,]) # total number of contaminated samples
-  # updates ro with derived beta distribution
+  # updates rho with derived beta distribution
   p_alpha <- sum_z + alpha # alpha parameter
   p_beta <- N - sum_z + beta # beta parameter
-  ro[k+1] <- rbeta(1,p_alpha,p_beta) # new ro value
+  rho[k+1] <- rbeta(1,p_alpha,p_beta) # new rho value
   
   k = k + 1
   }
-list(prob_contam = ro, allele_freq = allele_f)
+list(prob_contam = rho, allele_freq = allele_f)
 }
