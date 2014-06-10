@@ -3,3 +3,7 @@ lratio.Rd
 random_gene.Rd
 threshold.Rd
 ROC.Rd
+full_z.Rd
+MCMC.Rd
+fullz.Rd
+contam_MCMC.Rd
