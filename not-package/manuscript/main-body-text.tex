@@ -16,8 +16,75 @@ may well  become the way everything is done in the future, but the relative simp
 Fluidigm make those very attractive.  Also good for low-quantity DNA, large number of individuals, degraded 
 tissues, etc.  It is likely that 
 
- 
+\section*{Mathematical Derivation of MCMC Model}
+In the model of contamination in a single popultation, only the genotypes of the sampled individuals are known. The $i^{th}$ genotype at the $\ell^{th}$ locus is represented by the variable $y_{i\ell}$.  The probability that a sample is contaminated, $\rho$, and the allele frequency of the 1 allele at the $\ell^{th}$ locus, $\theta_{\ell}$, are unknown paramenters.  The latent variable, $z_i$, is used to indicate the contamination status of the $i^{th}$ sample.  If $z_i$ has a value equal to 1, then the $i^{th}$ sample is contaminated.  A value of 0 indicates that the sample is not contaminated.  
 
+To construct the MCMC model, it is assumed that the $\rho$ and $\theta_{\ell}$ have beta distributions, giving them priors of:
+  \begin{equation} \label{rho_prior}
+    p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1}
+  \end{equation}
+  \begin{equation} \label{theta_prior}
+    p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{\lambda_{\ell}-1}(1 - \theta_{\ell})^{\lambda_{\ell}-1}
+  \end{equation}
+The parameters $\alpha$, $\beta$, and $\lambda_{\ell}$ are assumed and not observed.
 
+Values for $\rho$, $\theta_{\ell}$, and $z_i$ were updated using Gibbs sampling, which required the derivation of the full conditional distributions of the paramenters. The formula for the full conditional of $z_i$ is given Eq. \ref{z_fc}.
 
- 
+\begin{equation} \label{z_fc}
+p(z_i|\theta_{\ell},y_i) = p(z_i|\rho)p(y_i|z_i,\theta)
+\end{equation}
+$p(z_i|\rho)$ is the likelihood of the $z_i$ value given $\rho$, and $p(y_i|z_i,\theta)$ is the likelihood of the genotype given $z_i$ and $\theta$.  A Bernoulli distribution gives the likelihood of $z_i$:
+
+\begin{equation} \label{z_lh}
+p(z_i|\rho) = \rho^{z_i}(1-\rho)^{1-z_i} 
+\end{equation}
+
+There are two cases for which the likelihood of the genotype must be computed: $z_i = 0$ and $z_i = 1$.  Both are computed assuming Hardy Weinberg Equilibrium, but when $z_i = 0$, the sample is assumed to be non-contaminated and comes from only one individual.  When $z_i = 1$, the sample is assumed to be contaminated by two individuals, so that $p(y_{\ell} = 0|\theta_{\ell}) = (1-\theta_{\ell})^4$, and $p(y_{\ell} = 1|\theta_{\ell}) = 1 -\theta_{\ell}^4 - (1-\theta_{\ell})^4$, $p(y_{\ell} = 2|\theta_{\ell}) = \theta_{\ell}^4$.  The likelihoods of a sampled genotype for case $z_i = 0$ and $z_i = 1$ are given by Eq. \ref{y_lh} and Eq. \ref{y_lhc} respectively.  $L$ is the total number of loci.
+
+\begin{equation} \label{y_lh}
+p(y_i|z_i=0,\theta) = \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},noncontam)
+\end{equation}
+\begin{equation} \label{y_lhc}
+p(y_i|z_i=1,\theta) = \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam)
+\end{equation}
+
+The full conditional distribution of $z_i$ used in the MCMC model,given by Eq. \ref{z_simpfc}, is derived by substituting Eq. \ref{z_lh}, Eq. \ref{y_lh}, and Eq. \ref{y_lhc} into Eq. \ref{z_fc}.
+\begin{eqnarray} \label{z_simpfc}
+p(z_i=0|\theta_{\ell},y_i) &=& \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},noncontam)}{R} \nonumber \\
+p(z_i=1|\theta_{\ell},y_i) &=& \frac{\rho^{z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam)}{R} \nonumber \\
+R &=& (1-\rho)^{1-z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},noncontam) \nonumber \\
+& & +\rho^{z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam) 
+\end{eqnarray}
+Dividing by R normalizes the distribution. \\
+
+The formula for the full conditional distribution for $\rho$ is given by:
+  \begin{equation} \label{rho_fc}
+    p(\rho|z_i) \propto [\prod_{i=1}^{N} p(z_i|\rho)] p(\rho|\alpha,\beta)
+  \end{equation}
+where $N$ is the total number of samples.
+
+As shown below, substituting Eq. \ref{z_lh} and Eq. \ref{rho_prior} into Eq. \ref{rho_fc} can reduce the full conditional distribution of $\rho$ to a beta distribution with parameters $(\alpha + \sum_{i=1}^{N} z_i)$ and $(\beta + N - \sum_{i=1}^{N} z_i)$ as shown below:
+
+\begin{eqnarray} \label{rho_simpfc}
+  p(\rho|z_i) &\propto& [\prod_{i=1}^{N} p(z_i|\rho)] p    (\rho|\alpha,\beta) \nonumber \\
+  &=& [\prod_{i=1}^{N} \rho^{z_i}(1 - \rho)^{1 - z_i}] \rho^{\alpha - 1}(1 - \rho)^{\beta-1} \nonumber \\
+  &=& \rho^{\sum_{i=1}^{N} z_i}(1-\rho)^{N - \sum_{i=1}^{N} z_i} \rho^{\alpha -1} (1-\rho)^{\beta-1} \nonumber \\
+  &=& \rho^{\alpha - 1 + \sum_{i=1}^{N} z_i}(1 - \rho)^{\beta -1 + N - \sum_{i=1}^{N} z_i}
+\end{eqnarray}
+
+The formula for full conditional distribution of $\theta_{\ell}$ given by:
+
+\begin{equation} \label{theta_fc}
+p(\theta_{\ell}|y_{i\ell},z_i) \propto [\prod_{i=\ell}^{N} p(y_{i\ell}|\theta_{\ell},z_i)]p(\theta_{\ell}|\lambda_{\ell})
+\end{equation}
+
+Only non-contaminated genotypes are used to calculate allele frequencies.  Therefore, only non-contaminated samples are relevant for the full condition distribution of $\theta_{\ell}$.  The likelihood of $y_{i\ell}$ given $\theta_{\ell}$ and non-contamination, $p(y_{i\ell}|\theta_{\ell},noncontam)$, is calculated assuming that the population is in Hardy-Weinberge Equilibrium. Evaluating $p(y_{i\ell}|\theta_{\ell},noncontam)$ and substituting Eq \ref{theta_prior} into Eq \ref{theta_fc} symplifies the full conditional distribution of $\theta_{\ell}$ to a beta distribution with parameters $(2x_2 + x_1 + \lambda_{\ell})$ and $(2x_0 + x_1 + \lambda_{\ell})$ where $x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$. 
+
+\begin{eqnarray} \label{theta_simpfc}
+p(\theta_{\ell}|y_{i\ell},z_i) &\propto& [\prod_{i=\ell}^{N} p(y_{i\ell}|\theta_{\ell},z_i)]p(\theta_{\ell}|\lambda_{\ell}) \nonumber \\
+&=& [\prod_{i:z=0}^{N} p(y_{i\ell}|\theta_{\ell},noncontam)] \nonumber \\
+& & \times \theta_{\ell}^{\lambda_{\ell} - 1}(1-\theta_{\ell})^{\lambda_{\ell} - 1} \nonumber \\
+&=& [(1-\theta_{\ell})^2]^{x_0}[2\theta_{\ell}(1-\theta_{\ell})]^{x_1}[\theta_{\ell}^2]^{x_2} \nonumber \\
+& & \times \theta_{\ell}^{\lambda_{\ell} - 1}(1 - \theta_{\ell})^{\lambda_{\ell} - 1} \nonumber \\
+& \propto& \theta_{\ell}^{2x_0 + x_1 + \lambda_{\ell} - 1}(1-\theta_{\ell})^{2x_0 + x_1 + \lambda_{\ell} - 1}
+\end{eqnarray}
