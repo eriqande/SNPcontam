@@ -2,7 +2,7 @@
 #' 
 #' Description
 #' @param data A matrix containing the genotype of data of individuals in the form of 
-#' A,C,G, and T.
+#  letters, numbers, or strings.
 #' @param inters  A number representing the total of number of interations for the MCMC model.
 #' @param rho_start The start value for the probability of contamination within the entire
 #' sample.
@@ -36,7 +36,7 @@ contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
   for(k in 1:inters){
   # update z
   prob <- full_z(snp_genos$mat,allele_f[k,],rho[k]) # full_z gives the prob of contamination for each individual
-  z[k,] <- c(runif(N) <= prob$prob)*1 # sets zi's to be 1 or 0 dependent on prob of contamination
+  z[k,] <- c(runif(N) <= prob)*1 # sets zi's to be 1 or 0 dependent on prob of contamination
   
   # update allele frequency
   # only use non-contaminated samples to calculate allele frequency
