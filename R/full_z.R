@@ -17,13 +17,14 @@
 #'  the ith element is the probability that ith sample is contaminated.}
 #' }
 #' @export 
-full_z <- function(genos,theta,ro){
+full_z <- function(genos,theta,rho){
   like <- likelihood(theta,genos) # use likelihood function to get probability of genotype given contamination and clean
-  clean <- apply(like$clean,2,prod,na.rm=TRUE)*rho # probability of non contaminated sample
-  contam <- apply(like$contam,2,prod,na.rm=TRUE)*(1-rho) # probability of contaminated samples
+  #consider taking log and then colSums so loop is avoided
+  clean <- apply(like$clean,2,prod,na.rm=TRUE)*(1 -rho) # probability of non contaminated sample
+  contam <- apply(like$contam,2,prod,na.rm=TRUE)*rho # probability of contaminated samples
   # full conditional probability distribution of z indicator value of 1 (indicating contamination)
   # normalized by (clean + contam) so that total probability is 1
   p <- contam/(clean + contam) 
-  list(prob = p)
+  list(prob = p) # can just return value without list
 }
   
