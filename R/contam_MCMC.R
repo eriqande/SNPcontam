@@ -23,27 +23,34 @@
 #' }
 #' @export
 contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
-  library(fullsniplings)
-  snp_genos <- get_snp_genos(data) # Converts data from alleles of A,C,G,T to genotypes of 0, 1, or 2
-  N <- ncol(snp_genos$mat) # Number of individuals
-  L <- nrow(snp_genos$mat) # Number of loci
+  #library(fullsniplings)
+  #snp_genos <- get_snp_genos(data) # Converts data from alleles of A,C,G,T to genotypes of 0, 1, or 2
+  N <- ncol(data) # Number of individuals
+  L <- nrow(data) # Number of loci
   rho <- rep(0,inters+1) # Creates array for rho values
-  rho[1] <- rho_start 
+  
+  if (length(rho_start) > 0){
+  rho[1] <- rho_start
+  }
+  else {
+  rho[1] <- rbeta(1,alpha,beta)  
+  }
+  
   allele_f <- matrix(0,inters+1,L) # Matrix for allele frequencies
   allele_f[1,] <- rbeta(L,lambda,lambda)
   z <- matrix(0,inters,N) # Matrix for z's
   
   for(k in 1:inters){
   # update z
-  prob <- full_z(snp_genos$mat,allele_f[k,],rho[k]) # full_z gives the prob of contamination for each individual
+  prob <- full_z(data,allele_f[k,],rho[k]) # full_z gives the prob of contamination for each individual
   z[k,] <- c(runif(N) <= prob)*1 # sets zi's to be 1 or 0 dependent on prob of contamination
   
   # update allele frequency
   # only use non-contaminated samples to calculate allele frequency
   # gene_x has 1s at indices where z is 0 and the genetype is x
-  gene_0 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(snp_genos$mat==0)
-  gene_1 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(snp_genos$mat==1)
-  gene_2 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(snp_genos$mat==2)
+  gene_0 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(data==0)
+  gene_1 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(data==1)
+  gene_2 <- (1 - matrix(rep(z[k,],L),nrow=L,byrow=TRUE))*(data==2)
   # sum of 1s of rows of gene_x gives total number of total number of genotype x at each locus
   x0 <- rowSums(gene_0,na.rm=TRUE) # total 0 genotype 
   x1 <- rowSums(gene_1,na.rm=TRUE) # total 1 genotype
