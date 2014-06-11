@@ -51,7 +51,7 @@ contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
   # updates allele frequency using derived beta distribution
     t_alpha <- 2*x2 + x1 + lambda # alpha parameter
     t_beta <- 2*x0 + x1 + lambda # beta paramenter
-    allele_f[k+1,] <- rbeta(1,t_alpha,t_beta) # allele frequency for 1 allele
+    allele_f[k+1,] <- rbeta(L,t_alpha,t_beta) # allele frequency for 1 allele
 
   # update rho
   sum_z <- sum(z[k,]) # total number of contaminated samples
