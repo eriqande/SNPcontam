@@ -23,8 +23,6 @@
 #' }
 #' @export
 contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
-  #library(fullsniplings)
-  #snp_genos <- get_snp_genos(data) # Converts data from alleles of A,C,G,T to genotypes of 0, 1, or 2
   N <- ncol(data) # Number of individuals
   L <- nrow(data) # Number of loci
   rho <- rep(0,inters+1) # Creates array for rho values
