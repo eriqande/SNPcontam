@@ -189,3 +189,22 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ### MCMC code
 * wrote some of the documentation for `contam_MCMC` and `full_z`
   * still need to include examples and some description
+  
+## 6/11/14
+### MCMC code
+* changed `full_z` to get rid of the `apply()` command and used `log()`, `colSums()`, and `exp()`. Also changed output from list to just `return(p)`
+* changed `contam_MCMC` to reflect change in the `full_z` output
+* created `simulate_genos` to simulate random contaminated and clean genotypes with a certain proportion of contamination
+* created `test_MCMC` to compare MCMC of simualted samples to true results
+
+##6/12/14
+### MCMC simulation
+* created `loci_table`
+    * compares the results of the MCMC for different number of loci
+    * outputs a table
+* created `missingl_table`
+    * compares the results of the MCMC for different proportion of missing loci
+    * outputs a table
+* created `threshold_table` 
+    * to compare the results of the MCMC for different threshold levels
+    * outputs a table
