@@ -208,3 +208,15 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * created `threshold_table` 
     * to compare the results of the MCMC for different threshold levels
     * outputs a table
+
+### Things to go over with simulation
+* sample with replacement from FRHSP or equivalent \theta (+ unif(-.01,0.1) so there is difference between reps) and sample size @ 200
+    * Number of loci (20,60,100,200)
+    * \rho (.025, .075, .2, .5)
+* store \theta in case we want analysis 
+* take the last 900
+* do 100 reps with different \theta
+* record how long it takes: proctime
+* look into the package parallel
+    * mclapply()
+
