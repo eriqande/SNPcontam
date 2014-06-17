@@ -10,7 +10,7 @@ simulate_genos <- function(N,L,p,l,sample_data){
   afreqs <- alle_freqs(geno_counts)
   # get genotype frequencies
   all_L <- nrow(snp_genos$mat)
-  loci <- sample(1:all_L,L,replace = FALSE)
+  loci <- sample(1:all_L,L,replace = TRUE)
   genes <- afreqs[2,loci]
   gfreqs <- likelihood(genes)
   
