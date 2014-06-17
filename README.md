@@ -15,7 +15,7 @@ system):
 ```
 latexmk -pdf snp-contam-main
 ```
-The resulting PDF file, `flock-comment-main` should then be complete.
+The resulting PDF file, `snp-contam-main` should then be complete.
 
 ## Terms 
 
