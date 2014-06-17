@@ -219,4 +219,20 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * record how long it takes: proctime
 * look into the package parallel
     * mclapply()
+    
+## 6/13/14
+* started working on the simulation called `MCMC_sims`
+* changed `test_MCMC` to have different outputs that correspond better with the desired simulation output
 
+## 6/16/14
+### Lab Work
+* practiced pipetting with Vanessa
+* went through preparing PreAmp and running PCR on for SNP chip
+
+### Simulation
+* used `lapply` to run the `test_MCMC` function on all of the
+* set up dataframes with the necessary information for making the three different sets of graphs
+* set up function `MCMC_plots` that will create the three graphs
+* wrote code to create the boxplots for the posterior mean of z
+
+## 6/17/14
