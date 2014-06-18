@@ -236,3 +236,12 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * wrote code to create the boxplots for the posterior mean of z
 
 ## 6/17/14
+### Lab Work
+* went through the preparation of the SNP chip and practiced loading old SNP chip wih water
+* learned some of the protocol for PCR
+
+### Simulation
+* wrote code for all the graphs in `MCMC_zplots`, `MCMC_alleleplot`, and `MCMC_rhoplot`
+    * have two different graphs for `MCMC_zplots` because I couldn't decide which one looks the best
+* added graph functions to `MCMC_sims` so that the code now produces graphs
+* 
