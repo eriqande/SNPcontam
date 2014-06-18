@@ -46,6 +46,8 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l, alpha, beta, lambda, in
   MCMC_zplots(z_df)
   MCMC_alleleplot(allele_df)
   MCMC_rhoplot(rho_df)
+  
+  list(z = z_df, allele = allele_df, rho = rho_df)
 }
 
   # look into the package parallel => mclapply()
