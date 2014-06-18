@@ -7,8 +7,8 @@ test_MCMC <- function(sample_data, N, L, p, l, alpha=0.5, beta=0.5, lambda=0.5, 
   #compare allele frequencies
   alleles <- MCMC$allele_freq[-(1:burnin),]
   a_means <- colMeans(alleles) 
-  bottom <- apply(MCMC$allele_freq, 2, quantile, probs = 0.05)
-  top <- apply(MCMC$allele_freq,2, quantile, probs = 0.95)
+  bottom <- apply(alleles, 2, quantile, probs = 0.05)
+  top <- apply(alleles,2, quantile, probs = 0.95)
   
   # calculate mean proportion contaminated
   p2 = mean(MCMC$prob_contam[-(1:burnin)])

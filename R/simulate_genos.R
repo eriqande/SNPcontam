@@ -11,7 +11,7 @@ simulate_genos <- function(N,L,p,l,sample_data){
   # get genotype frequencies
   all_L <- nrow(snp_genos$mat)
   loci <- sample(1:all_L,L,replace = TRUE)
-  genes <- afreqs[2,loci]
+  genes <- afreqs[2,loci] + runif(L,-.01,.01)
   gfreqs <- likelihood(genes)
   
   # randomly pick individuals to be contaminated
