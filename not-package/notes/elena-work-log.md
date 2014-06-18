@@ -244,4 +244,12 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * wrote code for all the graphs in `MCMC_zplots`, `MCMC_alleleplot`, and `MCMC_rhoplot`
     * have two different graphs for `MCMC_zplots` because I couldn't decide which one looks the best
 * added graph functions to `MCMC_sims` so that the code now produces graphs
-* 
+
+## 6/18/14
+### Rccp
+* read about Rccp
+* started working on code to calculate the likelihood of an individual coming from each population in `P_likelihood`
+
+### Talked with Anthony and Carlos about Lab Experiment
+* Carlos is going to send Coho data where contaminated individuals were identified using microsatellites
+* Anthony is thinking of more details about an experiment investigating effect of concentration of contaminated and clean DNA
