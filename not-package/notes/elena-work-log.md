@@ -253,3 +253,17 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ### Talked with Anthony and Carlos about Lab Experiment
 * Carlos is going to send Coho data where contaminated individuals were identified using microsatellites
 * Anthony is thinking of more details about an experiment investigating effect of concentration of contaminated and clean DNA
+
+## 6/19/14
+### Rccp
+* finished Rcpp code
+* didn't know what the input data would actually look out, so it might be missing a few steps
+    * the inputs are
+        * genos: a matrix with genotypes where the number of rows equal to loci and number of columns equal to individuals, i.e the ith column is the genotype of the ith individual
+        * gc: a matrix with number of rows equal to number of populations and number of columns equal to the number of loci. The matrix is filled with allele frequencies of the 1 allele at a particular locus in a particular population
+
+### Simulation
+* changed code in `MCMC_sims` so that we can change the rho values and number of loci used and still use the same code
+* added `allele_table` which makes a table of the mean difference between the allele value and the poterior mean for each of the 16 different scenarios
+    * I used xtable, but I am not sure how this will actually turn into a latex table
+        
