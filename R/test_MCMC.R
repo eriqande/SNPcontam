@@ -1,5 +1,5 @@
 #' @export
-test_MCMC <- function(sample_data, N, L, p, l, alpha=0.5, beta=0.5, lambda=0.5, inters, burnin=100){
+test_MCMC <- function(sample_data, N, L, p, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters, burnin=100){
   real_p <- p
   sim <- simulate_genos(N,L,p,l,sample_data)
   MCMC <- contam_MCMC(sim$geno,inters,rho_start=NULL,alpha,beta,lambda)
@@ -15,7 +15,7 @@ test_MCMC <- function(sample_data, N, L, p, l, alpha=0.5, beta=0.5, lambda=0.5, 
   
   # compare contaminated individuals
   z <- MCMC$z[-(1:burnin),]
-  z_pm <- colMeans(MCMC$z)
+  z_pm <- colMeans(z)
   z_id <- rep(0,N)
   z_id[sim$contam_id] = 1
   

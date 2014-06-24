@@ -15,9 +15,14 @@ simulate_genos <- function(N,L,p,l,sample_data){
   gfreqs <- likelihood(genes)
   
   # randomly pick individuals to be contaminated
+  if (p==0){
+    for (i in 1:L){
+      g[i,] <- sample(0:2,N,TRUE,prob=gfreqs$clean_prob[,i])
+    }
+  } else{
   id <- sample(1:N,n_contam,replace = FALSE)
   contam_loci <- sample(1:L,l_contam,replace = FALSE)
-  
+
   #simulate genotypes
   for (i in 1:L){
     if (i %in% contam_loci){
@@ -26,6 +31,7 @@ simulate_genos <- function(N,L,p,l,sample_data){
     g[i,-(id)] <- sample(0:2,(N-n_contam),TRUE,prob = gfreqs$clean_prob[,i])
   } else{
     g[i,] <- sample(0:2,N,TRUE,prob=gfreqs$clean_prob[,i])
+  }
   }
   }
   list(geno = g, contam_id = id, loci = loci, afreqs = genes)

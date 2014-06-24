@@ -1,9 +1,6 @@
 #' @export
 MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters=1000,n){
   # create list with all simulations
-  library(ggplot2)
-  library(grid)
-  library(gridExtra)
   types <- list() 
   k <- 0
   num_Ls <- length(Lvals) # number of Loci values
@@ -15,92 +12,41 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
     types[[k]]$rho = r 
     types[[k]]$numL = L
   }
-  # sets up data frame for all z posterior means
-  nl <- numeric(0) # will be vector containing values of loci number for all trials
-  np <- numeric(0) # will be vector of values for rho values of all trials
-  for (L in Lvals){
-    a1 <- rep(L,N)
-    nl <- c(nl,a1)
-  }
-  nl <- rep(nl,num_rho)
-  for (r in rhovals){
-    a2 <- rep(r,num_Ls*N)
-    np <- c(np,a2)
-  }
-  z_df <- data.frame(contam_prob = rep(np,n), loci_number = rep(nl,n), z = rep(0,n*N*num_rho*num_Ls), z_id = rep(0,n*N*num_rho*num_Ls))
-  
-  # Sets up data frame for the rho values
-  rho_v = numeric(0) # vector with all the rho values for the data frame
-  for (r in rhovals){
-    a3 <- rep(r,num_Ls)
-    rho_v <- c(rho_v,a3)
-  }
-  rho_df <- data.frame(contam_prob = rep(rho_v,n),loci_number = rep(Lvals,n*num_rho), rho_pm = rep(0,n*num_rho*num_Ls))
- 
   # Sets up data frame for allele frequencies
-  alls <- numeric(0)
-  aps <- numeric(0)
-  for (L in Lvals){
-    a4 <- rep(L,L)
-    alls <- c(alls,a4)
-  }
-  alls <- rep(alls,num_rho)
+  alls <- rep(rep(Lvals, times=Lvals), num_rho)
   s <- sum(Lvals)
-  for (r in rhovals){
-    a5 <- rep(r,s)
-    aps <- c(aps,a5)
-  }
+  aps <- rep(rhovals, each=s)
   allele_df <- data.frame(rho_value = rep(aps,n), loci_number = rep(alls,n))
   
   total <- N*num_rho*num_Ls
   
   # Runs all MCMCs.  
   # MCMC contains the z posterior means, the rho posterior means, the allele frequencies, the allele estimates, and the upper and lower bound for the 90% allele intervals
-  MCMC <- lapply(1:n, function(x) {lapply(types, function(x) test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters))})
-  alleles <- numeric(0) # correct allele frequencies
-  ameans <- numeric(0) # estimated allele frequencies
-  top_int <- numeric(0) # upper bound of allele frequencies
-  bottom_int <- numeric(0) # lower bound of allele frequencies
-  
-  # Combines all data so that it can be put into the data frames
-  for(i in 1:n){
-    values <- MCMC[[i]] # the ith sample MCMC
-    #indices for the z to be output
-    zindex1 <- (i-1)*total + 1
-    zindex2 <- i*total
-    
-    #indices for the rho values to be output
-    pindex1 <- (i-1)*num_rho*num_Ls + 1
-    pindex2 <- i*num_rho*num_Ls
-    # inputs relevant z values into data frame
-    z_df$z[zindex1:zindex2] <- as.vector(sapply(values, function(x) {x$z_pm}))
-    z_df$z_id[zindex1:zindex2] <- as.vector(sapply(values, function(x) {x$z_id}))
-    # inputs relevant rho values
-    rho_df$rho_pm[pindex1:pindex2] <- as.vector(sapply(values, function(x) {x$rho_pm}))
-    
-    # setting up vectors containing allele data
-    a <- unlist(lapply(values, function(x) {x$afreqs}))
-    alleles <- c(alleles, a) # true allele frequencies
-    am <- unlist(lapply(values, function(x) {x$alle_pm}))
-    ameans <- c(ameans, am) # allele frequency estimates
-    tp <- unlist(lapply(values, function(x) {x$top_int}))
-    top_int <- c(top_int, tp) # upper bound
-    bt <- unlist(lapply(values, function(x) {x$bottom_int}))
-    bottom_int <- c(bottom_int, bt) # lower bound
+  MCMC <- lapply(1:n, function(x) {lapply(types, function(x) list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters)))})
+ 
+  # Makes the z output data frame
+  slurp_mcmc_z_output <- function(y) {
+    data.frame(z = y$output$z_pm, z_id = y$output$z_id, contam_prob = y$params$rho, loci_number = y$params$numL )
   }
-  #puts allele data in data frame
-  allele_df$alle_freq <- alleles
-  allele_df$estimates <- ameans
-  allele_df$topint <- top_int
-  allele_df$bottomint <- bottom_int
+  ztmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_z_output(x); df$rep_num=rep; df }) }) 
+  ztmp2 <- unlist(ztmp1, recursive = FALSE)
+  z_df <- do.call(what = rbind, args = ztmp2)
   
-  MCMC_zplots(z_df) # plots z values
-  MCMC_alleleplot(allele_df) # plots allele data
-  MCMC_rhoplot(rho_df) # plots rho data
-  allele_table(allele_df,Lvals,rhovals)
+  # Makes the rho output data frame
+  slurp_mcmc_rho_output <- function(y){
+    data.frame(rho_pm = y$output$rho_pm, contam_prob = y$params$rho, loci_number = y$params$numL)
+  }
+  rtmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_rho_output(x); df$rep_num=rep; df})})
+  rtmp2 <- unlist(rtmp1, recursive = FALSE)
+  rho_df <- do.call(what = rbind, args = rtmp2)
   
-  list(z = z_df, allele = allele_df, rho = rho_df)
-}
-
-  # look into the package parallel => mclapply()
-  
+  # Makes the allele output data frame
+  slurp_mcmc_allele_output <- function(y){
+    data.frame(alle_freq = y$output$afreqs, estimates = y$output$alle_pm, topint = y$output$top_int, bottomint = y$output$bottom_int, contam_prob = y$params$rho, loci_number = y$params$numL)
+  }
+  atmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x){df <- slurp_mcmc_allele_output(x); df$rep_num=rep; df})})
+  atmp2 <- unlist(atmp1, recursive = FALSE)
+  allele_df <- do.call(what = rbind, args = atmp2)
+    
+  list(types = types, z = z_df, allele = allele_df, rho = rho_df, rhovals = rhovals, Lvals = Lvals)
+} 

@@ -22,7 +22,7 @@
 #'  total number of iterations.}
 #' }
 #' @export
-contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
+contam_MCMC<-function(data,inters,rho_start=NULL,alpha,beta,lambda){
   N <- ncol(data) # Number of individuals
   L <- nrow(data) # Number of loci
   rho <- rep(0,inters+1) # Creates array for rho values
@@ -64,7 +64,7 @@ contam_MCMC<-function(data,inters,rho_start,alpha,beta,lambda){
   p_alpha <- sum_z + alpha # alpha parameter
   p_beta <- N - sum_z + beta # beta parameter
   rho[k+1] <- rbeta(1,p_alpha,p_beta) # new rho value
- 
+
   }
 list(prob_contam = rho, allele_freq = allele_f, z=z)
 }
