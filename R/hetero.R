@@ -23,7 +23,8 @@
 #' 
 #' # run after random_gene to determine the heterozygousity of randomly generated genotypes
 #' # determines proportion of heterozygous loci for 5 individuals
-#' like <- likelihood(af = c(SNP1 = .1, SNP2 = .2))
+#' af = c(SNP1 = .1, SNP2 = .2)
+#' like <- likelihood(af)
 #' genes <- random_gene(5,af)
 #' hetero(genes$rclean,af)
 hetero <- function(gt,af){

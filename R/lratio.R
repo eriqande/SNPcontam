@@ -22,7 +22,8 @@
 #' @examples
 #' # call it after likelihood function to get likelihood ratios
 #' # generates ratio for 5 individuals
-#' like <- likelihood(af = c(SNP1 = .1, SNP2 = .2), c(0,0,0,1,1,1,1,1,1,2))
+#' af = c(SNP1 = .1, SNP2 = .2)
+#' like <- likelihood(af, c(0,0,0,1,1,1,1,1,1,2))
 #' lratio(like$clean, like$contam,af)
 #' 
 #' # call after calculating ratios for simulated genotypes
