@@ -1,25 +1,34 @@
 #' @export
-allele_table <- function(data,Lvals,rhovals){
-  nL <- length(Lvals)
+allele_table <- function(types, data, Lvals, rhovals){
+  data$difference <- abs(data$alle_freq - data$estimates) # finds absolute difference between estimate and real value fo allele frequency
+  # loops set up rho and L values for the data frame
+  get_output <- function(y){
+    rho <- y$rho
+    loci <- y$numL
+    df <- data.frame(Rho_Value = rho, Number_of_Loci = loci)
+    df$Average_Difference <- mean(data$difference[data$loci_number == loci & data$contam_prob == rho])
+   return(df)  
+  }
+  tmp <- lapply(types, function(x) {df <- get_output(x); df})
+  table_data <- do.call(what = rbind, args = tmp)
+  
+  
+  # get rid of extra rho values
+  x <- table_data$Rho_Value
+  reps <- c(FALSE,x[-1]==x[-length(x)])
+  table_data$Rho_Value[reps] <- NA
+  
+  #change column names
+  colnames(table_data) <- c("Rho Value", "Number of Loci", "Mean Absolute Difference")
+  
+  #print table
   nrho <- length(rhovals)
-  data2 <- data[,-(5:6)]
-  data2$difference <- abs(data2$alle_freq - data2$estimates)
-  rho <- numeric(0)
-  Ls <- numeric(0)
-  for (r in rhovals){
-    a1 <- rep(r,nL)
-    rho <- c(rho,a1)
+  nL <- length(Lvals)
+  lines <- numeric(0)
+  for (i in 1:nrho){
+    lines <- c(lines,i)
   }
-  for (L in Lvals){
-    a2 <- L
-    Ls <- c(Ls,a2)
-  }
-  table_data <- data.frame(Rho_Value = rho, Number_of_Loci= rep(Ls,nrho), Average_Difference = rep(0,nL*nrho),)
-  for (i in 1:(nL*nrho)){
-    loci <- table_data$Number_of_Loci[i]
-    r <- table_data$Rho_Value[i]
-    table_data$Average_Difference[i] = mean(data2$difference[data2$loci_number == loci & data2$rho_value == r])
-  }
-  colnames(table_data) <- c("Proportion of Contaminated Samples", "Number of Loci", "Mean Absolute Difference")
-  print(xtable(table_data,digits=c(0,3,0,3)),include.rownames=FALSE)
+  tab <- xtable(table_data,digits=c(0,3,0,3))
+  align(tab) <- "c|r|r|r|"
+  print(tab,include.rownames=FALSE,hline.after=c(-1,0,nL*lines))
 }
