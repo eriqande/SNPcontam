@@ -2,7 +2,7 @@
 test_MCMC <- function(sample_data, N, L, p, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters, burnin=100){
   real_p <- p
   sim <- simulate_genos(N,L,p,l,sample_data)
-  MCMC <- contam_MCMC(sim$geno,inters,rho_start=NULL,alpha,beta,lambda)
+  MCMC <- contam_MCMC(sim$geno,inters,alpha,beta,lambda)
   
   #compare allele frequencies
   alleles <- MCMC$allele_freq[-(1:burnin),]

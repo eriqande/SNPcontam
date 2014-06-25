@@ -20,19 +20,16 @@
 #'  \item{allele_freq}{A matrix containing the allele frequencies at each locus for each
 #'  iteration. The matrix has columns equal to the number loci and rows equal to the 1 plus
 #'  total number of iterations.}
+#'  \item{z}{A matrix containing the z value, which denotes contaminated status, for each individual
+#'  and every iteration.  The matrix has columns equal to the number of individuals and rows equal to
+#'  the total number of iterations.}
 #' }
 #' @export
-contam_MCMC<-function(data,inters,rho_start=NULL,alpha,beta,lambda){
+contam_MCMC<-function(data,inters = 1000,alpha=0.5,beta=0.5,lambda=0.5){
   N <- ncol(data) # Number of individuals
   L <- nrow(data) # Number of loci
   rho <- rep(0,inters+1) # Creates array for rho values
-  
-  if (length(rho_start) > 0){
-  rho[1] <- rho_start
-  }
-  else {
   rho[1] <- rbeta(1,alpha,beta)  
-  }
   
   allele_f <- matrix(0,inters+1,L) # Matrix for allele frequencies
   allele_f[1,] <- rbeta(L,lambda,lambda)

@@ -12,23 +12,16 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
     types[[k]]$rho = r 
     types[[k]]$numL = L
   }
-  # Sets up data frame for allele frequencies
-  alls <- rep(rep(Lvals, times=Lvals), num_rho)
-  s <- sum(Lvals)
-  aps <- rep(rhovals, each=s)
-  allele_df <- data.frame(rho_value = rep(aps,n), loci_number = rep(alls,n))
-  
-  total <- N*num_rho*num_Ls
   
   # Runs all MCMCs.  
   # MCMC contains the z posterior means, the rho posterior means, the allele frequencies, the allele estimates, and the upper and lower bound for the 90% allele intervals
-  MCMC <- lapply(1:n, function(x) {lapply(types, function(x) list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters)))})
+  MCMC <- mclapply(1:n, function(x) {lapply(types, function(x) list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters)))})
  
   # Makes the z output data frame
   slurp_mcmc_z_output <- function(y) {
     data.frame(z = y$output$z_pm, z_id = y$output$z_id, contam_prob = y$params$rho, loci_number = y$params$numL )
   }
-  ztmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_z_output(x); df$rep_num=rep; df }) }) 
+  ztmp1 <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_z_output(x); df$rep_num=rep; df }) }) 
   ztmp2 <- unlist(ztmp1, recursive = FALSE)
   z_df <- do.call(what = rbind, args = ztmp2)
   
@@ -36,7 +29,7 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
   slurp_mcmc_rho_output <- function(y){
     data.frame(rho_pm = y$output$rho_pm, contam_prob = y$params$rho, loci_number = y$params$numL)
   }
-  rtmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_rho_output(x); df$rep_num=rep; df})})
+  rtmp1 <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_rho_output(x); df$rep_num=rep; df})})
   rtmp2 <- unlist(rtmp1, recursive = FALSE)
   rho_df <- do.call(what = rbind, args = rtmp2)
   
@@ -44,7 +37,7 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
   slurp_mcmc_allele_output <- function(y){
     data.frame(alle_freq = y$output$afreqs, estimates = y$output$alle_pm, topint = y$output$top_int, bottomint = y$output$bottom_int, contam_prob = y$params$rho, loci_number = y$params$numL)
   }
-  atmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x){df <- slurp_mcmc_allele_output(x); df$rep_num=rep; df})})
+  atmp1 <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x){df <- slurp_mcmc_allele_output(x); df$rep_num=rep; df})})
   atmp2 <- unlist(atmp1, recursive = FALSE)
   allele_df <- do.call(what = rbind, args = atmp2)
     
