@@ -1,4 +1,4 @@
-%!TEX root = snp-contam-main.tex
+%!TEX root = snp-contam-main.Rnw
 
 We develop several models for detecting contaminated samples from genotype data, and if we
 have time we will investigate analysis of the ``raw'' data from the popular Fluidigm platform to
