@@ -1,0 +1,41 @@
+---
+title: "Running the MCMC Simulation for a Single Population"
+author: "Elena Venable"
+date: "June 25, 2014"
+output: html_document
+---
+## 1. Prepare Data
+The MCMC simulation function requires that the input data be a matrix with columns equal to the number of alleles, which is 2N where N is the number of loci, and with rows equal to the number of individuals.  The MCMC simulation uses functions from the package `fullsniplings` to turn a data frame of SNP alleles inot values of 0, 1, 2, or NA. Below is subset of the data frame in its original form:
+```{r, echo=FALSE}
+library(SNPcontam)
+load("~/Hollings/SNPcontam/data/swfsc_chinook_baseline.rda")
+tmp_data <- swfsc_chinook_baseline
+tmp_data[(1:6),(1:6)]
+```
+Any columns or rows contain non-SNP information (i.e. information regarding the origin of the individual) should only be removed before using the function `MCMC_sims`.  This is shown below:
+
+```{r}
+data <- tmp_data[,-(1:4)]
+data[(1:4),(1:4)]
+```
+
+
+
+## 2. Run the MCMC Simulation Function
+Once the data is prepared, the function `MCMC_sims` can be used to run `n` repitions of the the function `contam_MCMC` over a set of simulated data.  Below the simulation is run twice with four different values for number of loci (`Lvals`) and five different values for proportion of contaminated samples (`rhovals`).  The object `similuation` will be a list containing data frames with the posterior means of the allele frequencies, z values, and contamination proportions that are used to create plots using `MCMC_allplots`.
+
+```{r}
+library(fullsniplings)
+library(parallel)
+simulation <- MCMC_sims(sample_data = data,N = 200,Lvals = c(20,60,100,200),rhovals = c(0,.025,0.075,0.2,0.5), n = 2 )
+```
+
+## 3. Make Plots
+As stated above the function `MCMC_allplots` is used to make three plots and one table.  The code is shown below.  The `rho` and `loci` values correspond with the graph of the allele frequency estimates and dictate the subset of data used to make the graph.
+
+```{r}
+library(ggplot2)
+library(xtable) 
+library(grid)
+library(gridExtra)
+MCMC_allplots(sim = simulation,rho = .2,loci = 20)
