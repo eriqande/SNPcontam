@@ -15,7 +15,11 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
   
   # Runs all MCMCs.  
   # MCMC contains the z posterior means, the rho posterior means, the allele frequencies, the allele estimates, and the upper and lower bound for the 90% allele intervals
-  MCMC <- mclapply(1:n, function(x) {lapply(types, function(x) list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters)))})
+  MCMC <- mclapply(types, function(x) {
+      lapply(1:n, function(y) {
+          list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters))
+          })
+      })
  
   # Makes the z output data frame
   slurp_mcmc_z_output <- function(y) {

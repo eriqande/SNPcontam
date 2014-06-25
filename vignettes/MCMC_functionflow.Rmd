@@ -10,6 +10,7 @@ The MCMC simulation function requires that the input data be a matrix with colum
 library(SNPcontam)
 load("~/Hollings/SNPcontam/data/swfsc_chinook_baseline.rda")
 tmp_data <- swfsc_chinook_baseline
+tmp_data <- tmp_data[tmp_data$Pop == "Feather_H_sp", ]
 tmp_data[(1:6),(1:6)]
 ```
 Any columns or rows contain non-SNP information (i.e. information regarding the origin of the individual) should only be removed before using the function `MCMC_sims`.  This is shown below:
