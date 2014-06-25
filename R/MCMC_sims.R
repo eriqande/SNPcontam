@@ -1,5 +1,10 @@
 #' @export
 MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters=1000,n){
+  snp_genos <- get_snp_genos(sample_data)
+  snp_indices <- genos_to_indicators(g = snp_genos$mat)
+  geno_counts <- count_genos(snp_indices)
+  afreqs <- alle_freqs(geno_counts)
+  
   # create list with all simulations
   types <- list() 
   k <- 0
@@ -17,9 +22,9 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
   # MCMC contains the z posterior means, the rho posterior means, the allele frequencies, the allele estimates, and the upper and lower bound for the 90% allele intervals
   MCMC <- mclapply(types, function(x) {
       lapply(1:n, function(y) {
-          list(params = x, output = test_MCMC(sample_data = sample_data, N = N, l = l, L = x$numL, p = x$rho, inters = inters))
+          list(params = x, output = test_MCMC(afreqs = afreqs, N = N, l = l, L = x$numL, p = x$rho, inters = inters))
           })
-      })
+      },mc.cores=length(types))
  
   # Makes the z output data frame
   slurp_mcmc_z_output <- function(y) {
