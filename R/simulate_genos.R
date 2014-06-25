@@ -1,5 +1,5 @@
 #' @export
-simulate_genos <- function(N,L,p,l,sample_data){
+simulate_genos <- function(N,L,p,l, afreqs){
   n_contam <- round(N*p,0)
   l_contam <- round(L*l,0)
   g <- matrix(0,L,N)
@@ -12,6 +12,9 @@ simulate_genos <- function(N,L,p,l,sample_data){
   all_L <- nrow(snp_genos$mat)
   loci <- sample(1:all_L,L,replace = TRUE)
   genes <- afreqs[2,loci] + runif(L,-.01,.01)
+  genes[genes==0.0] <- .01
+  genes[genes<0.0] <- -genes[genes<0.0]
+  genes[genes>1.0] <- 2.0 - genes[genes>1.0]
   gfreqs <- likelihood(genes)
 
   # randomly pick individuals to be contaminated
