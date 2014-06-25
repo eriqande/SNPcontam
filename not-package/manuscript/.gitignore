@@ -9,4 +9,7 @@
 *.dvi
 *.fdb_latexmk
 snp-contam-main.pdf
-
+cache/
+snp-contam-main-concordance.tex
+snp-contam-main.tex
+knitr.sty

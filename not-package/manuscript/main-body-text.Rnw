@@ -1,25 +1,27 @@
-%!TEX root = snp-contam-main.tex
+% !TEX root = snp-contam-main.Rnw
 
 \section*{Introduction}
 
 Some free-form thoughts.
 
-The past half decade has seen the emergence of a number of cost-effective methods for genotyping
+
+
+The past half decade has seen the emergence of a number of cost-effective  methods for genotyping
 single-nucleotide polymorphisms (SNPs) for molecular ecology studies.  For example, \ldots.
-In the management of commercially important species like Pacific salmon, SNPs have been used, blah, blah.
-10's of thousands of individuals genotyped every year at a fraction of the cost of microsatellites (give 
+In the management of commercially important species  like Pacific salmon, SNPs have been used, blah, blah.
+10's of thousands of individuals genotyped every year at a  fraction of the cost of microsatellites (give 
 a ballpark estimate of how much less expensive, at least from our lab).  The application of such technologies 
 is now becoming more commonplace amongst other species.  (WIWA's for example).  
 
 Next generation sequencing technologies, and the allure of genotyping by sequencing on such platforms: this
 may well  become the way everything is done in the future, but the relative simplicity of platforms like the 
-Fluidigm make those very attractive.  Also good for low-quantity DNA, large number of individuals, degraded 
-tissues, etc.  It is likely that 
+Fluidigm make those very attractive. Also good for low-quantity DNA, large number of individuals, degraded 
+tissues, etc.  It is likely that
 
 \section*{Mathematical Derivation of MCMC Model}
-In the model of contamination in a single popultation, only the genotypes of the sampled individuals are known. The $i^{th}$ genotype at the $\ell^{th}$ locus is represented by the variable $y_{i\ell}$.  The probability that a sample is contaminated, $\rho$, and the allele frequency of the 1 allele at the $\ell^{th}$ locus, $\theta_{\ell}$, are unknown paramenters.  The latent variable, $z_i$, is used to indicate the contamination status of the $i^{th}$ sample.  If $z_i$ has a value equal to 1, then the $i^{th}$ sample is contaminated.  A value of 0 indicates that the sample is not contaminated.  
+In the model of contamination in a single population, only the genotypes of the sampled individuals are known. The $i^{th}$ genotype at the $\ell^{th}$ locus is represented by the variable $y_{i\ell}$.  The probability that a sample is contaminated, $\rho$, and the allele frequency of the 1 allele at the $\ell^{th}$ locus, $\theta_{\ell}$, are unknown paramenters. The latent variable, $z_i$, is used to indicate the contamination status of the $i^{th}$ sample.  If $z_i$ has a value equal to 1, then the $i^{th}$ sample is contaminated.  A value of 0 indicates that the sample is not contaminated.  
 
-To construct the MCMC model, it is assumed that the $\rho$ and $\theta_{\ell}$ have beta distributions, giving them priors of:
+To construct the MCMC model, it is assumed that the $\rho$ and $\theta_{\ell}$ have beta distributions, giving them priors of
   \begin{equation} \label{rho_prior}
     p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1}
   \end{equation}
@@ -39,6 +41,8 @@ $p(z_i|\rho)$ is the likelihood of the $z_i$ value given $\rho$, and $p(y_i|z_i,
 p(z_i|\rho) = \rho^{z_i}(1-\rho)^{1-z_i} 
 \end{equation}
 
+
+
 There are two cases for which the likelihood of the genotype must be computed: $z_i = 0$ and $z_i = 1$.  Both are computed assuming Hardy Weinberg Equilibrium, but when $z_i = 0$, the sample is assumed to be non-contaminated and comes from only one individual.  When $z_i = 1$, the sample is assumed to be contaminated by two individuals, so that $p(y_{\ell} = 0|\theta_{\ell}) = (1-\theta_{\ell})^4$, and $p(y_{\ell} = 1|\theta_{\ell}) = 1 -\theta_{\ell}^4 - (1-\theta_{\ell})^4$, $p(y_{\ell} = 2|\theta_{\ell}) = \theta_{\ell}^4$.  The likelihoods of a sampled genotype for case $z_i = 0$ and $z_i = 1$ are given by Eq. \ref{y_lh} and Eq. \ref{y_lhc} respectively.  $L$ is the total number of loci.
 
 \begin{equation} \label{y_lh}
@@ -56,6 +60,7 @@ R &=& (1-\rho)^{1-z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},noncontam) \no
 & & +\rho^{z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam) 
 \end{eqnarray}
 Dividing by R normalizes the distribution. \\
+
 
 The formula for the full conditional distribution for $\rho$ is given by:
   \begin{equation} \label{rho_fc}
