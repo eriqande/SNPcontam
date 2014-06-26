@@ -56,6 +56,12 @@ The function`contam_MCMC` performs the MCMC method on the data, returning the al
 
 The function `analyze_MCMC` computes the posterior means of the allele frequencies, contamination proportion, and z values.  If the MCMC results are the only input data, `analyze_MCMC` will use a default value of `burnin=100`.
 
+## Running the simulations
+The first set of simulations can be run like so:
+```sh
+nohup Rscript --vanilla ./not-package/simulations/01_simulation_1.R 
+```
+
 ## Terms 
 
 As a work partially of the United States Government, this package is in the
