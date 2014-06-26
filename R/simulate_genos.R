@@ -3,13 +3,8 @@ simulate_genos <- function(N,L,p,l, afreqs){
   n_contam <- round(N*p,0)
   l_contam <- round(L*l,0)
   g <- matrix(0,L,N)
-  # get data and allele frequencies
-  snp_genos <- get_snp_genos(sample_data)
-  snp_indices <- genos_to_indicators(g = snp_genos$mat)
-  geno_counts <- count_genos(snp_indices)
-  afreqs <- alle_freqs(geno_counts)
   # get genotype frequencies
-  all_L <- nrow(snp_genos$mat)
+  all_L <- ncol(afreqs)
   loci <- sample(1:all_L,L,replace = TRUE)
   genes <- afreqs[2,loci] + runif(L,-.01,.01)
   genes[genes==0.0] <- .01
