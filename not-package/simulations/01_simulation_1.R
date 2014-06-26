@@ -22,7 +22,7 @@ out_list_01 <- MCMC_sims(
                         N = 200,
                         Lvals = c(20,60,100,200),
                         rhovals = c(0,.025,0.075,0.2,0.5), 
-                        n = 2 
+                        n = 100 
                         )
 save(out_list_01, file = "out_list_01.rda", compress = "xz")
 
