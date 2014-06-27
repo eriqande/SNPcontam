@@ -1,4 +1,3 @@
-#' @export
 test_MCMC <- function(afreqs, N, L, p, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters, burnin=100){
   real_p <- p
   sim <- simulate_genos(N,L,p,l,afreqs)

@@ -1,4 +1,3 @@
-#' @export
 MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters=1000,n){
   snp_genos <- get_snp_genos(sample_data)
   snp_indices <- genos_to_indicators(g = snp_genos$mat)

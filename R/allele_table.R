@@ -1,4 +1,3 @@
-#' @export
 allele_table <- function(types, data, Lvals, rhovals){
   data$difference <- abs(data$alle_freq - data$estimates) # finds absolute difference between estimate and real value fo allele frequency
   # loops set up rho and L values for the data frame
@@ -30,5 +29,5 @@ allele_table <- function(types, data, Lvals, rhovals){
   }
   tab <- xtable(table_data,digits=c(0,3,0,3))
   align(tab) <- "c|r|r|r|"
-  print(tab,include.rownames=FALSE,hline.after=c(-1,0,nL*lines))
+  a <- print(tab,include.rownames=FALSE,hline.after=c(-1,0,nL*lines))
 }

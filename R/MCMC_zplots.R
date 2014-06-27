@@ -1,4 +1,3 @@
-#' @export
 MCMC_zplots <- function(z_df){
   loci_labeller <- function(var, value){
     value <- as.character(value)

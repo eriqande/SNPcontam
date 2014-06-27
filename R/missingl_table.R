@@ -1,4 +1,3 @@
-#' @export
 missingl_table <- function(sample_data, N, L, p, n, alpha, beta, lambda, inters, threshold){
   info <- data.frame(Contam_Loci=numeric(n), Mean_p=numeric(n),Mean_error=numeric(n),False_Positives=numeric(n),False_Negatives=numeric(n))
   for(i in 1:n){

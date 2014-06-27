@@ -1,4 +1,3 @@
-#' @export
 simulate_genos <- function(N,L,p,l, afreqs){
   n_contam <- round(N*p,0)
   l_contam <- round(L*l,0)

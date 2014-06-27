@@ -1,3 +1,4 @@
+#' @export
 analyze_MCMC <- function(MCMC,burnin=100){
   alleles <- MCMC$allele_freq[-(1:burnin),]
   a_means <- colMeans(alleles)

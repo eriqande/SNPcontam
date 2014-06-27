@@ -1,4 +1,3 @@
-#' @export
 loci_table <- function(sample_data, N, n, p, l, alpha, beta, lambda, inters, threshold){
   info <- data.frame(Loci=numeric(n), Mean_p=numeric(n),Mean_error=numeric(n),False_Positives=numeric(n),False_Negatives=numeric(n))
   for(i in 1:n){
