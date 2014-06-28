@@ -271,18 +271,3 @@ MCMC_ztable <- function(z_df,types,rhovals,Lvals){
   return(mat)
 }
 
-## Creates a matrix with information for a table of true allele values that fall into allele 90% intervals
-MCMC_atable <- function(allele_df,rhovals,Lvals, types){
-  get_astats <- function(y,z){
-    sub <- allele_df[allele_df$contam_prob == y & allele_df$loci_number == z,]
-    a <- sub[(sub$estimates >= sub$bottomint & sub$estimates <= sub$topint),]
-    total <- dim(sub)[1]
-    frac <- dim(a)[1]/total
-    return(frac)
-  }
-  values <- lapply(types,function(x) {get_astats(y = x$rho, z = x$numL)})
-  mat <- round(matrix(unlist(values), nrow=length(rhovals)),4)
-  rownames(mat) <- paste0(rhovals)
-  colnames(mat) <- paste0(Lvals)
-  return(mat)
-}

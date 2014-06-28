@@ -1,5 +1,9 @@
 # short script to produce charts from thethe MCMC simulation
 
+# this must be run in the simulations directory
+load("out_list_01.rda")
+source("simulation_functions.R")
+
 library(ggplot2)
 library(grid)
 library(gridExtra)
