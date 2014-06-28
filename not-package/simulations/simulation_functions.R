@@ -191,19 +191,19 @@ MCMC_hist <- function(z_df,types, width, height){
                legend1,widths=unit.c(unit(1,"npc")- lwidth1, lwidth1), nrow=1)
   
   dev.off()
-  pdf("histogram25.pdf",width=width,height=height)
+  pdf("histogram_0.025.pdf",width=width,height=height)
   b <- grid.arrange(arrangeGrob(hps[[5]],hps[[6]],hps[[7]],hps[[8]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histogram75.pdf",width=width,height=height)
+  pdf("histogram_0.075.pdf",width=width,height=height)
   c <- grid.arrange(arrangeGrob(hps[[9]],hps[[10]],hps[[11]],hps[[12]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histogram2.pdf",width=width,height=height)
+  pdf("histogram_0.2.pdf",width=width,height=height)
   d <- grid.arrange(arrangeGrob(hps[[13]],hps[[14]],hps[[15]],hps[[16]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histograms.pdf5",width=width,height=height)
+  pdf("histogram_0.5.pdf",width=width,height=height)
   f <- grid.arrange(arrangeGrob(hps[[17]],hps[[18]],hps[[19]],hps[[20]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
@@ -272,7 +272,7 @@ MCMC_ztable <- function(z_df,types,rhovals,Lvals){
 }
 
 ## Creates a matrix with information for a table of true allele values that fall into allele 90% intervals
-MCMC_atable <- function(allele_df,rhovals,Lvals){
+MCMC_atable <- function(allele_df,rhovals,Lvals, types){
   get_astats <- function(y,z){
     sub <- allele_df[allele_df$contam_prob == y & allele_df$loci_number == z,]
     a <- sub[(sub$estimates >= sub$bottomint & sub$estimates <= sub$topint),]
