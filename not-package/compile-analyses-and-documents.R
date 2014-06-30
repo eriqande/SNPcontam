@@ -18,3 +18,17 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
 source("simulations/02_makecharts_1.R")
 
 
+
+# before we start compiling up the documents, we are going to 
+# run pdfcrop on all of our figures
+# this is a quick funtion to run pdfcrop on all the pdf files in a directory
+pdfcrop_dir <- function(path = "manuscript/images/", pattern = "*.pdf", exclude = "banner.pdf") {
+  img <- dir(path = path, pattern = pattern)
+  img <- img[!(img %in% exclude)]
+  for(i in img) {
+    system(paste("pdfcrop", file.path(path, i), file.path(path, i)))
+  }
+}
+# now, do the cropping:
+pdfcrop_dir()
+pdfcrop_dir(path = "supplements/images", exclude = NULL)

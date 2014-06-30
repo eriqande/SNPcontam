@@ -21,6 +21,16 @@ tissues, etc.  It is likely that
 \section*{Mathematical Derivation of MCMC Model}
 In the model of contamination in a single population, only the genotypes of the sampled individuals are known. The $i^{th}$ genotype at the $\ell^{th}$ locus is represented by the variable $y_{i\ell}$.  The probability that a sample is contaminated, $\rho$, and the allele frequency of the 1 allele at the $\ell^{th}$ locus, $\theta_{\ell}$, are unknown paramenters. The latent variable, $z_i$, is used to indicate the contamination status of the $i^{th}$ sample.  If $z_i$ has a value equal to 1, then the $i^{th}$ sample is contaminated.  A value of 0 indicates that the sample is not contaminated.  
 
+%%%% The DAG figure
+\begin{figure}[tp]
+\begin{center}
+\includegraphics[width=.8\columnwidth]{./images/DAG_1_0.pdf}
+\end{center}
+\caption{Directed acyclic graph (DAG) representing the statistical model for the single-source-population (SSP) model
+for detecting contaminated samples. }
+\end{figure}
+
+
 To construct the MCMC model, it is assumed that the $\rho$ and $\theta_{\ell}$ have beta distributions, giving them priors of
   \begin{equation} \label{rho_prior}
     p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1}
@@ -82,6 +92,15 @@ The formula for full conditional distribution of $\theta_{\ell}$ given by:
 \begin{equation} \label{theta_fc}
 p(\theta_{\ell}|y_{i\ell},z_i) \propto [\prod_{i=\ell}^{N} p(y_{i\ell}|\theta_{\ell},z_i)]p(\theta_{\ell}|\lambda_{\ell})
 \end{equation}
+
+%%%  RHO AND ALLELE FIGURE
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width=\columnwidth]{./images/rho_and_allele.pdf}
+\end{center}
+\caption{({\em a}) Boxplots showing the distribution of posterior mean estimates of $\rho$ under varying true values of the fraction of contaminated samples  (listed along the top edge of edge panel) and number of loci (20, 60, 100, 200, as listed along the $x$-axis). Each boxplot summarizes 100 estimates. ({\em b}) Posterior mean estimates (on the $y$-axis) of allele frequencies, $\theta_\ell$  plotted against the true values (on the $x$-axis).  Results shown are from all 100 simulation replicates with $L=20$ and $\rho=0.2$.}
+\end{figure}
+
 
 Only non-contaminated genotypes are used to calculate allele frequencies.  Therefore, only non-contaminated samples are relevant for the full condition distribution of $\theta_{\ell}$.  The likelihood of $y_{i\ell}$ given $\theta_{\ell}$ and non-contamination, $p(y_{i\ell}|\theta_{\ell},noncontam)$, is calculated assuming that the population is in Hardy-Weinberge Equilibrium. Evaluating $p(y_{i\ell}|\theta_{\ell},noncontam)$ and substituting Eq \ref{theta_prior} into Eq \ref{theta_fc} symplifies the full conditional distribution of $\theta_{\ell}$ to a beta distribution with parameters $(2x_2 + x_1 + \lambda_{\ell})$ and $(2x_0 + x_1 + \lambda_{\ell})$ where $x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$. 
 
