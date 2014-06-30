@@ -8,4 +8,7 @@
 #'
 #' @docType package
 #' @name SNPcontam
+#' @useDynLib SNPcontam
+#' @importFrom Rcpp sourceCpp
 NULL
+
