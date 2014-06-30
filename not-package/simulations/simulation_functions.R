@@ -186,7 +186,7 @@ MCMC_hist <- function(z_df,types, width, height){
   lwidth2 <- sum(legend2$width)
   
   dev.off()
-  pdf("histogram0.pdf",width=width,height=height)
+  pdf("histogram_0.pdf",width=width,height=height)
   grid.arrange(arrangeGrob(hps[[1]],hps[[2]],hps[[3]],hps[[4]], left="Count"),
                legend1,widths=unit.c(unit(1,"npc")- lwidth1, lwidth1), nrow=1)
   
