@@ -1,6 +1,17 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+//' Compute likelihoods for populations of origin 
+//' 
+//' More later
+//' @param snp_zeroes Matrix of counts of the "zero" allele at L SNPs in P populations.  
+//' This is an L x P integer matrix where L is the number of SNP
+//' loci and P is the number of populations in the baseline. he observed number of 0 alleles
+//' at locus j in population p is snp_zeroes[j,p]
+//' @param snp_ones Same as above, but for the 1 allele at each SNP.
+//' @param genos  Fill in.
+//' @param lambda Fill in.
+//' @export
 // [[Rcpp::export]]
 NumericMatrix P_likelihood(NumericMatrix gc, IntegerMatrix genos, double lambda) {
    int N = genos.ncol();
