@@ -3,7 +3,7 @@
 \alias{P_likelihood}
 \title{Compute likelihoods for populations of origin}
 \usage{
-P_likelihood(gc, genos, lambda)
+P_likelihood(snp_zeroes, snp_ones, genos, lambda)
 }
 \arguments{
 \item{snp_zeroes}{Matrix of counts of the "zero" allele at L SNPs in P populations.

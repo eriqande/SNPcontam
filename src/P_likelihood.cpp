@@ -13,10 +13,10 @@ using namespace Rcpp;
 //' @param lambda Fill in.
 //' @export
 // [[Rcpp::export]]
-NumericMatrix P_likelihood(NumericMatrix gc, IntegerMatrix genos, double lambda) {
+NumericMatrix P_likelihood(IntegerMatrix snp_zeroes, IntegerMatrix snp_ones, IntegerMatrix genos, double lambda) {
    int N = genos.ncol();
    int L = genos.nrow();
-   int P = gc.nrow();
+   int P = snp_zeroes.ncol();
    double C = (2*N + 2*lambda)*(2*N + 1 + 2*lambda);
    double p;
    NumericVector like(P,1.0);
@@ -26,8 +26,8 @@ NumericMatrix P_likelihood(NumericMatrix gc, IntegerMatrix genos, double lambda)
      for(j=0; j<P; j++) {
        int k = 0;
         for(k= 0; k<L; k++){
-          int x1 = gc(j,k)*2*N;
-          int x0 = 2*N - x1;
+          int x1 = snp_ones(k,j);
+          int x0 = snp_zeroes(k,j);
           int g = genos(k,i);
           if (g == 0) {p = (x0 + 1 + lambda)*(x0 + lambda);}
           if (g == 1) {p = 2*(x0 + lambda)*(x1 + lambda);}

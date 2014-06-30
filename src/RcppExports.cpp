@@ -6,16 +6,17 @@
 using namespace Rcpp;
 
 // P_likelihood
-NumericMatrix P_likelihood(NumericMatrix gc, IntegerMatrix genos, double lambda);
-RcppExport SEXP SNPcontam_P_likelihood(SEXP gcSEXP, SEXP genosSEXP, SEXP lambdaSEXP) {
+NumericMatrix P_likelihood(IntegerMatrix snp_zeroes, IntegerMatrix snp_ones, IntegerMatrix genos, double lambda);
+RcppExport SEXP SNPcontam_P_likelihood(SEXP snp_zeroesSEXP, SEXP snp_onesSEXP, SEXP genosSEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericMatrix >::type gc(gcSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type snp_zeroes(snp_zeroesSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type snp_ones(snp_onesSEXP );
         Rcpp::traits::input_parameter< IntegerMatrix >::type genos(genosSEXP );
         Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP );
-        NumericMatrix __result = P_likelihood(gc, genos, lambda);
+        NumericMatrix __result = P_likelihood(snp_zeroes, snp_ones, genos, lambda);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
