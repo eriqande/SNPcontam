@@ -61,6 +61,8 @@ The first set of simulations can be run like so:
 ```sh
 nohup Rscript --vanilla ./not-package/simulations/01_simulation_1.R 
 ```
+This is changing.  Now, you can just source the file:
+compile-analyses-and-documents.R from the directory that it is in (not-package)..
 
 ## Terms 
 

@@ -163,7 +163,7 @@ MCMC_rhoplot <- function(rho_df,rhovals){
 }
 
 ## Creates histograms for the rho z values
-MCMC_hist <- function(z_df,types, width, height){
+MCMC_hist <- function(z_df,types, width, height, outpath){
   hp <- list()
   for(i in 1:length(types)){
     p1 <- ggplot(subset(z_df,contam_prob==types[[i]]$rho & loci_number==types[[i]]$numL), aes(z,fill=as.factor(z_id))) + 
@@ -186,24 +186,24 @@ MCMC_hist <- function(z_df,types, width, height){
   lwidth2 <- sum(legend2$width)
   
   dev.off()
-  pdf("histogram_0.pdf",width=width,height=height)
+  pdf(file.path(outpath, "histogram_0.pdf"), width=width,height=height)
   grid.arrange(arrangeGrob(hps[[1]],hps[[2]],hps[[3]],hps[[4]], left="Count"),
                legend1,widths=unit.c(unit(1,"npc")- lwidth1, lwidth1), nrow=1)
   
   dev.off()
-  pdf("histogram_0.025.pdf",width=width,height=height)
+  pdf(file.path(outpath, "histogram_0.025.pdf"), width=width,height=height)
   b <- grid.arrange(arrangeGrob(hps[[5]],hps[[6]],hps[[7]],hps[[8]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histogram_0.075.pdf",width=width,height=height)
+  pdf(file.path(outpath, "histogram_0.075.pdf"), width=width,height=height)
   c <- grid.arrange(arrangeGrob(hps[[9]],hps[[10]],hps[[11]],hps[[12]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histogram_0.2.pdf",width=width,height=height)
+  pdf(file.path(outpath, "histogram_0.2.pdf"), width=width,height=height)
   d <- grid.arrange(arrangeGrob(hps[[13]],hps[[14]],hps[[15]],hps[[16]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
-  pdf("histogram_0.5.pdf",width=width,height=height)
+  pdf(file.path(outpath, "histogram_0.5.pdf"), width=width,height=height)
   f <- grid.arrange(arrangeGrob(hps[[17]],hps[[18]],hps[[19]],hps[[20]], left="Count"),
                     legend2,widths=unit.c(unit(1,"npc")- lwidth2, lwidth2), nrow=1)
   dev.off()
