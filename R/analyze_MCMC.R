@@ -1,3 +1,17 @@
+#' MCMC function for determing contamination probability and allele frequencies
+#' 
+#' Description
+#' @param MCMC A list that contains the outputs of the contam_MCMC function, including the rho output,
+#' the allele frequency output, and the z value output from all sweeps.
+#' @param burnin  The number of sweeps at the beginning of the MCMC that will be disregarded for analysis.
+#' 
+#' @return Returns a list of two named components:
+#' \describe{
+#'  \item{allele_pm}{A vector containing the posterior mean of the allele frequencies for each allele.}
+#'  \item{rho_pm}{One value, which is the poterior mean of the contamination proportion.}
+#'  \item{z_pm}{A vector containing the posterior mean of the z value for each individual.  A z_pm value
+#'  1 at the ith index would indicate that the ith individual was indentified as contaminated in each sweep.}
+#'}
 #' @export
 analyze_MCMC <- function(MCMC,burnin=100){
   alleles <- MCMC$allele_freq[-(1:burnin),]
