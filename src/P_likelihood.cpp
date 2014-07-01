@@ -41,7 +41,7 @@ NumericMatrix P_likelihood(IntegerMatrix snp_zeroes, IntegerMatrix snp_ones, Int
           if (g == 0) {p = (x0 + 1 + lambda)*(x0 + lambda);}
           else if (g == 1) {p = 2*(x0 + lambda)*(x1 + lambda);}
           else if (g == 2) {p = (x1 + 1 + lambda)*(x1 + lambda);}
-          else {p = 1;}
+          else {p = C;}
           new_p = p/C;
           like *= new_p;
         }
