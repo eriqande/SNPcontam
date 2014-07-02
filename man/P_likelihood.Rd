@@ -8,16 +8,22 @@ P_likelihood(snp_zeroes, snp_ones, genos, lambda)
 \arguments{
 \item{snp_zeroes}{Matrix of counts of the "zero" allele at L SNPs in P populations.
 This is an L x P integer matrix where L is the number of SNP
-loci and P is the number of populations in the baseline. he observed number of 0 alleles
+loci and P is the number of populations in the baseline. The observed number of 0 alleles
 at locus j in population p is snp_zeroes[j,p]}
 
 \item{snp_ones}{Same as above, but for the 1 allele at each SNP.}
 
-\item{genos}{Fill in.}
+\item{genos}{Matrix of the genotypes of N individuals at each of the L loci.  Genotypes are represented
+as the number of "1" alleles.  This is an L x N integer matrix.  The genotype of the ith individual at
+the locus j is genos(j,i).}
 
-\item{lambda}{Fill in.}
+\item{lambda}{The parameter of the beta distribution for the frequency of the "1" allele.}
+}
+\value{
+Returns a P x N numeric matrix which contains the the probabilities the individuals originate from
+certain populations.  The probability that the ith originated from population p is ouput(p,i).
 }
 \description{
-More later
+Compute likelihoods for populations of origin
 }
 
