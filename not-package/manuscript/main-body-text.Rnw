@@ -112,3 +112,28 @@ p(\theta_{\ell}|y_{i\ell},z_i) &\propto& [\prod_{i=\ell}^{N} p(y_{i\ell}|\theta_
 & & \times \theta_{\ell}^{\lambda_{\ell} - 1}(1 - \theta_{\ell})^{\lambda_{\ell} - 1} \nonumber \\
 & \propto& \theta_{\ell}^{2x_0 + x_1 + \lambda_{\ell} - 1}(1-\theta_{\ell})^{2x_0 + x_1 + \lambda_{\ell} - 1}
 \end{eqnarray}
+
+
+%%% The allele frequency CI coverage table
+\begin{table}
+\caption{Coverage of posterior credible intervals for allele frequencies.  ADD MORE LATER.}
+\hrule \hrule
+\begin{center}
+\input{tables/afreq_ci_coverage}
+\end{center}
+\hrule
+\end{table}
+
+
+%%% The false and true positive z_table
+\begin{table}
+\caption{True positive and false positive rates.  {\em (a)}~Across all simulated 
+data sets with given values of $\rho$ and $L$, the fraction of truly contaminated
+samples inferred to have posterior probability $>0.5$ of being contaminated, [\ie $P(z_i=1|\mathbf{y})>0.5$].
+{\em (b)}~Fraction of non-contaminated samples with $P(z_i=1|\mathbf{y})>0.5$.}
+\hrule\hrule
+\mbox{}\\
+\input{tables/z_table_p_one_half}
+\hrule
+\end{table}
+
