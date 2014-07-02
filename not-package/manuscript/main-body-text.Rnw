@@ -24,7 +24,7 @@ In the model of contamination in a single population, only the genotypes of the 
 %%%% The DAG figure
 \begin{figure}[tp]
 \begin{center}
-\includegraphics[width=.8\columnwidth]{./images/DAG_1_0.pdf}
+\includegraphics[width=\columnwidth]{./images/DAG_1.pdf}
 \end{center}
 \caption{Directed acyclic graph (DAG) representing the statistical model for the single-source-population (SSP) model
 for detecting contaminated samples. }
