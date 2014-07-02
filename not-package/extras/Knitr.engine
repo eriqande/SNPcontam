@@ -2,5 +2,5 @@
 # export PATH=$PATH:/usr/texbin:/usr/local/bin  # these are already on my path!
 Rscript -e "library(knitr); knit('$1')"
 latexmk -pdf -pdflatex='pdflatex -shell-escape -synctex=1 -file-line-error' "${1%.*}"
-Rscript -e "source('/tmp/patchKnitrSynctex/patchKnitrSynctex.R',  echo=FALSE, encoding='UTF-8'); patchKnitrSynctex(\"${1%.*}\")"
+Rscript -e "source('~/Library/TeXShop/Rscripts/patchKnitrSynctex.R',  echo=FALSE, encoding='UTF-8'); patchKnitrSynctex(\"${1%.*}\")"
 
