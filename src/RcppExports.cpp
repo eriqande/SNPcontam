@@ -23,3 +23,21 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// Pcontam
+NumericMatrix Pcontam(IntegerMatrix snp_zeroes, IntegerMatrix snp_ones, IntegerMatrix genos, double lambda);
+RcppExport SEXP SNPcontam_Pcontam(SEXP snp_zeroesSEXP, SEXP snp_onesSEXP, SEXP genosSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< IntegerMatrix >::type snp_zeroes(snp_zeroesSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type snp_ones(snp_onesSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type genos(genosSEXP );
+        Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP );
+        NumericMatrix __result = Pcontam(snp_zeroes, snp_ones, genos, lambda);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
