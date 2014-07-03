@@ -64,12 +64,12 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
   z <- matrix(0,inters,N)
   
   # Creates list containing all combinations of populations
-  combos <- list()
+  combos <- matrix(0,2,P*P)
   pops <- 1:P
   k <- 0
   for (p1 in pops) for (p2 in pops){
     k <- k + 1
-    combos[[k]] <- c(p1,p2)
+    combos[ ,k] <- c(p1,p2)
   }
   
   for(i in 1:inters){
@@ -96,7 +96,7 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
         uprobs_c <- apply(probs_c[,z_c],2,list) # prob of orginating from each combo for each individual in z_c
         pops_c <- sapply(uprobs_c, function(x) {sample((1:cbs),size=1, prob = unlist(x))}) # samples for each individual in z_c
         }
-      u[(2*i-1):(2*i), z_c] <- unlist(combos[pops_c]) # updates u for contaminated individuals
+      u[(2*i-1):(2*i), z_c] <- combos[pops_c] # updates u for contaminated individuals
     }
     #clean
     if (length(z0) != 0){
