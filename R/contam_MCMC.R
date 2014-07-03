@@ -1,11 +1,9 @@
 #' MCMC function for determing contamination probability and allele frequencies
 #' 
 #' Description
-#' @param data A matrix containing the genotype of data of individuals in the form of 
-#  letters, numbers, or strings.
+#' @param data A L x N matrix containing the genotype of data of individuals in the form of 0s,1s, and 2s.
+#' N is the number of individuals, and L is the number of loci.
 #' @param inters  A number representing the total of number of interations for the MCMC model.
-#' @param rho_start The start value for the probability of contamination within the entire
-#' sample.
 #' @param alpha The alpha parameter for the prior distribution of rho, the probability
 #' of contamination.  The prior of rho is assumed to be a beta distribution.
 #' @param beta The beta parameter for the prior distribution of rho, which is assumed to be
@@ -13,10 +11,10 @@
 #' @param lambda The alpha and beta parameter for the prior distribution of the allele
 #' frequencies at each locus, which is assumed to be a beta distribution.
 #' 
-#' @return Returns a list of two named components:
+#' @return Returns a list of three named components:
 #' \describe{
-#'  \item{prob_contam}{A vector containing the rho value, which is the probability of 
-#'  contamination, for each interation. The vector has 1 plus the total number of iterations.}
+#'  \item{prob_contam}{A vector containing the rho value, which is the proportion of 
+#'  contaminated samples for each interation. The vector is a length 1 plus the total number of iterations.}
 #'  \item{allele_freq}{A matrix containing the allele frequencies at each locus for each
 #'  iteration. The matrix has columns equal to the number loci and rows equal to the 1 plus
 #'  total number of iterations.}
