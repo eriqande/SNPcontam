@@ -266,4 +266,70 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * changed code in `MCMC_sims` so that we can change the rho values and number of loci used and still use the same code
 * added `allele_table` which makes a table of the mean difference between the allele value and the poterior mean for each of the 16 different scenarios
     * I used xtable, but I am not sure how this will actually turn into a latex table
-        
+
+## 6/23/14
+* fixed sum of the `MCMC_sims` code to be more efficient and worked with produced figures and graphs
+
+## 6/24/14
+* continued to work on the figures and graphs from the `MCMC_sims` data
+* continued to fix some of the `MCMC_sims` code to get rid of loops
+    * used `do.call()` to combine data frames rather than setting up large complicated data frame in which to store data
+    
+## 6/25/14
+* wrote a vignette to explain the how to run `MCMC_sims` and the plotting functions
+    * also wrote information regarding `MCMC_sims` in the README for the package
+* tried to run `MCMC_sims` on the computer with many cores, but there was something wrong with the simulation code
+
+## 6/26/14
+* fixed the problem with the simulation code so that genotype pool with 0 contaminated samples can be simulated
+* removed all the simulation functions from the R package and put in `simulation_functions.R` in `not-package/simulations`
+* made Rmarkdown documents `02_makecharts_1.R` and `03_maketables_1.R` contain the code for making charts and tables
+
+## 6/30/14
+### Directed Acyclic Graph
+* Created a DAG using Inkscape for the one population MCMC method
+* downloaded `Macports` and `pdf2svg` in order to be able to import Latex text from Latexit to Inkscape as an svg
+
+### Rcpp Code
+* Changed the input matrices for `P_likelihood` code
+    * added two separate matrices for zero allele counts and one allele counts
+
+## 7/1/14
+### Rcpp
+* created function `Pcontam` which creates a matrix of likelihoods for a contaminated sample
+    * the table contains the likelihood that each sample is the result of contamination between all combinations of two populations
+* fixed problems with `P_likelihood` function
+    * fixed loop so that the likelihood value reset for each individual and population
+* added documentation to `P_likelihood`
+
+### MCMC code
+* added documenttaion to `analyze_MCMC` function
+
+### DAG
+* added the DAG_1 to an inkscape folder in `not-package`
+* changed the orientation of the DAG so that it is less narrow
+
+### Mixture Model
+* formulated full poterior distributions for the MCMC mixture model
+
+## 7/2/14
+### DAG
+* Began working on `DAG_2`
+    * a DAG for the MCMC mixture model
+
+### Mixture Model
+* created function `mixed_MCMC`
+    * runs the MCMC for the mixture model
+    * updates $\rho$ (contamination proportion), $z_i$ (contamination id), $u_i$ (population or population pair id), and $\pi$ (mixture proprotions)
+
+## 7/3/14
+### DAG
+* Finished `DAG_2`
+
+### Mixture Model
+* Finished `mixed_MCMC`
+* Created Rscript `sim_mixture` that randomly picks individuals from the baseline and then test the mixture model, `mixed_MCMC`
+    * created `README` in `not-package\notes` to explain the code
+    * `sim_mixture` does not simulate contaminated samples
+    * after running the code, it seems that the model has a low accuracy (~50%) for assigning individuals to the correct RepUnit
+    * with 50 individuals, 1000 sweeps, and 95 loci, `mixed_MCMC` took about 10 seconds
