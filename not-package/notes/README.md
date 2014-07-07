@@ -1,6 +1,5 @@
 # Testing the Mixture MCMC with Non-Contaminated Data
 
-
 ## Specify the Desired Number of Individuals
 In this case, I choose to randomly select 50 individuals from the baseline so:
 ```
@@ -10,15 +9,15 @@ N = 50
 ## Prepare the Data Set
 Using the code below, load the baseline data and change the population names to numbers.  In this case, the populations should now be numbers 1 through 69 because this data set contains 69 different populations.
 ```
-swfs3 <- swfsc_chinook_baseline
-swfs4 <- data.frame(lapply(swfs3, as.character), stringsAsFactors=FALSE)
-Pop <- swfs3$Pop
-swfs4$Pop[1] = 1
+swfs <- swfsc_chinook_baseline
+swfs2 <- data.frame(lapply(swfs, as.character), stringsAsFactors=FALSE)
+Pop <- swfs$Pop
+swfs2$Pop[1] = 1
 k = 1; 
 for (i in 2:8031){ 
-  if (swfs3$Pop[i-1] != swfs3$Pop[i]){
+  if (swfs$Pop[i-1] != swfs$Pop[i]){
     k = k+1}
-  swfs4$Pop[i] = k
+  swfs2$Pop[i] = k
 }
 ```
 
@@ -27,8 +26,8 @@ The code below randomly samples the individuals from the baseline, stores their 
 
 ```
 a <- sample(1:8031,N)
-pop_id <- swfs4$Pop[a]
-genos <- swfs4[a,-(1:2)]
+pop_id <- swfs2$Pop[a]
+genos <- swfs2[a,-(1:4)]
 ```
 
 ## Change the Genotype Data into Suitable Data for the MCMC Code
@@ -45,7 +44,7 @@ The code below is used to find the allele counts, which are needed for the funct
 
 ```
 # Creates a list where the data from each population is a separate list item
-boing <- lapply(1:69, function(x) {subset(swfs4,swfs4$Pop == x)[,-(1:2)]})
+boing <- lapply(1:69, function(x) {subset(swfs2,swfs2$Pop == x)[,-(1:4)]})
 
 # Gets the genotype counts for each population
 tmp <- lapply(boing, function(x) {snp_genos = get_snp_genos(x)})
@@ -87,14 +86,14 @@ clean_pops <- lapply(1:N, function(x) {test$pops[,x][2*which(test$z[,x] == 0) - 
 tmp_pops <- lapply(clean_pops, function(x) {factor(x,level = pops)}) 
 freq <- lapply(tmp_pops, function(x) {as.numeric(table(x))})
 MCMC_pop <- sapply(freq, function(x) {pops[which(x == max(x))]}) # MCMC identified pop
-Rep_us <- sapply(1:N, function(x) {swfs4$RepUnit[swfs4$Pop==MCMC_pop[x]][1] == swfs4$RepUnit[swfs4$Pop==true_pop[x]][1]}) # logical vector recording if individual was assigned to correct RepUnit
+Rep_us <- sapply(1:N, function(x) {swfs2$RepUnit[swfs2$Pop==MCMC_pop[x]][1] == swfs2$RepUnit[swfs2$Pop==true_pop[x]][1]}) # logical vector recording if individual was assigned to correct RepUnit
 pop_df <- data.frame(True_Population = true_pop, MCMC_Population = MCMC_pop, Same_RepUnit = Rep_us)
 
 # Proportion of Individuals Placed in Correct RepUnit
 correct_p = sum(Rep_us)/N
 
 # Table Mixture Data
-count_pop <- as.numeric(table(as.numeric(swfs4$Pop)))
+count_pop <- as.numeric(table(as.numeric(swfs2$Pop)))
 freqs_pop <- count_pop/sum(count_pop) # actual mixture frequencies from baseline
 mixing <- colMeans(test$mixing) # posterior means mixture frequencies from the MCMC
 mix_df <- data.frame(True_mix = freqs_pop, MCMC_mix = mixing, Difference = freqs_pop - mixing)
