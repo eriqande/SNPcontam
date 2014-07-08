@@ -333,3 +333,19 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
     * `sim_mixture` does not simulate contaminated samples
     * after running the code, it seems that the model has a low accuracy (~50%) for assigning individuals to the correct RepUnit
     * with 50 individuals, 1000 sweeps, and 95 loci, `mixed_MCMC` took about 10 seconds
+    
+## 7/7/14
+### Mixture Model
+* Added contaminated samples to the `sim_mixture` script
+* Went over the `sim_mixture` script with Eric and made some changes to simplify code
+* Looked at the GSI of data to see if there might be a bug in `mixed_MCMC`
+* New functions:
+    * `make_mixture` makes a baseline and a mixture matrix for a simulation when given the original baseline
+    * `get_likelihood_matrices` computes the likelihood matrices for clean and contam given a baseline and a mixture matrix
+* Also made script `population_compare` which runs `make_mixture`, `sim_mixture`, and `mixed_MCMC` and displays population assignment info for non-contaminated individuals
+    * one table contains the fraction of times that each individual was assigned to each population
+    * the other contains the ID of the individual, the assigned population using the MCMC, and the fraction of times it was assigned to the population
+
+## 7/8/14
+### Mixture Model
+### Presentation
