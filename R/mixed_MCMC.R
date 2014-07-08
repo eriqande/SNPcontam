@@ -41,7 +41,7 @@
 #' contam_data <- Pcontam(zeros,ones,genos,.5) 
 #' # Runs the MCMC on the data for 5 interations
 #' mixed_MCMC(data, contam_data, clean_data, inters = 5)
-mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters){
+mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, contamination = TRUE, inters){
   
   cbs <- nrow(contam_data) # Number of combinations of populations
   P <- nrow(clean_data) # Number of populations
@@ -49,15 +49,18 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
   L <- nrow(data) # Number of loci
   
   # Sets up rho matrix and gets first rho value
+  if (contamination){
   rho <- rep(0,inters+1)
   rho[1] <- rbeta(1,alpha,beta)
+  }
   
   # Sets up u matrix
-  u <- matrix(0,N,nrow=inters*2)
+  if (contamination){
+  u <- matrix(0,N,nrow=inters*2)}else {u <- matrix(0,N,nrow=inters)}
   
   # Sets up pi matrix and gets first pi values
   pii <- matrix(0,inters+1,P)
-  gm0 <- rgamma(P,shape=rep(1/P,P))
+  gm0 <- rgamma(P,shape=rep(1,P))
   pii[1,] <- gm0/sum(gm0)
   
   # Sets up z matrix
@@ -74,6 +77,7 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
   
   for(i in 1:inters){
     # propabilities of an individual coming from combinations of populations given the mixture proportions
+    if (contamination){
     c_pi <- rep(pii[i,], each=P)*rep(pii[i,], times=P)
   # update z
     probs_c <- contam_data*c_pi # prob of originating from combinations given genotypes and mixture proportions
@@ -82,17 +86,18 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
     pclean <- colSums(probs0*(1-rho[i])) # prob of individuals being noncontamined
     prob <- pcontam/(pclean + pcontam) # normalize probability so it adds to one
     z[i,] <- c(runif(N) <= prob)*1 # chooses new z based on prob of being contaminated
-  
+    
   # update u
     z_c <- which(z[i,] %in% 1) # indices of contaminated individuals
     z0 <- which(z[i,] %in% 0) # indices of clean individuals
+  
     #contaminated
     if (length(z_c) != 0){
       if (length(z_c) == 1){
         uprobs_c <- probs_c[,z_c] # prob of originating from each combination
         pops_c <- sample((1:cbs), size=1, prob = uprobs_c) # samples from combinations based on uprobs_c
         }
-      else {
+else {
         uprobs_c <- apply(probs_c[,z_c],2,list) # prob of orginating from each combo for each individual in z_c
         pops_c <- sapply(uprobs_c, function(x) {sample((1:cbs),size=1, prob = unlist(x))}) # samples for each individual in z_c
         }
@@ -110,9 +115,15 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
       }
       u[(2*i-1),z0] <- pops0 # updates u for clean individuals
     }  
-  
+    }  
+    if (contamination == FALSE){
+      probs0 <- clean_data*pii[i,]
+      uprobs0 <- apply(probs0,2,list)
+      u[i,] <- sapply(uprobs0, function(x) {sample((1:P), size=1, prob = unlist(x))}) 
+    }
+      
   # update pi
-    clean_us <- u[1,][u[2,]==0] # the population identification for only clean individuals
+    if (contamination) {clean_us <- u[i,][u[2,]==0]} else{clean_us <- u[i,]} # the population identification for only clean individuals
     utmp <- factor(clean_us, level=(1:P)) # step before using table so table will include values that have frequency of 0
     freqs <- as.numeric(table(utmp)) # gets frequencies of each population 
     xi <- (freqs + 1/P) # parameters for the dirichlet distribution for pi
@@ -121,11 +132,15 @@ mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, inters)
     pii[i+1,] <- gm/sum(gm)
   
   # update rho
+  if (contamination){
   sum_z <- sum(z[i,]) # total number of contaminated samples
   # updates rho with derived beta distribution
   p_alpha <- sum_z + alpha # alpha parameter
   p_beta <- N - sum_z + beta # beta parameter
   rho[i+1] <- rbeta(1,p_alpha,p_beta)
   }
-list(prob_contam = rho, pops = u, z = z, mixing = pii)
+  }
+  if (contamination){
+  list(prob_contam = rho, pops = u, z = z, mixing = pii)
+  }else { list(pops = u, mixing = pii)}
 }
