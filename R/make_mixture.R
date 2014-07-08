@@ -1,12 +1,14 @@
 make_mixture <- function(baseline, N, p){
   N_c = N*p
-  swfs <- swfsc_chinook_baseline
+  swfs <- baseline
   rownames(swfs) <- swfs$ID
   swfs2 <- swfs
-  swfs2$Pop <- factor(as.character(swfs$Pop), levels = unique(as.character(swfs$Pop)))
-    
+  swfs2$Pop <- factor(as.character(swfs2$Pop), levels = unique(as.character(swfs2$Pop)))
+  swfs2$RepPop <- factor(as.character(swfs2$RepPop), levels = unique(as.character(swfs2$RepPop)))
+  
 #### Pull out Contaminated Genotypes and make a mixture sample with them ####
   total <- dim(swfs2)[1]
+  if (p != 0){
   contam <- sample(1:total,2 * N_c)
   contam1 <- contam[1:N_c]
   contam2 <- contam[(N_c+1):(2*N_c)]
@@ -26,14 +28,26 @@ make_mixture <- function(baseline, N, p){
   
   colnames(geno_c) <- paste(colnames(geno1), colnames(geno2), sep="-x-")
   
-  pop_id <- swfs2$Pop[a]
-  contam_id <- rbind(swfs2$Pop[contam1],swfs2$Pop[contam2])
+  pop_id <- swfs2$RepPop[a]
+  contam_id <- rbind(swfs2$RepPop[contam1],swfs2$RepPop[contam2])
   
   snp_genos <- get_snp_genos(genos)
   data <- cbind(snp_genos$mat,geno_c)
   
   # in the end, we drop those from the baseline too
   bline <- swfs2[-c(a, contam),-c(2,4)]
-  
+  }
+
+#### Make Mixture and Baseline if There is No Contamination ####
+  else {
+  a <- sample((1:total), N)
+  pop_id <- swfs2$RepPop[a]
+  genos <- swfs2[a,-(1:4)]
+  snp_genos <- get_snp_genos(genos)
+  data <- snp_genos$mat
+  bline <- swfs2[-c(a),-c(2,4)]
+  }
+
+#### Output ####
 list(bline = bline, mixture = data)
 }
