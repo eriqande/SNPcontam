@@ -6,6 +6,9 @@ b <- make_mixture(swfsc_chinook_baseline,100,.05)
 #### Get the Likelihood Matrices ####
 likelihood <- get_likelihood_matrices(b$bline,b$mixture)
 
+#### Run the MCMC ####
+test <- mixed_MCMC(b$mixture, likelihood$contam_prob, likelihood$clean_prob, inters = 1000)
+
 #### Create Tables of Population Assignment ####
 N = 100
 p = 0.5
