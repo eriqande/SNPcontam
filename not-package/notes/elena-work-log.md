@@ -348,4 +348,38 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 
 ## 7/8/14
 ### Mixture Model
+* Worked on trying to figure out why MCMC is bad at population assignment
+
+#### Test 1: LKuskokwimBristolBay, CentralValleysp--Butte_Cr_Sp, and NPugetSound
+* All CentralValleysp fish identified correctly
+* All NPugetSound fish identified although all identified to Marblemount and not to separate pops within NPugetSound
+* No LKuskokwimBristolBay identified correctly -- all identified to Marblemount
+* When run with only CentralValleysp and LKuskokwimBristolBay, only one fish was put into LK
+* the likelihood values for LK are consistently lower than NPugetSound and CentralValleysp, which probably contributes to the problem with identification, but I checked the likelihood values and they are correct
+* Marblemount also has higher likelihood compared to the other NPugetSound population
+
+#### Test 2: CentralValleysp--Mill_Cr_sp, CentralValleysp--Deer_Cr_sp, NOregonCoast, NSEAlaskaChikatR, SSEAlaska
+* All CentralValleysp identified, but all but one to Mill_Cr_sp
+* All NOregonCoast identified, but all but one to Alsea
+* No Alaskan fish id, all identified as NOregon Coast fish
+* running this test with $\rho = 0$ did not change the population assignment
+* also tested both Test 1 and Test 2 with the prior for $\pi$ equal to a Dirichlet distribution with 1 as each population's parameter and it did not change results significantly
+
+#### Ran on Whole Baseline without Contamination
+* did a similar job of IDing populations, and still gets nothing in Alaska
+* the fraction of population assignments to the max population is much lower than with contamination parameter
+* did a much better job of estimating $\pi$
+
+#### Found the mistake!!!!!
+* I was not updating $\pi$ correctly 
+* now the MCMC seems to run better and the values for $\pi$ are much more reasonable
+* still can't identify populations in Alaska
+
+#### Code
+* Added to the `mixed_MCMC` code so that it can be run with $\rho = 0$ and only run the MCMC for mixing proportions and population assignment
+* changed `make_mixture` so makes different mixture matrix and baseline if $\rho = 0$
+* changed the `population_compare` script to be general so that it can be run for any portion of the baseline
+    * also changed code so that it can be run with $\rho = 0$
+
 ### Presentation
+* was going to start working on it, but too busy fixing code
