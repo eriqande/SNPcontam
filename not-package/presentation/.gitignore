@@ -1,0 +1,10 @@
+*.log
+*.nav
+*.snm
+*.synctexgz
+*.toc
+presentation_slides.pdf
+*.gz
+presentation_slides.out
+*.out
+*.aux
