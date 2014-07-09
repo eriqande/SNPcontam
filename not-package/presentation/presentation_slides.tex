@@ -153,52 +153,129 @@ Some short description and a picture to explain SNPs.
 \framesubtitle{Bayesian Statistics}
 Short explanation of Bayesian statistics and maybe include a few equations with prior, posterior distributions, etc. 
 \end{frame}
- 
+
 %Slide 7
 \begin{frame}{Single Population Model}
-Background of situation.
-\end{frame} 
+\begin{columns}[c]
+
+\column{2.25in}
+%\begin{itemize}
+$\boldsymbol{\rho}$: contamination proportion \\
+\vspace{3mm}
+$\boldsymbol{z_i}$: contamination indicator \\
+\vspace{3mm}
+$\boldsymbol{y_{i,\ell}}$: genotype \\
+\vspace{3mm}
+$\boldsymbol{\theta_{\ell}}$: allele frequency \\
+\vspace{3mm}
+$\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: distribution parameters
+%\end{itemize}
+
+\column{2in}
+\begin{center}
+\includegraphics[width=1\textwidth]{images/DAG_1.pdf}
+\end{center}
+\end{columns}
+\end{frame}
 
 %Slide 8
 \begin{frame}{Single Population Model}
-\begin{center}
-\includegraphics[width=.6\textwidth]{images/DAG_1.pdf}
-\end{center}
+\framesubtitle{Simulation}
 \end{frame}
 
 %Slide 9
 \begin{frame}{Single Population Model}
-Explain the simulation. \\
-Results of the single population model with the simulation graphs.
+\framesubtitle{Results}
+\begin{columns}[b]
+
+\column{2in}
+\includegraphics[width=1\textwidth]{images/rho_and_allele.pdf}
+
+\column{2.25in}
+\begin{itemize}
+\item contamination proportion is estimated very well
+\vspace{3mm}
+\item also good estimation of allele frequencies
+\end{itemize}
+
+\begin{table}
+\hrule \hrule
+\begin{center}
+\begin{scriptsize}
+\input{tables/afreq_ci_coverage}
+\end{scriptsize}
+\end{center}
+\hrule
+\end{table}
+
+\end{columns}
 \end{frame} 
 
 %Slide 10
-\begin{frame}{Mixture Model}
-Background of situation.
+\begin{frame}{Single Population Model}
+\framesubtitle{Results}
+\begin{columns}[c]
+\column{2.25in}
+\begin{table}
+\begin{scriptsize}
+\hrule\hrule
+\mbox{}\\
+\input{tables/z_table_p_one_half}
+\hrule
+\end{scriptsize}
+\end{table}
+
+\column{2.25in}
+\begin{itemize}
+\item true positives \textbf{(a)} and false negatives \textbf{(b)}
+\vspace{3mm}
+\item with large $L$, almost all contaminated samples identified, with practically zero false identifications
+\vspace{3mm}
+\item even with small $L$, most contaminated samples are identified with few errors
+\end{itemize}
+\end{columns}
 \end{frame}
 
 %Slide 11
 \begin{frame}{Mixture Model}
-\begin{center}
-\includegraphics[width=.6\textwidth]{images/DAG_2.pdf}
-\end{center}
+\begin{columns}[c]
+
+\column{2in}
+%\begin{itemize}
+$\boldsymbol{\pi}$: mixing proportions \\
+\vspace{3mm}
+$\boldsymbol{u_i}$: population indicator \\
+\vspace{3mm}
+$\boldsymbol{B}$: baseline data\\
+\vspace{3mm}
+$\boldsymbol{\xi}$: distribution parameter
+%\end{itemize}
+
+\column{2.25in}
+\includegraphics[width=.9\textwidth]{images/DAG_2.pdf}
+
+\end{columns}
 \end{frame}
 
 %Slide12
 \begin{frame}{Mixture Model}
-Explain the simulation. \\
-Results of the mixture model simulation with graphs.
+\framesubtitle{Simulation}
 \end{frame}
- 
+
 %Slide 13
+\begin{frame}{Mixture Model}
+\framesubtitle{Results}
+\end{frame} 
+ 
+%Slide 14
 \begin{frame}{Next Steps}
 \end{frame}
 
-%Slide 14
+%Slide 15
 \begin{frame}{Conclusion}
 \end{frame}
 
-%Slide 15
+%Slide 16
 \begin{frame}{Mathematics}
 \end{frame} 
 
