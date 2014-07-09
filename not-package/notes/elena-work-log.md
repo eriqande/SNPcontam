@@ -384,3 +384,8 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 ### Presentation
 * Created rough outline for the presentation using the the LaTex template
 * Looked up parameters for the talk: 15 minutes **including** questions (so really only 12 minutes)
+
+##7/9/14
+#### Presentation
+* Added pictures and text to the presentation slides
+* started working on the mathematics slide, which is unorganized right now
