@@ -382,4 +382,5 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
     * also changed code so that it can be run with $\rho = 0$
 
 ### Presentation
-* was going to start working on it, but too busy fixing code
+* Created rough outline for the presentation using the the LaTex template
+* Looked up parameters for the talk: 15 minutes **including** questions (so really only 12 minutes)
