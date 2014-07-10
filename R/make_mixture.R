@@ -1,6 +1,6 @@
 #add variable for index of fish to put in mixture (clean and contaminated)
 # use colnames of noncontam
-make_mixture <- function(baseline, N, p){
+make_mixture <- function(baseline, N, p, clean_list = NULL, contam_list = NULL){
   N_c = N*p
   swfs <- baseline
   rownames(swfs) <- swfs$ID
@@ -9,41 +9,58 @@ make_mixture <- function(baseline, N, p){
   swfs2$RepPop <- factor(as.character(swfs2$RepPop), levels = unique(as.character(swfs2$RepPop)))
   
 #### Pull out Contaminated Genotypes and make a mixture sample with them ####
+  
   total <- dim(swfs2)[1]
   if (p != 0){
-  contam <- sample(1:total,2 * N_c)
-  contam1 <- contam[1:N_c]
-  contam2 <- contam[(N_c+1):(2*N_c)]
+    if (length(contam_list) == 0){
+      contam <- sample(1:total,2 * N_c)
+      contam1 <- contam[1:N_c]
+      contam2 <- contam[(N_c+1):(2*N_c)]
+    }else{
+      contam1 <- contam_list[1,]
+      contam2 <- contam_list[2,]
+      geno1 <- get_snp_genos(swfs2[which(swfs2$ID %in% contam1),-(1:4)])$mat  # for contaminated fish in mixture
+      geno2 <- get_snp_genos(swfs2[which(swfs2$ID %in% contam2),-(1:4)])$mat
+      contam <- which(swfs2$ID %in% contam_list)
+      }
+    if(length(clean_list) == 0){
+      a <- sample((1:total)[-contam], N - N_c)
+    }else{
+      cc <- 1:nrow(swfs2); names(cc) <- swfs2$ID; a <- unname(cc[clean_list])
+    }
+    
+    genos <- swfs2[a, -(1:4)]  # uncontaminated fish in the mixture
+    geno1 <- get_snp_genos(swfs2[contam1,-(1:4)])$mat  # for contaminated fish in mixture
+    geno2 <- get_snp_genos(swfs2[contam2,-(1:4)])$mat
+    geno_c <- geno1 + geno2
+    geno_c[geno_c == 4] = 2
+    geno_c[geno_c == 3] = 1
+    geno_c[geno1 ==1 & geno2 == 1] = 1
+    geno_c[(geno1 == 0 & geno2 == 2)|(geno1 == 2 & geno2 == 0)] = 1
+    geno_c[is.na(geno1) & is.na(geno2) == FALSE] = geno2[is.na(geno1) & is.na(geno2) == FALSE]
+    geno_c[is.na(geno2) & is.na(geno1) == FALSE] = geno1[is.na(geno2) & is.na(geno1) == FALSE]
   
-  a <- sample((1:total)[-contam], N - N_c)
+    colnames(geno_c) <- paste(colnames(geno1), colnames(geno2), sep="-x-")
   
-  genos <- swfs2[a,-(1:4)]   # uncontaminated fish in the mixture
-  geno1 <- get_snp_genos(swfs2[contam1,-(1:4)])$mat  # for contaminated fish in mixture
-  geno2 <- get_snp_genos(swfs2[contam2,-(1:4)])$mat
-  geno_c <- geno1 + geno2
-  geno_c[geno_c == 4] = 2
-  geno_c[geno_c == 3] = 1
-  geno_c[geno1 ==1 & geno2 == 1] = 1
-  geno_c[(geno1 == 0 & geno2 == 2)|(geno1 == 2 & geno2 == 0)] = 1
-  geno_c[is.na(geno1) & is.na(geno2) == FALSE] = geno2[is.na(geno1) & is.na(geno2) == FALSE]
-  geno_c[is.na(geno2) & is.na(geno1) == FALSE] = geno1[is.na(geno2) & is.na(geno1) == FALSE]
-  
-  colnames(geno_c) <- paste(colnames(geno1), colnames(geno2), sep="-x-")
-  
-  snp_genos <- get_snp_genos(genos)
-  data <- cbind(snp_genos$mat,geno_c)
+    snp_genos <- get_snp_genos(genos)
+    data <- cbind(snp_genos$mat,geno_c)
   
   # in the end, we drop those from the baseline too
-  bline <- swfs2[-c(a, contam),-4]
-  }
+    bline <- swfs2[-c(a, contam),-4]
+    }
 
 #### Make Mixture and Baseline if There is No Contamination ####
   else {
-  a <- sample((1:total), N)
-  genos <- swfs2[a,-(1:4)]
-  snp_genos <- get_snp_genos(genos)
-  data <- snp_genos$mat
-  bline <- swfs2[-c(a),-4]
+    if (length(clean_list) == 0){
+      a <- sample((1:total), N)
+    }else{
+      cc <- 1:nrow(swfs2); names(cc) <- swfs2$ID; a <- unname(cc[clean_list])
+    }
+    genos <- swfs2[a,-(1:4)]
+    snp_genos <- get_snp_genos(genos)
+    data <- snp_genos$mat
+    bline <- swfs2[-c(a),-4]
+    
   }
 
 #### Output ####
