@@ -126,7 +126,7 @@ else {
     if (contamination) {clean_us <- u[i,][u[2,]==0]} else{clean_us <- u[i,]} # the population identification for only clean individuals
     utmp <- factor(clean_us, level=(1:P)) # step before using table so table will include values that have frequency of 0
     freqs <- as.numeric(table(utmp)) # gets frequencies of each population 
-    xi <- (freqs + 1/P) # parameters for the dirichlet distribution for pi
+    xi <- (freqs + 1) # parameters for the dirichlet distribution for pi
     # samples from dirichlet distribution using gamma distribution and updats pii
     gm <- rgamma(P,shape=(xi)) 
     pii[i+1,] <- gm/sum(gm)
