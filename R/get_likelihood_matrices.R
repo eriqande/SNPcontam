@@ -1,6 +1,6 @@
 get_likelihood_matrices <- function(bline, mixture){
   get_zeroes_and_ones <- function(x) {
-    y <- x[, -(1:2)]
+    y <- x[, -(1:3)]
     snp_genos <- get_snp_genos(y)$mat
     snp_indics <- genos_to_indicators(g = snp_genos)
     geno_counts <- count_genos(snp_indics)

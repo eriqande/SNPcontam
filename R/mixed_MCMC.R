@@ -13,16 +13,19 @@
 #' @param beta The beta parameter for the prior distribution of rho, which is assumed to be
 #' a beta distribution.
 #' @param inters Total number of sweeps used in the MCMC model.
+#' @param contamination Logical variable.  If contamination = FALSE, then the MCMC model will only update 
+#' the mixing proportions and the population identity, assuming no contamination is present.
 #' 
 #' @return Returns a list of four named components:
 #' \describe{
 #'  \item{prob_contam}{A vector containing the rho value, which is the proportion of 
 #'  contaminated samples for each interation. The vector is a length of 1 plus the total number of iterations.}
 #'  \item{pops}{A matrix the u, which denote the population or populations of origin, for each sweep.
-#'  u is a 2*inters x N matrix, and each pair of rows represents the population identification for each sweep.
+#'  If contamintion=TRUE, u is a 2*inters x N matrix, and each pair of rows represents the population identification for each sweep.
 #'  If an individual has u values of (any P, 0), than it is a non contaminated individual and the first value is
 #'  its population of origin.  If an individual has two u values, it is contaminated and the two values 
-#'  represent the source of contamination.}
+#'  represent the source of contamination.  If contamination=FALSE, u is a intersxN matrix, and each row represents the popultion
+#'  identification for each sweep.}
 #'  \item{z}{A matrix containing the z value, which denotes contaminated status, for each individual
 #'  and every iteration.  The matrix has columns equal to the number of individuals and rows equal to
 #'  the total number of iterations.}
@@ -39,8 +42,11 @@
 #' data <- matrix(c(1,2,1,0,2,0,2,0,0,0,1,2,0,0,1),nrow=3)
 #' clean_data <- P_likelihood(zeros,ones,genos,.5)
 #' contam_data <- Pcontam(zeros,ones,genos,.5) 
-#' # Runs the MCMC on the data for 5 interations
-#' mixed_MCMC(data, contam_data, clean_data, inters = 5)
+#' # Runs the MCMC that checks for contamination on the data for 5 interations
+#' mixed_MCMC(data, contam_data, clean_data, contamination = TRUE, inters = 5)
+#' 
+#' # Runs the MCMC on same data, but without evaluating contamination
+#' mixed_MCMC(data, contam_data, clean_data, contamination=FALSE, inters = 5)
 mixed_MCMC <- function(data, contam_data, clean_data, alpha=.5, beta=.5, contamination = TRUE, inters){
   
   cbs <- nrow(contam_data) # Number of combinations of populations
