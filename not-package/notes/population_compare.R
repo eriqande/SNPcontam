@@ -1,6 +1,6 @@
 library(fullsniplings)
 N = 100
-p = 0
+p = 0.05
 N_c = N*p
 contamination = TRUE
 data = swfsc_chinook_baseline
@@ -45,8 +45,9 @@ pop_id <- cbind(tmp_id,tmp_max)
 rownames(pop_id) <- rownames(pop_means)
 
 # Table comparing true and MCMC mixing proportions
-count_pop <- table(data$Pop)
+count_pop <- table(b$bline$Pop)
 freqs_pop <- count_pop/sum(count_pop)
 mixing <- colMeans(test$mixing)
 difference <- as.numeric(freqs_pop) - mixing
 mix_df <- data.frame(True_mix = freqs_pop, MCMC_mix = mixing, Difference = difference)
+plot(mix_df$True_mix.Freq,mix_df$MCMC_mix,ylim = c(0,.15),xlim = c(0,.18)); abline(a=0,b=1)
