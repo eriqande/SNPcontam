@@ -151,8 +151,9 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 \begin{frame}{Background Theory}
 \framesubtitle{Statistical Models}
    \begin{itemize}
-   	\item Logic of identify based on heterozygousity
-	\item Bayesian Approach
+   	\item Sample contamination identification using the proportion of heterozygous loci
+	\vspace{3mm}
+	\item Bayesian approach using Markov chain Monte Carlo (MCMC) methods
    \end{itemize}
 \end{frame}
 
@@ -170,7 +171,7 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 	\item $posterior \propto likelihood \times prior$
 	\end{itemize}
 	\vspace{2mm}
-\item Markov chain Monte Carlo (MCMC) Method
+\item MCMC methods
 	\vspace{1mm}
 	\begin{itemize}
 	\item algorithms for sampling from probability distributions
@@ -210,7 +211,7 @@ $\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution para
 \begin{frame}{Single Population Model}
 \framesubtitle{Simulation}
 \begin{itemize}
-\item Chinook salmon population from Feather Hatchery Spring-run to used create in silica sample of "fish"
+\item Chinook salmon population data from Feather Hatchery Spring-run to used create in silica sample of "fish"
 \vspace{3mm}
 \item Simulation Parameters
 	\begin{itemize}
@@ -324,48 +325,54 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \begin{tiny}
 \begin{columns}[T]
 
-\column{2.3in}
-\begin{center}
-\textbf{Single Population Model}
-\end{center}
-Prior Distributions \\ \vspace{2mm}
+\column{2.25in}
+\centerline{\textbf{Single Population Model}}
+\vspace{2mm}
+Prior Distributions \\ \vspace{1mm}
 $\bullet \, p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$ \\ \vspace{1mm}
 $\bullet \, p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{\lambda_{\ell}-1}(1 - \theta_{\ell})^{\lambda_{\ell}-1} = Beta(\lambda_{\ell},\lambda_{\ell})$ \\ 
 \vspace{2mm}
 
-Full Conditional Distributions \\ \vspace{2mm}
+Full Conditional Distributions \\ \vspace{1mm}
 $\bullet \, p(z_i=0|\theta_{\ell},y_i,\rho) = \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},nocontam)}{R}$ \\ \vspace{1mm}
 $\quad p(z_i=1|\theta_{\ell},y_i,\rho) = \frac{\rho^{z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam)}{R}$ \\ \vspace{1mm}
 $\quad R = p(z_i=1|\theta_{\ell},y_i,\rho) + p(z_i = 0|\theta_{\ell},y_i,\rho)$ \\ \vspace{1mm}
 $\quad p(y_{\ell}|\theta_{\ell},contam)$ and $p(y_{\ell}|\theta_{\ell},nocontam)$ calculated  \\  \vspace{1mm}
-\quad using Hardy Weinberg Equilibrium \\  \vspace{2mm}
+\quad using Hardy Weinberg Equilibrium \\  \vspace{1mm}
 
 $\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
 $\bullet \,p(\theta_{\ell}|y_{i\ell},z_i) \propto Beta(2x_2 + x_1 + \lambda_{\ell}, 2x_0 + x_1 + \lambda_{\ell})$ \\ \vspace{1mm}
 $\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$
 
 \column{2.5in}
-\begin{center}
-\textbf{Mixture Model}
-\end{center}
-
-Prior Distributions \\ \vspace{2mm}
+\centerline{\textbf{Mixture Model}}
+\vspace{2mm}
+Prior Distributions \\ \vspace{1mm}
 $\bullet \, p(\pi|\xi) \propto \prod_{i = 1}^K \pi_{i}^{\xi_i - 1} = Dirichlet(\xi_1, \ldots, \xi_K)$ \\
+\vspace{1mm}
 $\bullet \, p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$
-$\bullet \, p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{x_i + \lambda_{\ell}-1}(1 - \theta_{\ell})^{x_0 + \lambda_{\ell}-1} = $
-\\ $\quad Beta(x_1 + \lambda_{\ell},x_0 + \lambda_{\ell})$ \\ 
-$\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$
+$\bullet \, p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{x_i + \lambda_{\ell}-1}(1 - \theta_{\ell})^{x_0 + \lambda_{\ell}-1} = $ \\ 
+\vspace{1mm}
+$\quad Beta(x_1 + \lambda_{\ell},x_0 + \lambda_{\ell})$ \\ 
+\vspace{2mm}
 
-Full Conditional Distributions \\ \vspace{2mm}
-$\bullet \, p(z_i=0|\theta,y_i,\rho,B) = \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{R}$ \\ \vspace{1mm}
-$\quad p(z_i=1|\theta,y_i,\rho,B) = \frac{\rho^{z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,contam)}{R}$ \\ \vspace{1mm}
-$\quad R = p(z_i=1|\theta,y_i,\rho) + p(z_i = 0|\theta,y_i,\rho)$ \\ \vspace{1mm}
+Full Conditional Distributions \\ \vspace{1mm}
+$\bullet \, p(z_i=0|\theta,y_i,\rho,B) = \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{R}$ \\ 
+\vspace{1mm}
+$\quad p(z_i=1|\theta,y_i,\rho,B) = \frac{\rho^{z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,contam)}{R}$ \\
+ \vspace{1mm}
+$\quad R = p(z_i=1|\theta,y_i,\rho,B) + p(z_i = 0|\theta,y_i,\rho,B)$ \\ 
+\vspace{1mm}
 $\quad p(y_{\ell} |\theta_{\ell},B,nocontam)$ and $p(y_{\ell} |\theta_{\ell},B,contam)$ calculated \\
+\vspace{1mm}
 \quad using Polya's Urn model for beta-binomial distribution \\
-$\bullet p(u_i = k|\pi,z_i=0,y_i,\theta,B) = \frac{\pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{\sum_{k=1}^{K} \pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}$ \\
+\vspace{1mm}
+$\bullet \, p(u_i = k|\pi,z_i=0,y_i,\theta,B) = \frac{\pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{\sum_{k=1}^{K} \pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}$ \\
+\vspace{1mm}
 $\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
-$\bullet p(\pi|\xi,u_i) \propto Dirichlet(n_1 + \xi_1, \ldots, n_K + \xi_K)$ \\
-$\quad n_k =$ number of individuals in the $k^{th}$ population
+$\bullet \, p(\pi|\xi,u_i) \propto Dirichlet(n_1 + \xi_1, \ldots, n_K + \xi_K)$ \\
+\vspace{1mm}
+$\quad n_k = \sum_{i:z=0}^{N} \delta(u_{i} = k)$
 \end{columns}
 \end{tiny}
 \end{frame} 
