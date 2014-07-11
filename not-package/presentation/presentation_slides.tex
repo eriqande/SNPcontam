@@ -342,7 +342,15 @@ $\quad p(y_{\ell}|\theta_{\ell},contam)$ and $p(y_{\ell}|\theta_{\ell},nocontam)
 
 $\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
 $\bullet \,p(\theta_{\ell}|y_{i\ell},z_i) \propto Beta(2x_2 + x_1 + \lambda_{\ell}, 2x_0 + x_1 + \lambda_{\ell})$ \\ \vspace{1mm}
-$\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$
+$\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$\\
+
+\vspace{4mm}
+\centerline{\textbf{Parameters}}
+\vspace{2mm}
+$\bullet \, \alpha = \beta = \lambda = 0.5$ \\
+\vspace{1mm}
+$\bullet \, \xi = (\frac{1}{K}, \frac{1}{K}, \ldots, \frac{1}{K})$
+
 
 \column{2.5in}
 \centerline{\textbf{Mixture Model}}
