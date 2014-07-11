@@ -385,7 +385,22 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * Created rough outline for the presentation using the the LaTex template
 * Looked up parameters for the talk: 15 minutes **including** questions (so really only 12 minutes)
 
-##7/9/14
+## 7/9/14
 #### Presentation
 * Added pictures and text to the presentation slides
 * started working on the mathematics slide, which is unorganized right now
+
+## 7/10/14
+#### Presentation
+* Added more to the mathematics slide and added a few more sentences to other slides
+#### Mixture Model
+* changed `make_mixture` so that lists of IDs can be input for both contaminated and clean individuals
+
+## 7/11/14
+#### Presentation
+* began working on abstract
+#### Mixture Model
+* changed `make_mixture` so that mixture matrix and baseline matrix have the same format (pre-transformation to 0s,1s, and 2s)
+* Eric fixed the mistakes with the code that was counting the 0 and 1 alleles
+    * I retested the MCMC, and it is much better at identifying populaitons (especially Alaska)
+    * mixing proportions are very accurate
