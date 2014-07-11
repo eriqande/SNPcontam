@@ -13,6 +13,8 @@ get_likelihood_matrices <- function(bline, mixture){
   zeros <- do.call(what = cbind, args = lapply(alle.counts.list, function(x) x[,"0"]))
   ones <-  do.call(what = cbind, args = lapply(alle.counts.list, function(x) x[,"1"]))
   
+  storage.mode(zeros) <- "integer"
+  storage.mode(ones) <- "integer"
   
   # Getting the two probability matrices ####
   clean_prob <- P_likelihood(zeros,ones,mixture,.5)
