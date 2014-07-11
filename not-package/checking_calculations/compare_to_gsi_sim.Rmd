@@ -1,0 +1,161 @@
+# Comparing mixedMCMC to gsi_sim
+
+We just want to make sure that we are getting comparable results as a way of checking that we
+don't have any bugs.
+
+
+## Initial maneuvers
+First we need to source in the functions that Elena wrote to split baselines into
+a baseline and a test mixture.  This should be run from the top level directory.
+```{r}
+library(SNPcontam)
+library(gpiper)  # for running gsi_sim
+source("../../R/make_mixture.R")
+source("../../R/get_likelihood_matrices.R")
+BASE <- swfsc_chinook_baseline
+```
+
+
+## Splitting data into a baseline and a mixture
+We will make a mixture with 1000 individuals in it by sampling randomly from the baseline.
+```{r}
+N <- 1000
+rho <- 0.0
+set.seed(5)  # make it reproducible
+SPLIT <- make_mixture(BASE, N, rho)
+MixFish <- colnames(SPLIT$mixture)  # fish to put in mixture
+```
+
+
+## Computing likelihoods in R
+Now we have to compute likelihood matrices before running the MCMC
+```{r ComputeLikes, cache=TRUE}
+# computing the likelihood matrices
+lik_mat <-  get_likelihood_matrices(SPLIT$bline, SPLIT$mixture)
+```
+Now `lik_mat$clean` is an array of dimension (`r dim(lik_mat$clean)`).  These are unnormalized likelihoods for each individual of coming from each of the different source populations.  We should be able to compare these directly to what we get out of gsi_sim.
+
+Let's add some row and column names to that matrix, and also transpose it:
+```{r}
+clikes  <- t(lik_mat$clean_prob)  # clean likelihoods
+dimnames(clikes) <- list(FishIds = MixFish, PopNames = levels(SPLIT$bline$Pop))
+```
+
+
+
+
+## Computing likelihoods via gsi_sim
+```{r run_gsi_sim}
+# first make the baseline and the mixture to put into gsi_sim:
+# baseline
+tmp <- SPLIT$bline[, -(1:3)]
+tmp[is.na(tmp)] <- 0
+gPdf2gsi.sim(d = tmp, pop.ize.them = SPLIT$bline$Pop, outfile = "baseline.txt")
+
+# mixture
+rownames(BASE) <- BASE$ID
+tmp <- BASE[ MixFish, -(1:4)]
+tmp[is.na(tmp)] <- 0
+gPdf2gsi.sim(d = tmp, outfile = "mixture.txt")
+
+
+# then run gsi_sim
+gsi_Run_gsi_sim(" -b baseline.txt  -t mixture.txt ")
+```
+
+
+### Extracting values from gsi_sim's output
+This is a little ugly, but can be done.  I hacked a function I used for grabbing
+self-assignments out.  Here it is below.  I should put it in `gpiper`.
+```{r}
+# temporary to make some functions
+gsi.simBits2DF <- function(file="GSI_SIM_Dumpola.txt", tag = "UNSORTED_GENE_CLASS_CSV:") {
+  x <- readLines(file)
+  x1<-x[grep(tag, x)]  # get just the lines we want
+  x2<-read.table(textConnection(x1), sep=";", stringsAsFactors=F)
+  numpops <- (ncol(x2)-4)/4  # remove one column for each of ID, NumMissingLoci, NonMissingLocusNames, and MissingLocusNames
+  popnames <- as.character(x2[1,seq(from=2, by=3, length.out=numpops)])  # names of all the pops in the baseline, in that order
+  IDs <- gsub(tag, "", x2$V1)
+  IDs <- sub("\\/", "", IDs)
+  Posteriors <- x2[,seq(from=3, by=3, length.out=numpops)]/100.0
+  LogLs <- x2[, seq(from=2+3*numpops, length.out=numpops)]
+  NumLoci <- x2[, ncol(x2)-2]
+  
+  # send result back as a list of data frames, either Posteriors or LogLs.
+  # get the row and column names on there
+  ret <- lapply(list(Post=Posteriors, LogLs=LogLs), function(z) {
+    names(z) <- popnames
+    rownames(z) <- IDs
+    z})
+  
+  # put the number of loci on there as well
+  ret <- c(ret, list(NumLoci=NumLoci))
+  
+  ret
+}
+
+```
+And now we get those values:
+```{r}
+GSLM <- gsi.simBits2DF()
+```
+
+
+## Some comparisons
+here is a quick jot
+```{r}
+emat <- log10(clikes)
+plot(-as.matrix(GSLM$LogLs), emat, pch = 19, cex=.05,
+     #xlim=c(-60, -40), ylim = c(-60,-40),
+     col = round((1:length(clikes) / 1000))  # each color is a population
+     #col = (1:length(clikes) %% 1000) + 1)
+     )
+abline(a = 0, b = 1, col = "red", lwd = 3, lty = "dashed", )
+```
+
+## Maybe my functions for counting alleles are not right
+Let's check zeros and ones.  Given a baseline like blines, count up the alleles.  Here is a quick function for that:
+```{r}
+count_alle_via_table <- function(x, locstart=4) {
+  ret <- lapply(seq(locstart, ncol(x), 2), function(y) table(factor(c(x[,y], x[,y+1])), rep(x$Pop,2)))
+  names(ret) <- colnames(x)[seq(locstart, ncol(x), 2)]
+  ret
+}
+alist <- count_alle_via_table(SPLIT$bline)
+t.zeros <- do.call(rbind, args = lapply(alist, function(x) x[1,]))
+t.ones <-  do.call(rbind, args = lapply(alist, function(x) x[2,]))
+```
+
+And we can compare those with what we get by using the other functions:
+```{r}
+get_zeroes_and_ones <- function(x) {
+    y <- x[, -(1:3)]
+    snp_genos <- get_snp_genos(y)$mat
+    snp_indics <- genos_to_indicators(g = snp_genos)
+    geno_counts <- count_genos(snp_indics)
+    af <- t(alle_freqs(geno_counts, proportion = F))
+  }
+  
+  # Get zero and one allele counts for each population
+  pop.list <- split(SPLIT$bline, SPLIT$bline$Pop)
+  alle.counts.list <- lapply(pop.list, get_zeroes_and_ones)
+  zeros <- do.call(what = cbind, args = lapply(alle.counts.list, function(x) x[,"0"]))
+  ones <-  do.call(what = cbind, args = lapply(alle.counts.list, function(x) x[,"1"]))
+```
+
+And once we have that, by comparing t.zeros with zeros and t.ones with ones we see that the 
+problem is that the code I told Elena to use to compute the allele frequencies calls the 0 allele the
+one with the smallest frequency in the population.  So, the labels of the alleles is switching between
+populations and is especially bad with the alaska populations.  I wrote that stuff for processing single
+populations in mind.  So, we can just use the code above in the block where `count_alle_via_table` is
+defined to make the zeros and ones matrices.  That will be better anyway...then we don't have to 
+load the fullsniplings package.
+
+Over and out.
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+GSI_SIM_Dumpola.txt
+GSI_SIM_Stderr.txt
+baseline.txt
+compare_to_gsi_sim.html
+compare_to_gsi_sim.md
+gsi_sim_seeds
+mixture.txt
+pop_pi_full_em_mle.txt
+pop_pofz_full_em_mle.txt
+pop_pofz_one_step_em_mle.txt
+cache/*
+*~
+figure/*
+pop_pofz*
