@@ -1,5 +1,3 @@
-require(fullsniplings)
-
 #add variable for index of fish to put in mixture (clean and contaminated)
 # use colnames of noncontam
 make_mixture <- function(baseline, N, p, clean_list = NULL, contam_list = NULL){
