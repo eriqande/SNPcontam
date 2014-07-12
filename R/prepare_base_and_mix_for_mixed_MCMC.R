@@ -74,15 +74,15 @@ prepare_base_and_mix_for_mixed_MCMC <- function(B, B_locstart, B_pops, M, M_locs
   
   # now, make sure that the levels of B3 and M3's alleles are appropriately set
   for(i in seq(1, ncol(B3), 2)) {
-    B3[, i] <- factor(B3[, i], levels = uniq_alleles[[colnames(B3)[i]]])
-    B3[, i+1] <- factor(B3[, i+1], levels = uniq_alleles[[colnames(B3)[i]]])
-    M3[, i] <- factor(M3[, i], levels = uniq_alleles[[colnames(B3)[i]]])
-    M3[, i+1] <- factor(M3[, i+1], levels = uniq_alleles[[colnames(B3)[i]]])
+    B3[, i] <- factor(B3[, i], levels = uniq_alleles3[[colnames(B3)[i]]])
+    B3[, i+1] <- factor(B3[, i+1], levels = uniq_alleles3[[colnames(B3)[i]]])
+    M3[, i] <- factor(M3[, i], levels = uniq_alleles3[[colnames(B3)[i]]])
+    M3[, i+1] <- factor(M3[, i+1], levels = uniq_alleles3[[colnames(B3)[i]]])
   }
   
   
   # now count the number of zero and one alleles in each population at each locus in baseline B3
-  alle_counts <- lapply(seq(1, ncol(B3), 2), function(y) table(c(B3[,y], B3[,y+1]), rep(B_pops,2)))
+  alle_counts <- lapply(seq(1, ncol(B3), 2), function(y) table(c(B3[, y], B3[, y+1]), rep(B_pops,2)))
   names(alle_counts) <- colnames(B3)[seq(1, ncol(B3), 2)]
   
   # now extract the zeros and ones matrices.  These are matrices that hold the number of 
@@ -92,7 +92,7 @@ prepare_base_and_mix_for_mixed_MCMC <- function(B, B_locstart, B_pops, M, M_locs
   
   
   # OK, now we must convert the mixture genotypes to 0s,  1s, and 2s
-  tmp <- lapply(seq(1, ncol(M3), 2), function(x) {
+  tmp <- lapply(seq(1, ncol(M3), 2), function(i) {
     rowSums(
       cbind(
         as.integer(M3[, i]) - 1,   # the minus ones here make the alleles 0 and 1, rather than 1 and 2
