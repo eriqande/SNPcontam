@@ -47,6 +47,11 @@ tmp_id <- sapply(1:(N-N_c), function(x) colnames(pop_means)[which(max(pop_means[
 pop_id <- cbind(tmp_id,tmp_max)
 rownames(pop_id) <- rownames(pop_means)
 
+unit <- strsplit(as.character(pop_id[,1]),"--")
+runit <- lapply(unit, function(x) x[1])
+correct_Pop = sum(b$mixture$RepPop[1:(N-N_c)] == pop_id[,1])/(N-N_c)
+correct_Rep = sum(b$mixture$RepUnit[1:(N-N_c)] == runit)/(N-N_c)
+
 # Table comparing true and MCMC mixing proportions
 count_pop <- table(b$bline$Pop)
 freqs_pop <- count_pop/sum(count_pop)
