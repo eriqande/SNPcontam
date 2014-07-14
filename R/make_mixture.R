@@ -32,9 +32,11 @@ make_mixture <- function(baseline, N, p, clean_list = NULL, contam_list = NULL){
       a <- unname(cc[clean_list])
     }
     
-    genos <- swfs2[a, -(1:4)]  # uncontaminated fish in the mixture
+    genos <- swfs2[a, -4]  # uncontaminated fish in the mixture
     geno1 <- swfs2[contam1,-(1:4)]  # for contaminated fish in mixture
     geno2 <- swfs2[contam2,-(1:4)]
+    g1_info <- swfs2[contam1,(1:3)]
+    g2_info <- swfs2[contam2,(1:3)]
     
     contaminate_genos <- function(x,y){
       geno_c <- x # geno_c will be the final version of the contaminated genotypes
@@ -54,10 +56,13 @@ make_mixture <- function(baseline, N, p, clean_list = NULL, contam_list = NULL){
       geno_c
       }
     
-    geno_c <- contaminate_genos(geno1,geno2) # contaminated samples
-    rownames(geno_c) <- paste(rownames(geno1), rownames(geno2), sep="-x-")
+    geno_c0 <- contaminate_genos(geno1,geno2) # contaminated samples
+    rownames(geno_c0) <- paste(rownames(geno1), rownames(geno2), sep="-x-")
+    info <- sapply(1:3, function(x) paste(g1_info[,x], g2_info[,x], sep = "-x-"))
+    geno_c1 <- cbind(info,geno_c0)
+    colnames(geno_c1)[1:3] = c("RepPop","RepUnit","Pop")
     
-    data <- rbind(genos,geno_c) # mixture
+    data <- rbind(genos,geno_c1) # mixture
   
   # in the end, we drop those from the baseline too
     bline <- swfs2[-c(a, contam),-4]
