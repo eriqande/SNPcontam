@@ -1,5 +1,5 @@
 library(fullsniplings)
-N = 100
+N = 1000
 p = 0.05
 N_c = N*p
 contamination = TRUE
@@ -10,14 +10,16 @@ data = swfsc_chinook_baseline
 b <- make_mixture(data,N,p)
 
 
-#### Get the Likelihood Matrices ####
-likelihood <- get_likelihood_matrices(b$bline,b$mixture)
+#### Get the Prepared Matrices and Likelihood Matrices ####
+MCMC_mats <- prepare_base_and_mix_for_mixed_MCMC(B = b$bline, B_locstart = 4, B_pops = b$bline$Pop, M = b$mixture, M_locstart = 1)
+contam_mat <- Pcontam(snp_zeroes = MCMC_mats$zero, snp_ones = MCMC_mats$ones, genos = MCMC_mats$mixmat, lambda = .5)
+clean_mat <- P_likelihood(snp_zeroes = MCMC_mats$zero, snp_ones = MCMC_mats$ones, genos = MCMC_mats$mixmat, lambda = .5)
 
 #### Run the MCMC ####
-test <- mixed_MCMC(b$mixture, likelihood$contam_prob, likelihood$clean_prob, inters = inters, contamination = TRUE)
+test <- mixed_MCMC(MCMC_mats$mixmat, contam_mat, clean_mat, inters = inters, contamination = TRUE)
 
 #### Create Tables of Population Assignment ####
-P = nrow(likelihood$clean_prob)
+P = nrow(clean_mat)
 
 # The table pop_means has the individuals from the mixture in the row and all populations in columns
 # The table shows the fraction of times that each individual was assigned to each population
@@ -28,13 +30,13 @@ tmp_pops <- lapply(clean_pops, function(x) {factor(x,level = 1:P)})
 freq <- lapply(tmp_pops, function(x) {as.numeric(table(x))})
 pop_means <- do.call(what = rbind, args = lapply(freq, function(x) x))/inters
 colnames(pop_means) <- levels(b$bline$RepPop)
-if (p == 0) {rownames(pop_means) <- colnames(b$mixture)}else {rownames(pop_means) <- colnames(b$mixture)[-((N-N_c + 1):N)]}
+if (p == 0) {rownames(pop_means) <- rownames(b$mixture)}else {rownames(pop_means) <- rownames(b$mixture)[-((N-N_c + 1):N)]}
 }else {
   tmp_pops <- lapply(1:N, function(x) {factor(test$pop[,x],level = 1:P)}) 
   freq <- lapply(tmp_pops, function(x) {as.numeric(table(x))})
   pop_means <- do.call(what = rbind, args = lapply(freq, function(x) x))/inters
   colnames(pop_means) <- levels(b$bline$RepPop)
-  rownames(pop_means) <- colnames(b$mixture)
+  rownames(pop_means) <- rownames(b$mixture)
 }
 
 # Pop_id shows the ID of each individual from the mixtures, it population ID according to the MCMC
