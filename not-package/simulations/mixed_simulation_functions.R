@@ -232,7 +232,7 @@ mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRU
       data.frame(ID = y$output$mixture_ids[(N-N_c+1):N], fishery = y$params$name, u = y$output$contam_df, rho = y$params$rho)
     } else{NULL}
   }
-  pair_tmp <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {slurp_mcmc_u_contam_output(x,N)})})
+  pair_tmp <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {slurp_mcmc_u_contam_output(x,N)})})
   pair_tmp2 <- unlist(pair_tmp, recursive = FALSE)
   contam_u_df <- do.call(what = rbind, args = pair_tmp2)
   
