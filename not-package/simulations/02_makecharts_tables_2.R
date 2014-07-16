@@ -1,0 +1,26 @@
+# short script to produce charts from the mixed MCMC simulation
+
+# this script should be run from the directory that includes the directories "simulations", "supplements", 
+# and "manuscript"
+if(!all(file.exists("simulations", "manuscript", "supplements")))  {
+  stop("You must run 01_simulation_1.R in directory that includes: \"simulations\", \"manuscript\", \"supplements\"")
+}
+
+load("simulations/out_list_01.rda")
+source("simulations/simulation_functions.R")
+
+library(ggplot2)
+
+#### Rho Plot ####
+mixed_MCMC_rhoplot(rho_df = out_list_02$rho_df,
+                   rhovals = out_list_02$rhovals, 
+                   outpath = "manuscript/images/mixed_rho.pdf", 
+                   width = 5, height = 3)
+
+#### Z Table ####
+mixed_MCMC_ztable(z_df = out_list_02$z_df,
+                  PPlim = 0.9,
+                  outpath = "manuscript/tables/mixed_z_table.tex")
+
+#### Get Fraction of Correctly Assigned Populations and RepUnits ####
+pop_info <- mixed_MCMC_population_info(u_df = out_list_02$u_df)
