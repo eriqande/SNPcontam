@@ -150,6 +150,7 @@ Boing <- nrow(swfsc_chinook_baseline)
 \bibliographystyle{men}
 {\footnotesize
 \bibliography{snp-contam}}
+\flushcolsend
 
 \onecolumn
 \appendix
