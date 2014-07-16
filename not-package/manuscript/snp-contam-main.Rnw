@@ -30,6 +30,8 @@
 \usepackage{color}
 \usepackage{amsmath}
 
+
+
 %% some handy things for making bold math
 \def\bm#1{\mathpalette\bmstyle{#1}}
 \def\bmstyle#1#2{\mbox{\boldmath$#1#2$}}
@@ -148,7 +150,11 @@ Boing <- nrow(swfsc_chinook_baseline)
 \bibliographystyle{men}
 {\footnotesize
 \bibliography{snp-contam}}
+\flushcolsend
 
- \end{document}
+\onecolumn
+\appendix
+	\input{appendices.Rnw}
+\end{document}
 
 
