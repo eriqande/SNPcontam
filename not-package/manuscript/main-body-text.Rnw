@@ -18,7 +18,18 @@ may well  become the way everything is done in the future, but the relative simp
 Fluidigm make those very attractive. Also good for low-quantity DNA, large number of individuals, degraded 
 tissues, etc.  It is likely that
 
-\section*{Mathematical Derivation of MCMC Model}
+\section*{Methods}
+\subsection*{Statistical Models}
+We begin by formulating a model for detecting contaminated samples from a collection in which all the individuals, as well as any contaminating DNA, originate from a single population.  Let the collection include $N$ genetic samples, each one typed at $L$ SNPs.  Without loss of generality, we label one allele at each SNP $0$ and the other $1$.  At the $\ell\thh$ SNP we let $\theta_\ell$ denote the frequency of the $1$ allele, $\ell\in\{1,\ldots,L\}$, in the population from whence the samples originate. Associated with each sample $i$ ($i\in\{1,\ldots,N\})$ is an unobserved indicator variable $z_i$ which takes the value 1 if sample $i$ is contaminated (contains DNA from 2 individuals) and 0 if sample $i$ contains DNA from just a single individual. The observed genotype of sample $i$ at locus $\ell$ is denoted by $y_{i,\ell}$.  If a sample contains only ``0'' alleles, $y_{i,\ell}=0$, if both a ``0'' and ``1'' allele are detected, $y_{i,\ell}=1$, and if the sample contains only ``1'' alleles then $y_{i,\ell}=2$.  If sample $i$ is not contaminated, and is from a diploid, the probability of $y_{i,\ell}$ is assumed to follow independent sampling of alleles from the population (\ie the expected frequencies conform to Hardy-Weinberg expectations):
+\begin{eqnarray}
+P(y_{i,\ell} = 0\:|\:z_i = 0) & = & (1-\theta_\ell)^2 \nonumber\\
+P(y_{i,\ell} = 1\:|\:z_i = 0) & = & 2\theta_\ell(1-\theta_\ell) \\
+P(y_{i,\ell} = 2\:|\:z_i = 0) & = & \theta_\ell^2  \nonumber
+\end{eqnarray}
+
+
+
+ 
 In the model of contamination in a single population, only the genotypes of the sampled individuals are known. The $i^{th}$ genotype at the $\ell^{th}$ locus is represented by the variable $y_{i\ell}$.  The probability that a sample is contaminated, $\rho$, and the allele frequency of the 1 allele at the $\ell^{th}$ locus, $\theta_{\ell}$, are unknown paramenters. The latent variable, $z_i$, is used to indicate the contamination status of the $i^{th}$ sample.  If $z_i$ has a value equal to 1, then the $i^{th}$ sample is contaminated.  A value of 0 indicates that the sample is not contaminated.  
 
 %%%% The DAG figure
