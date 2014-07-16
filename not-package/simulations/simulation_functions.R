@@ -273,3 +273,29 @@ MCMC_ztable <- function(z, PPlim = 0.5) {
   list(FP = FalsePos, TP = TruePos)
 }
 
+make_tabular <- function(x, dd=2, leftcolhead, rightcolshead, outfile="", open_tabular = TRUE, close_tabular = TRUE, append = FALSE) {
+  nr <- nrow(x)
+  nc <- ncol(x)
+  xf <- format(round(x, digits=dd), digits=dd)  # make them strings formatted as desired
+  xf <- cbind(rownames(xf), xf)  # add the rownames as a column
+  xf <- rbind(c(leftcolhead, colnames(x)), xf) # add the colnames as the top row
+  
+  
+  # remove outfile if it exists
+  if(append == FALSE) {if(file.exists(outfile)) file.remove(outfile)}
+  
+  # now make the enclosing tabular environment
+  colstring <- paste(c("l", rep("r", ncol(x))), collapse="")
+  if(open_tabular == TRUE) cat(paste("\\begin{tabular}{", colstring, "}", sep=""), "\n", file = outfile, append = T)
+  
+  # now, haggle with getting the multicolumn header on and written to file
+  cat(paste("  &  \\multicolumn{", ncol(x), "}{c}{\\underline{", rightcolshead, "}} \\\\\n", sep=""), file = outfile, append = T)
+  
+  # now, the second line in xf should start with \hline
+  xf[2,1] <- paste("\\hline", xf[2,1])
+  write.table(format(xf, digits=2), quote=F, sep="  &  ", col.names=F, row.names=F, eol="  \\\\  \n", file = outfile, append = T)
+  
+  # finally, enclose the tabular environment if need be
+  if(close_tabular == TRUE) cat("\\end{tabular} \n", file = outfile, append = T)
+}
+

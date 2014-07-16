@@ -182,12 +182,12 @@ mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRU
     types[[k]]$rho = r   
     types[[k]]$f_types = f
   }
-  MCMC <- lapply(types, function(x) {
+  MCMC <- mclapply(types, function(x) {
     lapply(1:n, function(y) {
       list(params = list(name = x$f_types$name, proportions = x$f_types$pop, rho = x$rho), 
            output = mixed_MCMC_with_means(baseline = baseline, N = N, p = x$rho, contamination = contamination, inters = inters, props = unlist(x$f_types$pop), less.NA = less.NA))
     })
-  }) #mc.cores=length(types))
+  }, mc.cores=length(types))
   
   # MAkes the z output data frame
   slurp_mcmc_z_output2 <- function(y) {
@@ -252,22 +252,34 @@ mixed_MCMC_rhoplot <- function(rho_df,rhovals,outpath, width = 5, height = 3){
 }
 
 mixed_MCMC_population_info <- function(u_df){
-  nc <- ncol(u_df)
-  N <- nrow(pop_means)
-  pop_means <- u_df[,-c(1,(nc-1),nc)]
-  tmp_max <- matrix(sapply(1:N, function(x) max(pop_means[x,])),ncol=1)
-  tmp_id <- sapply(1:N, function(x) colnames(pop_means)[which(max(pop_means[x,]) == pop_means[x,])])
+  get_pop_data <- function(split_df){
+    nc <- ncol(split_df)
+    rho <- split_df$rho[1]
+    fishery <- as.character(split_df$fishery[1])
+    N <- nrow(split_df)
+    pop_means <- split_df[,-c(1,(nc-1),nc)]
+    tmp_id <- sapply(1:N, function(x) colnames(pop_means)[which(max(pop_means[x,]) == pop_means[x,])])
+      
+    mc_unit <- strsplit(as.character(tmp_id),("\\."))
+    mc_runit <- lapply(mc_unit, function(x) x[2])
+    mc_pop <- lapply(mc_unit, function(x) x[4])
+    mix <- strsplit(rownames(split_df), "[--:]")
+    mix_runit <- lapply(mix, function(x) x[1])
+    mix_pop <- lapply(mix, function(x) x[3])
+    correct_Pop = sum(unlist(mix_pop) == unlist(mc_pop))/N
+    correct_Rep = sum(unlist(mix_runit) == unlist(mc_runit))/N
+    list(correct_Pop = correct_Pop, correct_Rep = correct_Rep, rho = rho, fishery = fishery)
+  }
+  factor(u_df$rho)
+  factor(u_df$fishery)
+  tmp_pops <- split(u_df, list(u_df$rho, u_df$fishery))
+  pop_ids <- lapply(tmp_pops, function(x) get_pop_data(split_df = x))
   
-  matrix(strsplit(s, "[;=]")[[1]], 2)[2,]
-  mc_unit <- strsplit(as.character(tmp_id),("\\."))
-  mc_runit <- lapply(mc_unit, function(x) x[2])
-  mc_pop <- lapply(mc_unit, function(x) x[4])
-  mix <- strsplit(rownames(u_df), "[--:]")
-  mix_runit <- lapply(mix, function(x) x[1])
-  mix_pop <- lapply(mix, function(x) x[3])
-  correct_Pop = sum(unlist(mix_pop) == unlist(mc_pop))/N
-  correct_Rep = sum(unlist(mix_runit) == unlist(mc_runit))/N
-  list(correct_Pop = correct_Pop, correct_Rep = correct_Rep)
+  tmp_pops2 <- lapply(pop_ids, function(x) unlist(x))
+  pop_data <- do.call(what = rbind, args = tmp_pops2)
+  pop_df <- data.frame(fishery = pop_data[,4], rho = as.numeric(pop_data[,3]), correct_Pop = as.numeric(pop_data[,1]), correct_RepUnit = as.numeric(pop_data[,2]))
+  rownames(pop_df) = NULL
+  pop_df
 }
 
 mixed_MCMC_ztable <- function(z_df, PPlim = 0.5, outpath) {
