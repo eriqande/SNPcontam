@@ -73,6 +73,8 @@ MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, 
   geno_counts <- count_genos(snp_indices)
   afreqs <- alle_freqs(geno_counts)
   
+  
+  
   # create list with all simulations
   types <- list() 
   k <- 0
