@@ -12,6 +12,7 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
 
 library(SNPcontam)
 library(parallel)
+library(gtools)
 
 source("simulations/mixed_simulation_functions.R")
 

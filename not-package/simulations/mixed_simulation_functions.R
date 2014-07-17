@@ -190,6 +190,8 @@ mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRU
     })
   }, mc.cores=min(length(types), MAX_CORES))
   
+  save(MCMC, file="MCMC.rda")
+  
   # MAkes the z output data frame
   slurp_mcmc_z_output2 <- function(y) {
     data.frame(z = y$output$z_pm, z_id = y$output$z_id, fishery = y$params$name, ID = y$output$mixture_ids, rho = y$params$rho, stringsAsFactors = FALSE)
