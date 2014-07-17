@@ -6,8 +6,8 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
   stop("You must run 01_simulation_1.R in directory that includes: \"simulations\", \"manuscript\", \"supplements\"")
 }
 
-load("simulations/out_list_01.rda")
-source("simulations/simulation_functions.R")
+load("simulations/out_list_02.rda")
+source("simulations/mixed_simulation_functions.R")
 
 library(ggplot2)
 

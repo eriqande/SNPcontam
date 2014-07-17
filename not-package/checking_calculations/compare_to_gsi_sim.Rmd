@@ -20,10 +20,10 @@ BASE <- swfsc_chinook_baseline
 We will make a mixture with 1000 individuals in it by sampling randomly from the baseline.
 ```{r}
 N <- 1000
-rho <- 0.0
+rho <- 0.01
 set.seed(5)  # make it reproducible
 SPLIT <- make_mixture(BASE, N, rho)
-MixFish <- colnames(SPLIT$mixture)  # fish to put in mixture
+MixFish <- rownames(SPLIT$mixture)  # fish to put in mixture
 ```
 
 

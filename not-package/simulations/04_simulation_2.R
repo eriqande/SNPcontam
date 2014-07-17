@@ -20,10 +20,11 @@ source("simulations/mixed_simulation_functions.R")
 #### Get the data from which baseline and mixture will be chosen and the true mixing proportions ####
 baseline <- swfsc_chinook_baseline
 load("data/ca_fishery_props.rda")
-fish_pops <- ca_fishery_props[1:2,]
+fish_pops <- ca_fishery_props
 
 
 #### Run the MCMC simulations and put output in a big Rda file ####
+set.seed(10)  # set seed for reproducibility
 out_list_02 <- mixed_MCMC_sims(
                                 baseline = baseline,
                                 N = 200, 
@@ -32,7 +33,7 @@ out_list_02 <- mixed_MCMC_sims(
                                 inters = 1000, 
                                 contamination = TRUE, 
                                 less.NA = 10, 
-                                n = 2,
+                                n = 20,
                                 MAX_CORES = 20)
 
 save(out_list_02, file = "simulations/out_list_02.rda", compress = "xz")

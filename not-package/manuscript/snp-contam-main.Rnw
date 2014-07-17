@@ -154,7 +154,9 @@ Boing <- nrow(swfsc_chinook_baseline)
 
 \onecolumn
 \appendix
+{\small
 	\input{appendices.Rnw}
+}
 \end{document}
 
 
