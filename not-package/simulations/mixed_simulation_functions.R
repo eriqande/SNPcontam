@@ -105,8 +105,7 @@ mixed_lists <- function(baseline, props, N ,p , less.NA = NULL){
 }
 
 #### Simulation Function ####
-mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRUE, less.NA = NULL, n){
-  MAX_CORES <- 20
+mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRUE, less.NA = NULL, n, MAX_CORES = 4){
   P = length(levels(baseline$Pop))
   # function for simplifying MCMC data
   mixed_MCMC_with_means <- function(baseline, N, p, contamination = TRUE, inters, props, less.NA = NULL, alpha=.5, beta=.5, burnin = 100){
@@ -220,9 +219,10 @@ mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRU
     
   # Makes data frame for clean population means
   slurp_mcmc_u_output <- function(y){
-    data.frame(fishery = y$params$name, u = y$output$clean_means, rho = y$params$rho, , stringsAsFactors = FALSE)
+    data.frame(fishery = y$params$name, u = y$output$clean_means, rho = y$params$rho, stringsAsFactors = FALSE)
     }
-  utmp1 <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_u_output(x); df$rep_num=rep; df})}, mc.cores = min(length(MCMC), MAX_CORES))
+#  utmp1 <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_u_output(x); df$rep_num=rep; df})}, mc.cores = min(length(MCMC), MAX_CORES))
+  utmp1 <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {df <- slurp_mcmc_u_output(x); df$rep_num=rep; df})})
   utmp2 <- unlist(utmp1, recursive = FALSE)
   u_df <- do.call(what = rbind, args = as.list(utmp2))
     
@@ -232,15 +232,17 @@ mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRU
     if(y$params$rho != 0){
       p = y$params$rho
       N_c = N*p
-      data.frame(ID = y$output$mixture_ids[(N-N_c+1):N], fishery = y$params$name, u = y$output$contam_df, rho = y$params$rho, , stringsAsFactors = FALSE)
+      data.frame(ID = y$output$mixture_ids[(N-N_c+1):N], fishery = y$params$name, u = y$output$contam_df, rho = y$params$rho, stringsAsFactors = FALSE)
     } else{NULL}
   }
-  pair_tmp <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {slurp_mcmc_u_contam_output(x,N)})}, mc.cores = min(length(MCMC), MAX_CORES))
+  #pair_tmp <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {slurp_mcmc_u_contam_output(x,N)})}, mc.cores = min(length(MCMC), MAX_CORES))
+  pair_tmp <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {slurp_mcmc_u_contam_output(x,N)})})
   pair_tmp2 <- unlist(pair_tmp, recursive = FALSE)
   contam_u_df <- do.call(what = rbind, args = as.list(pair_tmp2))
   
   #Just get all of the contam data
-  contam_data <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {x$output$contam_pops})}, mc.cores = min(length(MCMC), MAX_CORES))  
+#  contam_data <- mclapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {x$output$contam_pops})}, mc.cores = min(length(MCMC), MAX_CORES))  
+contam_data <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], function(x) {x$output$contam_pops})})  
   
   list(rhovals = p, z_df = z_df, rho_df = rho_df, pii_df, u_df = u_df , contam_u_df = contam_u_df, contam_data = contam_data)
 }

@@ -31,6 +31,9 @@ out_list_02 <- mixed_MCMC_sims(
                                 fish_pops = fish_pops, 
                                 inters = 1000, 
                                 contamination = TRUE, 
-                                less.NA = 10, n = 2)
+                                less.NA = 10, 
+                                n = 2,
+                                MAX_CORES = 20)
+
 save(out_list_02, file = "simulations/out_list_02.rda", compress = "xz")
 
