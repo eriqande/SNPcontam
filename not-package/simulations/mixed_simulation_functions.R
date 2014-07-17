@@ -105,7 +105,8 @@ mixed_lists <- function(baseline, props, N ,p , less.NA = NULL){
 }
 
 #### Simulation Function ####
-mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRUE, less.NA = NULL, n, MAX_CORES = 20){
+mixed_MCMC_sims <- function(baseline, N, p, fish_pops,inters,contamination = TRUE, less.NA = NULL, n){
+  MAX_CORES <- 20
   P = length(levels(baseline$Pop))
   # function for simplifying MCMC data
   mixed_MCMC_with_means <- function(baseline, N, p, contamination = TRUE, inters, props, less.NA = NULL, alpha=.5, beta=.5, burnin = 100){
