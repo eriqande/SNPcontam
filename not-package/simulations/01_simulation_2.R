@@ -12,11 +12,12 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
 
 library(SNPcontam)
 library(parallel)
+library(gtools)
 
 
 #### Get the data from which baseline and mixture will be chosen and the true mixing proportions ####
 baseline <- swfsc_chinook_baseline
-fish_pops <- ca_fishery_props
+fish_pops <- ca_fishery_props[1:2,]
 
 
 #### Run the MCMC simulations and put output in a big Rda file ####

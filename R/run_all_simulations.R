@@ -16,6 +16,7 @@ library(parallel)
 library(ggplot2)
 library(grid)
 library(gridExtra)
+library(gtools)
 source('~/simulations/mixed_simulation_functions.R')
 source('~/simulations/simulation_functions.R')
 
