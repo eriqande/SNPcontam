@@ -302,7 +302,8 @@ mixed_MCMC_ztable <- function(z_df, PPlim = 0.5, outpath) {
   TruePos <- WP[,,"1","TRUE"] / NP[,,"1"]
   
   list(FP = FalsePos, TP = TruePos)}
-  
+  tmp_fishery <- strsplit(z_df$fishery,"_")
+  z_df$fishery <- sapply(tmp_fishery, function(x) unlist(paste(x[1],x[2],sep = ".")))
   z_tab <- zdata(z = z_df, PL = PPlim)
   ztab_file <- outpath
   cat("{\\bf (a)} Contaminated samples \n", file = ztab_file)
