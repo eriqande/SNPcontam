@@ -13,9 +13,12 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
 library(SNPcontam)
 library(parallel)
 
+source("simulations/mixed_simulation_functions.R")
+
 
 #### Get the data from which baseline and mixture will be chosen and the true mixing proportions ####
 baseline <- swfsc_chinook_baseline
+load("data/ca_fishery_props.rda")
 fish_pops <- ca_fishery_props
 
 
@@ -27,6 +30,6 @@ out_list_02 <- mixed_MCMC_sims(
                                 fish_pops = fish_pops, 
                                 inters = 1000, 
                                 contamination = TRUE, 
-                                less.NA = 10, n = 100)
+                                less.NA = 10, n = 2)
 save(out_list_02, file = "simulations/out_list_02.rda", compress = "xz")
 
