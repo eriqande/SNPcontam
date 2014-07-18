@@ -12,7 +12,7 @@ REDO_SIMULATION_2 <- FALSE
 
 #### Check to see if necessary packages are installed, and install if necessary ####
 message("Checking that required packages are installed")
-packages <- c("ggplot2", "gpiper", "grid", "gridExtra", "gtools", "knitr", "parallel", "reshape2", "xtable")
+packages <- c("ggplot2", "grid", "gridExtra", "gtools", "knitr", "parallel", "reshape2", "xtable")
 need_these <- setdiff(packages, rownames(installed.packages()))
 
 if(length(need_these) > 0) {
