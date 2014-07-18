@@ -120,7 +120,6 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 	\item Background Theory
 	\item Single Population Model
 	\item Mixture Model
-	\item Next Steps
 	\item Conclusion
    \end{itemize}
 \end{frame}
@@ -183,7 +182,7 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 	\item $posterior \propto likelihood \times prior$
 	\end{itemize}
 	\vspace{2mm}
-\item MCMC methods
+\item Markov chain Monte Carlo (MCMC) methods
 	\vspace{1mm}
 	\begin{itemize}
 	\item algorithms for sampling from probability distributions
@@ -207,7 +206,11 @@ $\boldsymbol{y_{i,\ell}}$: genotype \\
 \vspace{3mm}
 $\boldsymbol{\theta_{\ell}}$: allele frequency \\
 \vspace{3mm}
-$\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution parameters
+$\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution parameters \\
+\vspace{3mm}
+$\boldsymbol{N}$: total \# of individuals \\
+\vspace{3mm}
+$\boldsymbol{M}$: total \# of loci
 %\end{itemize}
 
 \column{2in}
@@ -248,9 +251,9 @@ $\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution para
 
 \column{2.25in}
 \begin{itemize}
-\item contamination proportion is estimated very well
+\item Contamination proportion is estimated well \textbf{(a)}
 \vspace{3mm}
-\item also good estimation of allele frequencies
+\item Good estimation of allele frequencies \textbf{(b)}
 \end{itemize}
 
 \begin{table}
@@ -270,7 +273,7 @@ $\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution para
 \begin{frame}{Single Population Model}
 \framesubtitle{Results}
 \begin{columns}[c]
-\column{2.25in}
+\column{2.75in}
 \begin{table}
 \begin{scriptsize}
 \hrule\hrule
@@ -280,13 +283,11 @@ $\boldsymbol{\alpha}, \pmb{\beta}, \boldsymbol{\lambda}$: Beta distribution para
 \end{scriptsize}
 \end{table}
 
-\column{2.25in}
+\column{2in}
 \begin{itemize}
 \item true positives \textbf{(a)} and false negatives \textbf{(b)}
-\vspace{3mm}
-\item with large $L$, almost all contaminated samples identified, with practically zero false identifications
-\vspace{3mm}
-\item even with small $L$, most contaminated samples are identified with few errors
+\vspace{5mm}
+\item almost all contaminated samples identified, with very few false identifications
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -334,25 +335,33 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 %Slide 13
 \begin{frame}{Mixture Model}
 \framesubtitle{Results}
-\begin{table}
-\begin{scriptsize}
-\hrule\hrule
-\mbox{}\\
-\input{tables/mixed_z_table}
-\hrule
-\end{scriptsize}
-\end{table}
+
+\centering
+\includegraphics[width=.95\textwidth]{images/mixed_rho.pdf}
+
+\begin{itemize}
+	\item Well estimated values for contamination proportion
+\end{itemize}
+
 \end{frame} 
- 
+
 %Slide 14
-\begin{frame}{Next Steps}
+\begin{frame}{Conclusion}
+\begin{columns}[c]
+\column{2.5in}
+\centering \includegraphics[width=.95\textwidth]{images/conclusion_salmon2.pdf}
+
+\column{2.5in}
+\centering \includegraphics[width=.95\textwidth]{images/conclusion_salmon.pdf}
+\end{columns}
+
+\begin{itemize}
+   \item Next Steps: usse real output from a SNP genotyping platform
+   \item Our statistical method has potential to provide new tool to advance SNP genotype use in fisheries management 
+\end{itemize}
 \end{frame}
 
 %Slide 15
-\begin{frame}{Conclusion}
-\end{frame}
-
-%Slide 16
 \begin{frame}{Mathematics}
 \begin{tiny}
 \begin{columns}[T]
