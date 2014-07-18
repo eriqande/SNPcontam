@@ -21,7 +21,7 @@ mixed_MCMC_rhoplot(rho_df = out_list_02$rho_df,
 #### Z Table ####
 message("     making manuscript/tables/mixed_z_table.tex")
 mixed_MCMC_ztable(z_df = out_list_02$z_df,
-                  PPlim = 0.9,
+                  PPlim = 0.5,
                   outpath = "manuscript/tables/mixed_z_table.tex")
 
 #### Get Fraction of Correctly Assigned Populations and RepUnits ####

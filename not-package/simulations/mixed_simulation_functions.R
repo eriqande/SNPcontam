@@ -248,9 +248,9 @@ contam_data <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], functio
 }
 
 mixed_MCMC_rhoplot <- function(rho_df,rhovals,outpath, width = 5, height = 3){
-  a <- ggplot(rho_df, aes(x=factor(fishery), y=rho_pm)) + geom_boxplot(outlier.shape=1, outlier.size=1.5) +
+  a <- ggplot(rho_df, aes(x=factor(fishery), y=rho_pm)) + geom_boxplot(outlier.shape=1, outlier.size=.75) +
     facet_grid(.~rho) + ylab("Posterior Mean") + xlab("Fishery") + geom_hline(aes(yintercept=rho),lty="dotdash") +
-    theme(axis.text.x=element_text(angle=90, hjust=1, size=8), axis.title.x=element_text(size=10), plot.title = element_text(hjust = 0))
+    theme(axis.text.x=element_text(angle=90, hjust=1, size=8), axis.title.x=element_text(size=10), plot.title = element_text(hjust = 0), axis.text = element_blank(), axis.ticks = element_blank())
   pdf(outpath,width=5,height=3)
   print(a)
   dev.off()
@@ -301,18 +301,19 @@ mixed_MCMC_ztable <- function(z_df, PPlim = 0.5, outpath) {
   # true contams with post prob > PPlim
   TruePos <- WP[,,"1","TRUE"] / NP[,,"1"]
   
-  list(FP = FalsePos, TP = TruePos)}
+  list(FP = t(FalsePos), TP = t(TruePos))}
+  
   tmp_fishery <- strsplit(z_df$fishery,"_")
   z_df$fishery <- sapply(tmp_fishery, function(x) unlist(paste(x[1],x[2],sep = ".")))
   z_tab <- zdata(z = z_df, PL = PPlim)
   ztab_file <- outpath
   cat("{\\bf (a)} Contaminated samples \n", file = ztab_file)
   cat("\\begin{center}\n", file = ztab_file, append = T)
-  make_tabular(x = z_tab$TP[-1,], dd = 3, leftcolhead = "$\\rho~~~~~~~$", rightcolshead = "Fishery", outfile = ztab_file, append = T)
+  make_tabular(x = z_tab$TP[,-1], dd = 3, leftcolhead = "Fishery", rightcolshead = "$\\rho$", outfile = ztab_file, append = T)
   cat("\\end{center}\n", file = ztab_file, append = T)
   cat("{\\bf (b)} Non-contaminated samples \n", file = ztab_file, append = T)
   cat("\\begin{center}\n", file = ztab_file, append = T)
-  make_tabular(x = z_tab$FP, dd = 4, leftcolhead = "$\\rho~~~~~~~$", rightcolshead = "Fishery", outfile = ztab_file, append = T)
+  make_tabular(x = z_tab$FP, dd = 4, leftcolhead = "Fishery", rightcolshead = "$\\rho$", outfile = ztab_file, append = T)
   cat("\\end{center}\n", file = ztab_file, append = T)
 }
 
