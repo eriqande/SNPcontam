@@ -127,11 +127,22 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 
 %Slide 3
 \begin{frame}{Introduction/Objectives}
+  \begin{columns}[T]
+ 
+ \column{2.75 in}
+ \centering
+   \includegraphics[width=.8\textwidth]{images/chinooksalmon}
+ 
+  \column{2.25in}
    \begin{itemize}
-	\item Stock ID of West Coast salmon important for protecting endangered population
-	\vspace{3mm}
-	\item New stock ID technology using Single Nucleotide Polymorphisms (SNPs) developed at the Southwest Fisheries Science Center
+	\item Importance of stock ID of West Coast salmon
+		\vspace{2mm}
+	\item New Single Nucleotide Polymorphism (SNP) technology
    \end{itemize}
+   \vspace{2mm}
+   \centering  \includegraphics[width=.75\textwidth]{images/salmon_individual}
+   
+   \end{columns}
 \end{frame}
 
 %Slide 4
@@ -150,10 +161,11 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 %Slide 5
 \begin{frame}{Background Theory}
 \framesubtitle{Statistical Models}
+  \begin{center}
+   \includegraphics[width=.6\textwidth]{images/hetero_figure2}
+  \end{center}
    \begin{itemize}
-   	\item Sample contamination identification using the proportion of heterozygous loci
-	\vspace{3mm}
-	\item Bayesian approach using Markov chain Monte Carlo (MCMC) methods
+   	\item contamination identification using the proportion of heterozygous loci
    \end{itemize}
 \end{frame}
 
@@ -177,8 +189,6 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 	\item algorithms for sampling from probability distributions
 	\vspace{2mm}
 	\item repeated random sampling to approximate values
-	\vspace{2mm}
-	\item Gibbs sampling, which uses the full conditional distribution to update each parameter
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -305,6 +315,20 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 %Slide12
 \begin{frame}{Mixture Model}
 \framesubtitle{Simulation}
+\begin{itemize}
+	\item Individuals sampled from existing baseline data
+	\vspace{3mm}
+	\item Simulation Parameters
+	\begin{itemize}
+		\item Number of individuals: N = 200
+		\vspace{1.5mm}
+		\item Proportion of contaminated samples: $\rho = (0, 0.025, 0.075, 0.2, 0.5)$
+		\vspace{1.5mm}
+		\item Mixing proportions: $\pi = $ 20 sets of observed fishery proportions
+	\end{itemize}
+	\vspace{3mm}
+	\item 20 runs of the simulation
+\end{itemize}
 \end{frame}
 
 %Slide 13
