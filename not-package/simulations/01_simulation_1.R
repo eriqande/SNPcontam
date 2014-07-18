@@ -14,7 +14,7 @@ library(SNPcontam)
 library(fullsniplings)
 library(parallel)
 
-
+source("simulations/simulation_functions.R")
 
 #### Get data set and choose Feather H Spring as an example collection of allele freqs ####
 tmp_data <- swfsc_chinook_baseline

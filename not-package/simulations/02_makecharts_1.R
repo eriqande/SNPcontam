@@ -13,6 +13,8 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
+
+message("     making manuscript/images/rho_and_allele.pdf")
 #### Produce the rho boxplots
 rho_plot <- MCMC_rhoplot(rho_df = out_list_01$rho, rhovals = out_list_01$rhovals)
 
@@ -25,6 +27,7 @@ grid.arrange(rho_plot,allele_plot,ncol=1)
 dev.off()
 
 #### Make the Histograms of the z-values
+message("     making supplements/images/histogram_*.pdf")
 # the code saves the graphs into 5 separate files
 # width and height denote the dementions of the pdf files
 MCMC_hist(z_df = out_list_01$z, types = out_list_01$types, width = 11, height = 6, outpath = "supplements/images")

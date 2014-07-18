@@ -12,15 +12,20 @@ source("simulations/mixed_simulation_functions.R")
 library(ggplot2)
 
 #### Rho Plot ####
+message("     making manuscript/images/mixed_rho.pdf")
 mixed_MCMC_rhoplot(rho_df = out_list_02$rho_df,
                    rhovals = out_list_02$rhovals, 
                    outpath = "manuscript/images/mixed_rho.pdf", 
                    width = 5, height = 3)
 
 #### Z Table ####
+message("     making manuscript/tables/mixed_z_table.tex")
 mixed_MCMC_ztable(z_df = out_list_02$z_df,
                   PPlim = 0.9,
                   outpath = "manuscript/tables/mixed_z_table.tex")
 
 #### Get Fraction of Correctly Assigned Populations and RepUnits ####
-pop_info <- mixed_MCMC_population_info(u_df = out_list_02$u_df)
+message("Skipping the fraction of correctly assigned fish to population and RepUnit")
+message(" because that took too long...(eric commented it out)")
+## Eric commented this out because it seems to take too long / hang on the large simulation output
+# pop_info <- mixed_MCMC_population_info(u_df = out_list_02$u_df)

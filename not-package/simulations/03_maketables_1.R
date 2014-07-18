@@ -18,6 +18,10 @@ library(reshape2)
 # currently commented out because we don't use it.
 #alle_tab <- allele_table(types = out_list_01$types, data = out_list_01$allele, Lvals = out_list_01$Lvals, rhovals = out_list_01$rhovals)
 
+
+message("     making manuscript/tables/afreq_ci_coverage.tex       and   ")
+message("            manuscript/tables/z_table_p_one_half.tex")
+
 #### Produce a matrix for a the z-value table  ####
 # we want a table that gives the fraction of truly contaminated samples with posterior prob 
 # of contamination over 0.9 (or, more generally PPlim).  We also want the fraction of non-contaminated samples with that
