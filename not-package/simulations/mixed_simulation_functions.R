@@ -250,7 +250,7 @@ contam_data <- lapply(1:length(MCMC), function(rep) {lapply(MCMC[[rep]], functio
 mixed_MCMC_rhoplot <- function(rho_df,rhovals,outpath, width = 5, height = 3){
   a <- ggplot(rho_df, aes(x=factor(fishery), y=rho_pm)) + geom_boxplot(outlier.shape=1, outlier.size=.75) +
     facet_grid(.~rho) + ylab("Posterior Mean") + xlab("Fishery") + geom_hline(aes(yintercept=rho),lty="dotdash") +
-    theme(axis.text.x=element_text(angle=90, hjust=1, size=8), axis.title.x=element_text(size=10), plot.title = element_text(hjust = 0), axis.text = element_blank(), axis.ticks = element_blank())
+    theme(plot.title = element_text(hjust = 0),axis.text.x = element_blank(), axis.ticks.x = element_blank())
   pdf(outpath,width=5,height=3)
   print(a)
   dev.off()
