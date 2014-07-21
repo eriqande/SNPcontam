@@ -42,11 +42,9 @@
 \usepackage{verbatim}
 \usepackage{times}
 \usepackage[T1]{fontenc}
-%\usepackage{mychicago}
-%\renewcommand{\citeN}{\shortciteN}
-% Or whatever. Note that the encoding and the font should match. If T1
-% does not look nice, try deleting the line with the fontenc.
-
+\def\Tiny{\fontsize{3pt}{3pt} \selectfont}
+\def\ttiny{\fontsize{5pt}{5pt} \selectfont}
+	
 \logo{\includegraphics[width=.1\textwidth]{./images/official_NOAA_logo.pdf}}
 
 \title[SNP contamination identification with Bayesian methods\hspace{2em}\insertframenumber] % (optional, use only with long paper titles)
@@ -129,8 +127,8 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
   \begin{columns}[T]
  
  \column{2.75 in}
- \centering
-   \includegraphics[width=.8\textwidth]{images/chinooksalmon}
+ \centering \includegraphics[width=.8\textwidth]{images/chinooksalmon} \\
+\centering \Tiny \url{http://www.nmfs.noaa.gov/pr/species/fish/chinooksalmon.htm}	
  
   \column{2.25in}
    \begin{itemize}
@@ -139,7 +137,9 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 	\item New Single Nucleotide Polymorphism (SNP) technology
    \end{itemize}
    \vspace{2mm}
-   \centering  \includegraphics[width=.75\textwidth]{images/salmon_individual}
+  \centering  \includegraphics[width=.75\textwidth]{images/salmon_individual}
+  \Tiny
+  \url{http://www.wta.org/hiking-info/nature-on-trail/nature-on-trail-chinook-salmon}
    
    \end{columns}
 \end{frame}
@@ -153,7 +153,8 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 \item most SNPs have only two alleles 
 \end{itemize}
 \begin{center}
-\includegraphics[width=.5\textwidth]{images/snp_diagram}
+\includegraphics[width=.5\textwidth]{images/snp_diagram} \\
+\Tiny \url{http://www.siriusgenomics.com/technology}
 \end{center}
 \end{frame}
 
@@ -175,11 +176,11 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 \item Bayesian Inference: Combining new evidence with prior beliefs
 	\vspace{1mm}
 	\begin{itemize}
-	\item $p(\theta|y) = \frac{p(y|\theta) \times p(\theta)}{p(y)}$
-	\vspace{2mm}
-	\item $p(\theta|y) \propto p(y|\theta) \times p(\theta)$
+	\item $p(H|E) = \frac{p(E|H) \times p(H)}{p(E)}$
 	\vspace{2mm}
 	\item $posterior \propto likelihood \times prior$
+	\vspace{2mm}
+	\item $\propto$ means "proportional to"
 	\end{itemize}
 	\vspace{2mm}
 \item Markov chain Monte Carlo (MCMC) methods
@@ -244,27 +245,17 @@ $\boldsymbol{M}$: total \# of loci
 %Slide 9
 \begin{frame}{Single Population Model}
 \framesubtitle{Results}
-\begin{columns}[b]
+\begin{columns}[c]
+
+\column{2.75in}
+\includegraphics[width=.9\textwidth]{images/rho_and_allele.pdf}
 
 \column{2in}
-\includegraphics[width=1\textwidth]{images/rho_and_allele.pdf}
-
-\column{2.25in}
 \begin{itemize}
 \item Contamination proportion is estimated well \textbf{(a)}
-\vspace{3mm}
+\vspace{5mm}
 \item Good estimation of allele frequencies \textbf{(b)}
 \end{itemize}
-
-\begin{table}
-\hrule \hrule
-\begin{center}
-\begin{scriptsize}
-\input{tables/afreq_ci_coverage}
-\end{scriptsize}
-\end{center}
-\hrule
-\end{table}
 
 \end{columns}
 \end{frame} 
@@ -337,10 +328,11 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \framesubtitle{Results}
 
 \centering
-\includegraphics[width=.95\textwidth]{images/mixed_rho.pdf}
+\includegraphics[width=.9\textwidth]{images/mixed_rho.pdf}
 
 \begin{itemize}
 	\item Well estimated values for contamination proportion
+	\item Nearly all contaminated samples identified
 \end{itemize}
 
 \end{frame} 
@@ -350,14 +342,17 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \begin{columns}[c]
 \column{2.5in}
 \centering \includegraphics[width=.95\textwidth]{images/conclusion_salmon2.pdf}
+\centering \Tiny \url{http://jessicanewley.com/coho-salmon/coho-salmon-2-3/}
 
 \column{2.5in}
-\centering \includegraphics[width=.95\textwidth]{images/conclusion_salmon.pdf}
+\centering \includegraphics[width=.95\textwidth]{images/conclusion_salmon.pdf} 
+\centering \Tiny \url{http://www.wtip.org/drupal/content/friday-fish-report-aug-19}
 \end{columns}
 
 \begin{itemize}
-   \item Next Steps: usse real output from a SNP genotyping platform
-   \item Our statistical method has potential to provide new tool to advance SNP genotype use in fisheries management 
+   \item Two statistical models and software for inference
+   \vspace{3mm}
+   \item Contaminated samples identified well using SNPs
 \end{itemize}
 \end{frame}
 
@@ -385,12 +380,17 @@ $\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \s
 $\bullet \,p(\theta_{\ell}|y_{i\ell},z_i) \propto Beta(2x_2 + x_1 + \lambda_{\ell}, 2x_0 + x_1 + \lambda_{\ell})$ \\ \vspace{1mm}
 $\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$\\
 
-\vspace{4mm}
+\vspace{3mm}
 \centerline{\textbf{Parameters}}
 \vspace{2mm}
 $\bullet \, \alpha = \beta = \lambda = 0.5$ \\
 \vspace{1mm}
-$\bullet \, \xi = (\frac{1}{K}, \frac{1}{K}, \ldots, \frac{1}{K})$
+$\bullet \, \xi = (\frac{1}{K}, \frac{1}{K}, \ldots, \frac{1}{K})$ where $K = $ number of populations
+\vspace{3mm}
+
+\ttiny
+GitHub repository \: \url{https://github.com/eriqande/SNPcontam.git} \\
+R and Cpp code, manuscript, and presentation \\
 
 
 \column{2.5in}
