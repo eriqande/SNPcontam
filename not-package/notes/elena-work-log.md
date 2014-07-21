@@ -404,3 +404,72 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * Eric fixed the mistakes with the code that was counting the 0 and 1 alleles
     * I retested the MCMC, and it is much better at identifying populaitons (especially Alaska)
     * mixing proportions are very accurate
+    
+## 7/14/14
+### Presentation
+* finished and sent abstract to the NOAA student scholarship people
+
+### Mixture Model
+* changed the `make_mixture` code so that it includes RepPop, RepUnit, and Pop in the mixture and baseline
+* changed the flow in `population_compare` so that it works with `prepare_base_and_mixe_for_MCMC`
+* also added code in `population_compare` to calculate the fraction of samples that are correctly assigned to their RepUnit and population
+* began working on simulation for the mixture model
+    * created `mixed_simulation_function` to store all of the simulation functions and moved `make_mixture` into the script
+    * created code `make_lists` to take the proportions of the from the `ca_fishery_proportions` and take individuals to be used in the mixture
+
+## 7/15/14
+### MCMC Simulation
+* finished code for the MCMC simulation in `mixed_MCMC_sims`
+    * created function `mixed_MCMC_with_means` to calculate posterior means and such so that an lapply can be applied in `mixed_MCMC_sims` to run all the simulations
+    * briefly checked the MCMC and it seems to be functioning correctly
+* still need the make the graphs and tables
+
+## 7/16/14
+### MCMC Simulation
+* added code to the simulation function `mixed_MCMC_sims` so that it uses different rho values
+    * now code runs the MCMC for all combinations of fisheries proporitons and rho values
+* added code to `mixed_MCMC_functions` to make graphs and tables and to calculate fraction of individuals correctly identified
+* created scripts to run the simulation and to make the graphs and tables for the mixed MCMC
+* created script to run both tables and make graphs and tables
+
+## 7/17/14
+### Presentation
+* added images of salmon
+* added figures from the mixed_MCMC function
+* wrote text for the mixed_MCMC simulation and the conclusion
+* now drafts of all slides are finished
+
+## 7/18/14
+### Mixture Model
+* changed the tables and graphs
+    * changed z-table so that the fisheries are horizontal and the rho values are the columns because the table was to big in the other direction
+    * took off the x-axis labels and tick marks for the rho plot
+
+### Single Pop MCMC model
+* added function `single_pop_MCMC` that wraps all of the MCMC functions for the single population (`analyze_MCMC` and `contam_MCMC`)
+    * also included function within `single_pop_MCMC` called `change_to_ones_zeros_twos` that changes the data (which is in the 2 column SNP format) to data with individuals in the columns and loci on the rows with only zeros, ones, twos, and NAs
+    * made `change_to_ones_zeros_twos` from code in `prepare_base_and_mix_for_mixture_MCMC` but edited for only one set of data instead of mixture and baseline
+* also cleaned up the R directory because there were unused functions from before when I was testing the MCMC model
+
+### Presentation
+* practiced presentation with Eric and wrote down some changes to make to my presentation slides and presentation
+
+## 7/21/14
+### Presentation
+* made some changes to the presentation slides
+    * added urls for all the photos that I used
+    * took out the allele CI table in the single population results
+    * changed the test in the Conclusion slide
+    * added GitHub respository information to the last Mathematics slide
+* made changes to my presentation text that Eric and I talked about on Friday and also tried a new way to explain Bayesian Statistics (I am going to try it out on my friend later)
+
+### Coho Data
+* loaded the Coho data into R and saved three separate files
+    * `kl_genotypes` are the samples from the Klamath watershed
+    * `noyo_genotypes` are the samples from the Noyo River
+    * `contaminated_coho` are the IDs, origins, and contamination status of all the suspect samples
+* ran the Klamath data through the single population model: `single_pop_MCMC`
+    * seemed that the model was not doing a very good job of finding contaminated individuals
+    * there it found 6 of 36 of the Klamath samples that were "cross contaminated" and identified non fo the "possibly contaminated" samples (only one microsatellite locus had more than 2 alleles)
+    * also seemed like it was only identifying the contaminated individuals with lots of missing data
+* have not tried to test and mixture model type stuff yet
