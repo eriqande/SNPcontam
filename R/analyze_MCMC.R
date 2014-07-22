@@ -5,7 +5,7 @@
 #' the allele frequency output, and the z value output from all sweeps.
 #' @param burnin  The number of sweeps at the beginning of the MCMC that will be disregarded for analysis.
 #' 
-#' @return Returns a list of two named components:
+#' @return Returns a list of three named components:
 #' \describe{
 #'  \item{allele_pm}{A vector containing the posterior mean of the allele frequencies for each allele.}
 #'  \item{rho_pm}{One value, which is the poterior mean of the contamination proportion.}
