@@ -1,6 +1,9 @@
 #' MCMC function for determing contamination proportions and mixing proportions of a mixture sample
 #' 
-#' Description
+#' This function runs an MCMC tailored for a situation in which one is sampling from a mixture of individuals
+#' from different populaitons.  The MCMC function uses the SNP genotype data and baseline data to estimate the 
+#' contamination proportion and the mixing proportions as well as identify contaminated individuals and 
+#' preform population assignment.
 #' @param data A L x N matrix containing the genotype of data of individuals in the form of 0s,1s, and 2s.
 #' N is the number of individuals, and L is the number of loci.
 #' @param contam_data A P*P x N matrix containing the likelihood that each individual orginates from each

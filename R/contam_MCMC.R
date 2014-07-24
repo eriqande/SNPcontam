@@ -1,6 +1,7 @@
-#' MCMC function for determing contamination probability and allele frequencies
+#' MCMC function for determing contamination porpotion and allele frequencies
 #' 
-#' Description
+#' This function runs an MCMC algorithm on the SNP genotype data of a group of samples to estimate the contamation
+#' proportion and the allele frequencies and identify the contaminated samples.
 #' @param data A L x N matrix containing the genotype of data of individuals in the form of 0s,1s, and 2s.
 #' N is the number of individuals, and L is the number of loci.
 #' @param inters  A number representing the total of number of interations for the MCMC model.
