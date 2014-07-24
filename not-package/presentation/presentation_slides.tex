@@ -41,6 +41,7 @@
 % or whatever
 \usepackage{verbatim}
 \usepackage{times}
+\usepackage{tcolorbox}
 \usepackage[T1]{fontenc}
 \def\Tiny{\fontsize{3pt}{3pt} \selectfont}
 \def\ttiny{\fontsize{5pt}{5pt} \selectfont}
@@ -66,7 +67,7 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 
 \date[CSGM--2014] % (optional)
 {
- Hollings and EPP Undergraduate Scholars Symposium \\ 29 JULY 2014}
+ Hollings and EPP Undergraduate Scholars Symposium \\ 30 JULY 2014}
 
 \subject{Talks}
 % This is only inserted into the PDF information catalog. Can be left
@@ -125,9 +126,9 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 %Slide 3
 \begin{frame}{Introduction/Objectives}
    \begin{itemize}
-	\item Importance of stock ID of West Coast salmon
+	\item Importance of stock ID of Pacific salmon
 		\vspace{2mm}
-	\item New Single Nucleotide Polymorphism (SNP) technology
+	\item Use of Single Nucleotide Polymorphism (SNP) technology
    \end{itemize}
    \vspace{2mm}
   \centering  \includegraphics[width=.75\textwidth]{images/salmon_individual}
@@ -144,10 +145,41 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 \vspace{2mm}
 \item most SNPs have only two alleles 
 \end{itemize}
+\vspace{3mm}
 \begin{center}
-\includegraphics[width=.5\textwidth]{images/snp_diagram} \\
-\Tiny \url{http://www.siriusgenomics.com/technology}
+\includegraphics[width=.6\textwidth]{images/snp_diagram2} \\
+\Tiny \url{www.genome.gov}
 \end{center}
+\end{frame}
+
+%Slide 5
+\begin{frame}{Background Theory}
+\framesubtitle{Contamination}
+\begin{columns}[c]
+
+\column{2.5in}
+\begin{itemize}
+\item Sources of Contamination
+\vspace{2mm}
+    \begin{itemize}
+	\item Lab contamination
+	\vspace{5mm}
+	\item Collection contamination
+   \end{itemize}
+\end{itemize}
+\vspace{6mm}
+\centering \includegraphics[width=.6\textwidth]{images/heap_fish} \\
+\Tiny \url{http://eonyango.blogspot.com/2012/08/fish-from-lake-victoria-sells-high-in.html}
+
+\column{2.5in}
+\centering \includegraphics[width=.45\textwidth]{images/bad_lab} \hspace{2mm}
+\includegraphics[width=.45\textwidth]{images/bad_lab2} \\
+\Tiny \hspace{.5mm} \url{uncyclopedia.wikia.com/wiki/Medical_technologist} \hspace{12mm} \url{hdfons.com} \hfill
+\vspace{5mm}
+\centering \includegraphics[width=.6\textwidth]{images/pipette} \\
+\Tiny \url{http://www.biocompare.com}
+
+\end{columns}
 \end{frame}
 
 %Slide 6
@@ -206,7 +238,7 @@ $\boldsymbol{M}$: total \# of loci
 \begin{frame}{Single Population Model}
 \framesubtitle{Simulation}
 \begin{itemize}
-\item Chinook salmon population data from Feather Hatchery Spring-run to used create in silica sample of "fish"
+\item Chinook salmon population data from Feather River Hatchery Spring-run used to create in silico sample genotypes 
 \vspace{3mm}
 \item Simulation Parameters
 	\begin{itemize}
@@ -219,7 +251,7 @@ $\boldsymbol{M}$: total \# of loci
 	\item Allele frequencies: $\boldsymbol{\theta} =$ Feather Hatchery frequencies 
 	\end{itemize}
 	\vspace{3mm}
-\item 100 runs of the simulation
+\item 100 runs of the simulation with each set of parameters
 \end{itemize}
 \end{frame}
 
@@ -233,9 +265,9 @@ $\boldsymbol{M}$: total \# of loci
 
 \column{2in}
 \begin{itemize}
-\item Contamination proportion is estimated well \textbf{(a)}
-\vspace{5mm}
-\item Good estimation of allele frequencies \textbf{(b)}
+\item \textbf{(a)} Contamination proportion is estimated well
+\vspace{2.3cm}
+\item \textbf{(b)} Good estimation of allele frequencies
 \end{itemize}
 
 \end{columns}
@@ -257,9 +289,9 @@ $\boldsymbol{M}$: total \# of loci
 
 \column{2in}
 \begin{itemize}
-\item true positives \textbf{(a)} and false positives \textbf{(b)}
+\item \textbf{(a)} true positives and \textbf{(b)} false positives
 \vspace{5mm}
-\item almost all contaminated samples identified, with very few false identifications
+\item almost all contaminated samples identified, with few false identifications
 \end{itemize}
 \end{columns}
 \end{frame}
@@ -300,7 +332,8 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 		\item Mixing proportions: $\pi = $ 20 sets of observed fishery proportions
 	\end{itemize}
 	\vspace{3mm}
-	\item 20 runs of the simulation
+	\item 20 runs of the simulation for each set of parameters
+	\item (cite baseline paper)
 \end{itemize}
 \end{frame}
 
@@ -333,11 +366,22 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \begin{itemize}
    \item Two statistical models and software for inference
    \vspace{3mm}
-   \item Contaminated samples identified well using SNPs
+   \item Contaminated samples genotyped with SNPs identified well from SNP data alone
+  \vspace{3mm}
+   \item Advance the use of SNPs
 \end{itemize}
 \end{frame}
 
 %Slide 15
+\begin{frame}{Acknowledgments}
+\begin{itemize}
+\item Eric C. Anderson, Carlos Garza, and the rest of the Southwest Fisheries Science Center Molecular Ecology Team
+\vspace{4mm}
+\item The NOAA Ernest F. Hollings scholarship program and the Hollings and EPP-USP Program Staff
+\end{itemize}
+\end{frame}
+
+%Slide 16
 \begin{frame}{Mathematics}
 \begin{tiny}
 \begin{columns}[T]
@@ -369,10 +413,14 @@ $\bullet \, \alpha = \beta = \lambda = 0.5$ \\
 $\bullet \, \xi = (\frac{1}{K}, \frac{1}{K}, \ldots, \frac{1}{K})$ where $K = $ number of populations
 \vspace{3mm}
 
-\ttiny
-GitHub repository \: \url{https://github.com/eriqande/SNPcontam.git} \\
-R and Cpp code, manuscript, and presentation \\
 
+    \fbox{
+            \parbox{0.95\linewidth}{
+                    \textbf{GitHub repository} \\
+                    \url{https://github.com/eriqande/SNPcontam.git} \\
+                    R and Cpp code, manuscript, and presentation
+            }
+    }
 
 \column{2.5in}
 \centerline{\textbf{Mixture Model}}
