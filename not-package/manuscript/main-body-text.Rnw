@@ -71,7 +71,24 @@ Figure~\ref{fig:dag1} shows the directed acyclic graph for the SSP model.  To pe
 
 Put some references in just for testing: \citep{Andersonetal2008}.
 
+We next formulate a model for detecting contaminated samples from a collection in which the individuals, as well as contaminating DNA, originate from a mixture of population, calling this the Multiple Source Population (MSP) model.  As with the MSP model, the collection includes $N$ genetic samples, each one typed at $L$ SNPs, from $P$ populations.  Again, samples are assumed to not be in linkage disequilibrium (LD) in each population.  We used the same labels as in the SSP model to represent the alleles, allele frequencies, and genotypes and assumed the same probability distributions for $y_{i,\ell}$.  We again used $z_i$ as a contamination indiciator value and $\rho$ to denote the contamination rate.
 
+In the MSP model, associated with each sample $i$ is another unobserved indicator variable $u_i$ ($u_i\in\{1,\ldots,P\}$), which takes a single value that indicates the population of origin of a non-contaminated sample and takes two values that indicate the two populations of origin in a contaminated sample.  We let $\pi = (\pi_1,\ldots,\pi_P)$ denote the mixing proportion from the source of the samples. Given $\pi_k$, a sample in our collection originates from population $k$ with a probability of $\pi_k$.  In the MSP model, we assumed that the DNA that contaminates a sample is drawn randomly from the source, independtly between samples, meaning that individuals originating from populations with a higher $\pi$ value are assumed to have a higher probability of being the source of contamination. Our model also uses previously collected baseline data, $B$, to estimate the allele frequencies, $\theta = (\theta_1, \ldots, \theta_L)$, in each of the $P$ populatons.
+
+Our goal is to use the observed baseline data and the observed genotype data from each individual at all the loci to infer the mixing proportions, $\pi = (\pi_1, \ldots, \pi_P)$, population origin of the samples, $u_i = (u_1, \ldots, u_N)$, the contamination rate, $\rho$, and the contamination status of each individual, $z = (z_1, \ldots, z_N)$.  We placed the same prior distributions upon $\rho$ and $\theta$ as in the SSP model, and placed a Dirichlet distribution with parameters $\xi$ on $\pi$. In our experiments, we set the hyperparameters to the given unit-information priors:
+$\alpha=\beta=\lambda=0.5$ and
+$\xi= (\frac{1}{P}, \ldots, \frac{1}{P})$
+Figure~\ref{fig:dag2}
+shows the directed acyclic graph for the MSP model.  We again developed an MCMC algorithm relying on simple Gibbs-sample updates for all the unobserved variables, the details of which appear in Appendix%~\ref{app:ssp}.
+
+%%%% The DAG_2 figure
+\begin{figure}[hb]
+\begin{center}
+\includegraphics[width=\columnwidth]{./images/DAG_2.pdf}
+\end{center}
+\caption{Directed acyclic graph (DAG) representing the MSP model.  Black nodes are observed, gray ones are parameters of prior distributions, and unfilled nodes are unobserved variables that are the goal of inference. }
+\label{fig:dag2}
+\end{figure}
 
 
 
