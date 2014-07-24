@@ -473,3 +473,26 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
     * there it found 6 of 36 of the Klamath samples that were "cross contaminated" and identified non fo the "possibly contaminated" samples (only one microsatellite locus had more than 2 alleles)
     * also seemed like it was only identifying the contaminated individuals with lots of missing data
 * have not tried to test and mixture model type stuff yet
+
+## 7/22/14
+### Presentation
+* took out a the slide about heterozygousity because it was too long, and I think it is not necessary for the presentation
+* also took out the NMFS endangered populations graph because explaining about it was a little to long
+* timed presentation and it was about 14 minutes, so I need to shorten it by 2 minutes
+* changed some minor typos
+* Presented to lab:
+    * total presentation was about 17 minutes, but people were asking questions and giving suggestions throughout the presentation
+    * suggestions to change minor typos
+    * also suggestions to add slide about contamination and more clearly explain the origin of contamination
+    * suggestions to add an acknowledgement slide
+
+### Simulations
+* added documentation to some of the functions that were missing documentation
+* re-added the noyo river data to the not-package/data folder because I had missentered it yesterday
+    * there are 7 individuals that are cross-contaminated, possibly contaminated, or miss indentified species?, and the MCMC is not seeming to find any of them
+
+## 7/23/14
+### Presentation
+* added the suggestions from the lab presentation on Tuesday
+    * main changes: added contamination slide, added acknowledgment slide 
+* also changed some of my talk
