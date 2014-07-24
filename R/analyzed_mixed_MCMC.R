@@ -53,7 +53,34 @@ analyzed_mixed_MCMC <- function(MCMC, burnin = 100, B_pops){
   pop_id <- cbind(tmp_id,tmp_max)
   rownames(pop_id) <- rownames(pop_means)
   
-  list(z_pm = z_pm, rho_pm = rho_pm, pop_means = pop_means, pop_id = pop_id)
+  # contamination population id
+  which_contam <- which(z_pm >= 0.5)
+  if(length(which_contam) >0){
+  contam_pops <- lapply(which_contam, function(x) {if (z_pm[x] == 1) {MCMC$pop[-(1:(2*burnin)),x]} else{MCMC$pops[-(1:(2*burnin)),x][-c((2*which(MCMC$z[-(1:(burnin)),x] == 0)-1),(2*which(MCMC$z[-(1:(burnin)),x] == 0)))]}})
+  # Contam population assignment
+  opts <- combinations(P,2,1:P, repeats.allowed = TRUE) # all combinations of 2 populations
+  t_opts <- nrow(opts) # number of combinations
+  # Matrix of each individuals contamination population data. Two columns that are the two different combinations.
+  mat_ind <- lapply(contam_pops, function(x) matrix(x,ncol=2, byrow = TRUE))
+  # Number of times each of the combinations appears
+  counts <- lapply(mat_ind, function(y) {sapply(1:t_opts, function(x) {sum(y[,1] == opts[x,1] & y[,2] == opts[x,2] | y[,1] == opts[x,2] & y[,2] == opts[x,1])})})
+  # Pair with the maximum assignments for each individual
+  max_pair <- sapply(counts, function(x) {a <- which(max(x) == x); if(length(a) > 1){a2 <- a[[1]]} 
+                                            else{a2 <- a}; opts[a2,]})
+  # Counts without the maximum
+  counts2 <- lapply(counts, function(x) {a <- which(max(x) == x); if(length(a) > 1){a2 <- a[[1]]} 
+                                           else{a2 <- a}; x[-a2]})
+  # Pair with the second highest counts
+  max_pair2 <- sapply(counts2, function(x) {a <- which(max(x) == x); if(length(a) > 1){a2 <- a[[1]]} 
+                                              else{a2 <- a}; opts[a2,]})
+  # Population Natmes
+  populations = B_pops
+  #Data frame wiht all of the name of the individual and the populations of origin according to the MCMC
+  contam_df <- data.frame(id = which_contam, max_pair = matrix(populations[t(max_pair)],ncol=2), 
+                            max_pair2 = matrix(populations[t(max_pair2)], ncol=2))
+  } else{contam_df = NULL}
+  
+  list(z_pm = z_pm, rho_pm = rho_pm, pop_means = pop_means, pop_id = pop_id, contam_df = contam_df)
 }
   
  
