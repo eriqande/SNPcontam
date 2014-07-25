@@ -7,7 +7,7 @@ known. The contamination rate, $\rho$, the allele frequency of the "1" allele at
 Values for $\rho$, $\theta_{\ell}$, and $z_i$ were updated using Gibbs sampling, which required the derivation of the full conditional distributions of the paramenters. The formula for the full conditional of $z_i$ is given Eq. \ref{z_fc}.
 
 \begin{equation} \label{z_fc}
-P(z_i|\theta_{\ell},y_i) = P(z_i|\rho)P(y_i|z_i,\theta)
+P(z_i|\theta_{\ell},y_i,\rho) = P(z_i|\rho)P(y_i|z_i,\theta)
 \end{equation}
 $P(z_i|\rho)$ is the likelihood of the $z_i$ value given $\rho$, and $P(y_i|z_i,\theta)$ is the likelihood of the genotype given $z_i$ and $\theta$.  A Bernoulli distribution gives the likelihood of $z_i$:
 
@@ -24,8 +24,8 @@ P(y_i|z_i=1,\theta) = \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},contam)
 \end{equation}
 The full conditional distribution of $z_i$ used in the MCMC model,given by Eq. \ref{z_simpfc}, is derived by substituting Eq. \ref{z_lh}, Eq. \ref{y_lh}, and Eq. \ref{y_lhc} into Eq. \ref{z_fc}.
 \begin{eqnarray} \label{z_simpfc}
-P(z_i=0|\theta_{\ell},y_i) &=& \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},noncontam)}{R} \nonumber \\
-P(z_i=1|\theta_{\ell},y_i) &=& \frac{\rho^{z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},contam)}{R} \nonumber \\
+P(z_i=0|\theta_{\ell},y_i,\rho) &=& \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},noncontam)}{R} \nonumber \\
+P(z_i=1|\theta_{\ell},y_i,\rho) &=& \frac{\rho^{z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},contam)}{R} \nonumber \\
 R &=& (1-\rho)^{1-z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},noncontam) \nonumber \\
 & & +\rho^{z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},contam) 
 \end{eqnarray}
@@ -39,7 +39,7 @@ The formula for the full conditional distribution for $\rho$ is given by:
 As shown below, substituting Eq. \ref{z_lh} and Eq. \ref{rho_prior} into Eq. \ref{rho_fc} can reduce the full conditional distribution of $\rho$ to a beta distribution with parameters $(\alpha + \sum_{i=1}^{N} z_i)$ and $(\beta + N - \sum_{i=1}^{N} z_i)$ as shown below:
 
 \begin{eqnarray} \label{rho_simpfc}
-  P(\rho|z_i) &\propto& [\prod_{i=1}^{N} P(z_i|\rho)] p    (\rho|\alpha,\beta) \nonumber \\
+  P(\rho|z_i) &\propto& [\prod_{i=1}^{N} P(z_i|\rho)] P(\rho|\alpha,\beta) \nonumber \\
   &=& [\prod_{i=1}^{N} \rho^{z_i}(1 - \rho)^{1 - z_i}] \rho^{\alpha - 1}(1 - \rho)^{\beta-1} \nonumber \\
   &=& \rho^{\sum_{i=1}^{N} z_i}(1-\rho)^{N - \sum_{i=1}^{N} z_i} \rho^{\alpha -1} (1-\rho)^{\beta-1} \nonumber \\
   &=& \rho^{\alpha - 1 + \sum_{i=1}^{N} z_i}(1 - \rho)^{\beta -1 + N - \sum_{i=1}^{N} z_i}
@@ -64,6 +64,50 @@ P(\theta_{\ell}|y_{i\ell},z_i) &\propto& [\prod_{i=\ell}^{N} P(y_{i\ell}|\theta_
 
 \section{MCMC in the MSP model}
 
-In the MSP, our sample collection includes $N$ samples with $L$ SNP loci from $P$ populations.  The genotypes of the sampled individuals, $y_{i,\ell}, and the baseline data, $B$, are the only known parameters. The contamination rate, $\rho$, the mixing proprotions, $\pi$, the indicator variable $u_i$, and the indicator variable $z_i$ are unknown paramenters.  
+In the MSP, our sample collection includes $N$ samples with $L$ SNP loci from $P$ populations.  The genotypes of the sampled individuals, $y_{i,\ell}$, and the baseline data, $B$, are the only known parameters. The contamination rate, $\rho$, the mixing proprotions, $\pi$, the indicator variable $u_i$, and the indicator variable $z_i$ are unknown paramenters.  
 
-Values for $\rho$, $\pi$, $u_i$, and $z_i$ were updated using Gibbs sampling.  The full conditional distribution of $\rho$ is the distribution used in the SSP model  The formula for the full conditional of $z_i$ is given Eq. \ref{z_fc}.
+Values for $\rho$, $\pi$, $u_i$, and $z_i$ were updated using Gibbs sampling.  The full conditional distribution of $\rho$ is the distribution used in the SSP model given by Eq. \ref{rho_simpfc}.  The formula for the full conditional of $z_i$ is given Eq. \ref{z_fc2}.
+
+\begin{equation} \label{z_fc2}
+P(z_i|\theta_{\ell},y_i,\rho, B) = P(z_i|\rho)P(y_i|z_i,\theta,B)
+\end{equation}
+The likelihood $P(z_i|\rho)$ is the same as in the SSP model and is given by Eq. \ref{z_lh}. The full conditional distribution of $z_i$ is shown in Eq. \ref{z_simpfc2}. 
+
+\begin{eqnarray} \label{z_simpfc}
+P(z_i=0|\theta_{\ell},y_i,\rho,B) &=& \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell,k}|\theta_{\ell,k},noncontam,B)}{R} \nonumber \\
+P(z_i=1|\theta_{\ell},y_i,\rho,B) &=& \frac{\rho^{z_i}\sum_{k=1}^{P} \sum_{j=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell,k,j}|\theta_{\ell,k},\theta_{\ell,j},contam,B)}{R} \nonumber \\
+R &=& P(z_i=0|\theta_{\ell},y_i,\rho,B) + P(z_i=1|\theta_{\ell},y_i,\rho,B)
+\end{eqnarray}
+However, calculating the likelihood of $y_i$ is more complicated than in the SSP model.  We used Polya's Urn model to model $P(y_i|z_i,\theta,B)$ with a beta binomial distribution.  The distribution when $z_i = 0$ is given by Eq. \ref{clean_bb}.  The variable $n_{\ell,k}$ is the number of samples at the $\ell^{th}$ locus in the $k^{th}$ population and $x_j = \sum_{i}^{N} \delta(y_{i,\ell} = j)$.
+
+\begin{eqnarray} \label{clean_bb}
+P(y_{\ell,k} = 0|clean, \theta_{\ell},B) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
+P(y_{\ell,k} = 2|clean, \theta_{\ell},B) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
+P(y_{\ell,k} = 1|clean, \theta_{\ell},B) &=& 2 \times \frac{(x_0 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)}
+\end{eqnarray}
+
+We used Eq. \ref{contam_bb} to calculate the distribution when $z_i = 1$.  There are two separate distributions for if the contamination is within the same population or between two different populations. 
+\begin{eqnarray} \label{contam_bb}
+P(y_{\ell,k,j} = 0|contam, \theta_{\ell},B, k=j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)(x_0 + 2 + \lambda)(x_0 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
+P(y_{\ell,k,j} = 0|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,k,j} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
+P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B,k=j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)(x_1 + 2 + \lambda)(x_1 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
+P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
+P(y_{\ell,k,j} = 1|contam, \theta_{\ell},B) &=& 1 - P(y_{\ell,k,j} = 0|contam, \theta_{\ell}, B) - P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B)
+\end{eqnarray}
+
+The full conditional probablity of $\pi$ was given by Eq. \ref{pi_fc}.  We only used non-contaminated samples to update the value of \pi.  
+
+\begin{equation} \label{pi_fc}
+P(\pi|\xi,u) = P(\pi|\xi)P(u|\pi)
+\end{equation}
+We used a Dirichlet distribution for $P(\pi|\xi)$ with $\xi = (\frac{1}{P},\ldots,\frac{1}{P})$, and a multinomial distribution shown in Eq. \ref{multi_u} for $P(u|\pi)$.  After substitution, the full conditional distribution of $\pi$ is given by Eq. \ref{pi_simpfc}, which is a Dirichlet distribution with parameters $(w_1 + \frac{1}{P}, \ldots, w_P + \frac{1}{P})$ where $w_j = \sum_{i}^{N} \delta(u_{i} = j)$.
+
+\begin{equation} \label{multi_u}
+P(u|\pi) = \frac{P!}{\prod_{i=1}^{P} w_i!} \prod_{i=1}^{P} \pi_i^{w_i}
+\end{equation}
+
+\begin{eqnarray} \label{pi_simpfc}
+P(\pi|\xi,u) &\propto& \prod_{i=1}^{P} \pi_i^{\xi-1} \times \frac{P!}{\prod_{i=1}^{P} w_i!} \prod_{i=1}^{P} \pi_i^{w_i} \nonumber \\
+&\propto& \prod_{i=1}^{P} \pi_i^{\xi-1} \times \prod_{i=1}^{P} \pi_i^{w_i} \nonumber \\
+&=& \prod_{i=1}^{P} \pi_i^{\xi + w_i - 1}
+\end{eqnarray}
