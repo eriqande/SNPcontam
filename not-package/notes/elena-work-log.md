@@ -496,3 +496,21 @@ hist(hetero_c[[1]],col=rgb(0,0,1,0.5),add=T)
 * added the suggestions from the lab presentation on Tuesday
     * main changes: added contamination slide, added acknowledgment slide 
 * also changed some of my talk
+
+## 7/24/14
+### Manuscript
+* added some text to the "Methods" section of the manuscript describing the second model
+* began to work on writing the derivation down in the appendix for the second model
+
+### Model Simulations
+* ran the baseline data through the single population MCMC and ran the CDFG samples through the mixture model MCMC
+    * mostly picked up samples with a lot of missing data, but contamination was picked up in a few samples with little or no missing data
+    
+## 7/25/14
+### Manuscript
+* worked on the derivation in the appendix for the mixture model
+
+### Presentaiton
+* made minor changes on the presentation
+    * changed the "P" in the probabilities to upper case
+    * added a line in the conclusion about next steps
