@@ -189,7 +189,7 @@ Brown University \\ Applied Mathematics - Biology \\ Healthy Oceans \\ Southwest
 \item Bayesian Inference: Combining new evidence with prior beliefs
 	\vspace{1mm}
 	\begin{itemize}
-	\item $p(H|E) = \frac{p(E|H) \times p(H)}{p(E)}$
+	\item $P(H|E) = \frac{P(E|H) \times P(H)}{P(E)}$
 	\vspace{2mm}
 	\item $posterior \propto likelihood \times prior$
 	\vspace{2mm}
@@ -363,11 +363,11 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \end{columns}
 
 \begin{itemize}
-   \item Two statistical models and software for inference
+   \item Two statistical models and software for inference that could advance the use of SNPs
    \vspace{3mm}
    \item Contaminated samples genotyped with SNPs identified well from SNP data alone
-  \vspace{3mm}
-   \item Advance the use of SNPs
+   \vspace{3mm}
+   \item Next steps: Address the concept of partially contaminated genotypes
 \end{itemize}
 \end{frame}
 
@@ -389,19 +389,19 @@ $\boldsymbol{\xi}$: Dirichlet distribution parameter
 \centerline{\textbf{Single Population Model}}
 \vspace{2mm}
 Prior Distributions \\ \vspace{1mm}
-$\bullet \, p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$ \\ \vspace{1mm}
-$\bullet \, p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{\lambda_{\ell}-1}(1 - \theta_{\ell})^{\lambda_{\ell}-1} = Beta(\lambda_{\ell},\lambda_{\ell})$ \\ 
+$\bullet \, P(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$ \\ \vspace{1mm}
+$\bullet \, P(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{\lambda_{\ell}-1}(1 - \theta_{\ell})^{\lambda_{\ell}-1} = Beta(\lambda_{\ell},\lambda_{\ell})$ \\ 
 \vspace{2mm}
 
 Full Conditional Distributions \\ \vspace{1mm}
-$\bullet \, p(z_i=0|\theta_{\ell},y_i,\rho) = \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},nocontam)}{R}$ \\ \vspace{1mm}
-$\quad p(z_i=1|\theta_{\ell},y_i,\rho) = \frac{\rho^{z_i}\prod_{\ell=1}^{L} p(y_{\ell}|\theta_{\ell},contam)}{R}$ \\ \vspace{1mm}
-$\quad R = p(z_i=1|\theta_{\ell},y_i,\rho) + p(z_i = 0|\theta_{\ell},y_i,\rho)$ \\ \vspace{1mm}
-$\quad p(y_{\ell}|\theta_{\ell},contam)$ and $p(y_{\ell}|\theta_{\ell},nocontam)$ calculated  \\  \vspace{1mm}
+$\bullet \, P(z_i=0|\theta_{\ell},y_i,\rho) = \frac{(1-\rho)^{1-z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},nocontam)}{R}$ \\ \vspace{1mm}
+$\quad P(z_i=1|\theta_{\ell},y_i,\rho) = \frac{\rho^{z_i}\prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell},contam)}{R}$ \\ \vspace{1mm}
+$\quad R = P(z_i=1|\theta_{\ell},y_i,\rho) + P(z_i = 0|\theta_{\ell},y_i,\rho)$ \\ \vspace{1mm}
+$\quad P(y_{\ell}|\theta_{\ell},contam)$ and $P(y_{\ell}|\theta_{\ell},nocontam)$ calculated  \\  \vspace{1mm}
 \quad using Hardy Weinberg Equilibrium \\  \vspace{1mm}
 
-$\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
-$\bullet \,p(\theta_{\ell}|y_{i\ell},z_i) \propto Beta(2x_2 + x_1 + \lambda_{\ell}, 2x_0 + x_1 + \lambda_{\ell})$ \\ \vspace{1mm}
+$\bullet \, P(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
+$\bullet \,P(\theta_{\ell}|y_{i\ell},z_i) \propto Beta(2x_2 + x_1 + \lambda_{\ell}, 2x_0 + x_1 + \lambda_{\ell})$ \\ \vspace{1mm}
 $\quad x_j = \sum_{i:z=0}^{N} \delta(y_{i\ell} = j)$\\
 
 \vspace{3mm}
@@ -425,29 +425,29 @@ $\bullet \, \xi = (\frac{1}{K}, \frac{1}{K}, \ldots, \frac{1}{K})$ where $K = $ 
 \centerline{\textbf{Mixture Model}}
 \vspace{2mm}
 Prior Distributions \\ \vspace{1mm}
-$\bullet \, p(\pi|\xi) \propto \prod_{i = 1}^K \pi_{i}^{\xi_i - 1} = Dirichlet(\xi_1, \ldots, \xi_K)$ \\
+$\bullet \, P(\pi|\xi) \propto \prod_{i = 1}^K \pi_{i}^{\xi_i - 1} = Dirichlet(\xi_1, \ldots, \xi_K)$ \\
 \vspace{1mm}
-$\bullet \, p(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$
-$\bullet \, p(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{x_i + \lambda_{\ell}-1}(1 - \theta_{\ell})^{x_0 + \lambda_{\ell}-1} = $ \\ 
+$\bullet \, P(\rho;\alpha,\beta) \propto \rho^{\alpha - 1}(1 - \rho)^{\beta - 1} = Beta(\alpha, \beta)$
+$\bullet \, P(\theta_{\ell};\lambda_{\ell}) \propto \theta_{\ell}^{x_i + \lambda_{\ell}-1}(1 - \theta_{\ell})^{x_0 + \lambda_{\ell}-1} = $ \\ 
 \vspace{1mm}
 $\quad Beta(x_1 + \lambda_{\ell},x_0 + \lambda_{\ell})$ \\ 
 \vspace{2mm}
 
 Full Conditional Distributions \\ \vspace{1mm}
-$\bullet \, p(z_i=0|\theta,y_i,\rho,B) = \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{R}$ \\ 
+$\bullet \, P(z_i=0|\theta,y_i,\rho,B) = \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell},B,nocontam)}{R}$ \\ 
 \vspace{1mm}
-$\quad p(z_i=1|\theta,y_i,\rho,B) = \frac{\rho^{z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,contam)}{R}$ \\
+$\quad p(z_i=1|\theta,y_i,\rho,B) = \frac{\rho^{z_i}\sum_{k=1}^{K} \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell},B,contam)}{R}$ \\
  \vspace{1mm}
-$\quad R = p(z_i=1|\theta,y_i,\rho,B) + p(z_i = 0|\theta,y_i,\rho,B)$ \\ 
+$\quad R = P(z_i=1|\theta,y_i,\rho,B) + P(z_i = 0|\theta,y_i,\rho,B)$ \\ 
 \vspace{1mm}
-$\quad p(y_{\ell} |\theta_{\ell},B,nocontam)$ and $p(y_{\ell} |\theta_{\ell},B,contam)$ calculated \\
+$\quad P(y_{\ell} |\theta_{\ell},B,nocontam)$ and $P(y_{\ell} |\theta_{\ell},B,contam)$ calculated \\
 \vspace{1mm}
 \quad using Polya's Urn model for beta-binomial distribution \\
 \vspace{1mm}
-$\bullet \, p(u_i = k|\pi,z_i=0,y_i,\theta,B) = \frac{\pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{\sum_{k=1}^{K} \pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}$ \\
+$\bullet \, P(u_i = k|\pi,z_i=0,y_i,\theta,B) = \frac{\pi_k \times \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell},B,nocontam)}{\sum_{k=1}^{K} \pi_k \times \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell},B,nocontam)}$ \\
 \vspace{1mm}
-$\bullet \, p(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
-$\bullet \, p(\pi|\xi,u_i) \propto Dirichlet(n_1 + \xi_1, \ldots, n_K + \xi_K)$ \\
+$\bullet \, P(\rho|z_i) \propto Beta(\alpha + \sum_{i=1}^{N} z_i, \beta + N - \sum_{i=1}^{N} z_i)$ \\ \vspace{1mm}
+$\bullet \, P(\pi|\xi,u_i) \propto Dirichlet(n_1 + \xi_1, \ldots, n_K + \xi_K)$ \\
 \vspace{1mm}
 $\quad n_k = \sum_{i:z=0}^{N} \delta(u_{i} = k)$
 \end{columns}
