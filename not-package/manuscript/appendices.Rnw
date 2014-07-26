@@ -74,25 +74,26 @@ P(z_i|\theta_{\ell},y_i,\rho, B) = P(z_i|\rho)P(y_i|z_i,\theta,B)
 The likelihood $P(z_i|\rho)$ is the same as in the SSP model and is given by Eq. \ref{z_lh}. The full conditional distribution of $z_i$ is shown in Eq. \ref{z_simpfc2}. 
 
 \begin{eqnarray} \label{z_simpfc}
-P(z_i=0|\theta_{\ell},y_i,\rho,B) &=& \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell,k}|\theta_{\ell,k},noncontam,B)}{R} \nonumber \\
-P(z_i=1|\theta_{\ell},y_i,\rho,B) &=& \frac{\rho^{z_i}\sum_{k=1}^{P} \sum_{j=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell,k,j}|\theta_{\ell,k},\theta_{\ell,j},contam,B)}{R} \nonumber \\
+P(z_i=0|\theta_{\ell},y_i,\rho,B) &=& \frac{(1-\rho)^{1-z_i}\sum_{k=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{\ell,k},noncontam,B)}{R} \nonumber \\
+P(z_i=1|\theta_{\ell},y_i,\rho,B) &=& \frac{\rho^{z_i}\sum_{k=1}^{P} \sum_{j=1}^{P} \prod_{\ell=1}^{L} P(y_{\ell,}|\theta_{\ell,k},\theta_{\ell,j},contam,B)}{R} \nonumber \\
 R &=& P(z_i=0|\theta_{\ell},y_i,\rho,B) + P(z_i=1|\theta_{\ell},y_i,\rho,B)
 \end{eqnarray}
-However, calculating the likelihood of $y_i$ is more complicated than in the SSP model.  We used Polya's Urn model to model $P(y_i|z_i,\theta,B)$ with a beta binomial distribution.  The distribution when $z_i = 0$ is given by Eq. \ref{clean_bb}.  The variable $n_{\ell,k}$ is the number of samples at the $\ell^{th}$ locus in the $k^{th}$ population and $x_j = \sum_{i}^{N} \delta(y_{i,\ell} = j)$.
+
+Calculating the likelihood of $y_i$ is more complicated than in the SSP model.  We used Polya's Urn model to model $P(y_i|z_i,\theta,B)$ with a beta binomial distribution.  The distribution when $z_i = 0$ is given by Eq. \ref{clean_bb}.  The variable $n_{\ell,k}$ is the number of samples at the $\ell^{th}$ locus in the $k^{th}$ population and $x_j = \sum_{i}^{N} \delta(y_{i,\ell} = j)$.
 
 \begin{eqnarray} \label{clean_bb}
-P(y_{\ell,k} = 0|clean, \theta_{\ell},B) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
-P(y_{\ell,k} = 2|clean, \theta_{\ell},B) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
-P(y_{\ell,k} = 1|clean, \theta_{\ell},B) &=& 2 \times \frac{(x_0 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)}
+P(y_{\ell} = 0|clean, \theta_{\ell},B) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
+P(y_{\ell} = 2|clean, \theta_{\ell},B) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \nonumber \\
+P(y_{\ell} = 1|clean, \theta_{\ell},B) &=& 2 \times \frac{(x_0 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)}
 \end{eqnarray}
 
 We used Eq. \ref{contam_bb} to calculate the distribution when $z_i = 1$.  There are two separate distributions for if the contamination is within the same population or between two different populations. 
 \begin{eqnarray} \label{contam_bb}
-P(y_{\ell,k,j} = 0|contam, \theta_{\ell},B, k=j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)(x_0 + 2 + \lambda)(x_0 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
-P(y_{\ell,k,j} = 0|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,k,j} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
-P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B,k=j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)(x_1 + 2 + \lambda)(x_1 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
-P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
-P(y_{\ell,k,j} = 1|contam, \theta_{\ell},B) &=& 1 - P(y_{\ell,k,j} = 0|contam, \theta_{\ell}, B) - P(y_{\ell,k,j} = 2|contam, \theta_{\ell},B)
+P(y_{\ell} = 0|contam, \theta_{\ell},B, k=j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)(x_0 + 2 + \lambda)(x_0 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
+P(y_{\ell} = 0|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_0 + 1 + \lambda)(x_0 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
+P(y_{\ell} = 2|contam, \theta_{\ell},B,k=j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)(x_1 + 2 + \lambda)(x_1 + 3 + \lambda)}{(2n_{\ell} + 1)(2n_{\ell} + 2)(2n_{\ell} + 3)(2n_{\ell} + 4)} \nonumber \\
+P(y_{\ell} = 2|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,k} + 1)(2n_{\ell,k} + 2)} \times \frac{(x_1 + 1 + \lambda)(x_1 + \lambda)}{(2n_{\ell,j} + 1)(2n_{\ell,j} + 2)} \nonumber \\
+P(y_{\ell} = 1|contam, \theta_{\ell},B) &=& 1 - P(y_{\ell} = 0|contam, \theta_{\ell}, B) - P(y_{\ell} = 2|contam, \theta_{\ell},B)
 \end{eqnarray}
 
 The full conditional probablity of $\pi$ was given by Eq. \ref{pi_fc}.  We only used non-contaminated samples to update the value of \pi.  
@@ -111,3 +112,21 @@ P(\pi|\xi,u) &\propto& \prod_{i=1}^{P} \pi_i^{\xi-1} \times \frac{P!}{\prod_{i=1
 &\propto& \prod_{i=1}^{P} \pi_i^{\xi-1} \times \prod_{i=1}^{P} \pi_i^{w_i} \nonumber \\
 &=& \prod_{i=1}^{P} \pi_i^{\xi + w_i - 1}
 \end{eqnarray}
+
+The full conditional for $u_i$ is given by Eq. \ref{u_fc}. There are two separate distributions for non-contaminatd and contaminated samples.  If a sample is clean, the likelihood of a $u_i$ being a specific population $k$ is given by $P(u_i = k|\pi) = \pi_k$, and the likelihood of $y_i$ is given by Eq. \ref{clean_bb}.  Therefore, the full conditional distribution of $u_i$ for a non-contaminated sample is given by Eq. \ref{u_simpfc}.
+
+\begin{equation} \label{u_fc}
+P(u_i|\pi,y_i,\theta,z_i) = P(u_i|\pi)P(y_i|u_i,\theta,z_i,B)
+\end{equation}
+
+\begin{equation} \label{u_simpfc}
+P(u_i = k|\pi,z_i=0,y_i,\theta,B) = \frac{\pi_k \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},B,nocontam)}{\sum_{k=1}^{P} \pi_k \times \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell},B,nocontam)}
+\end{equation}
+
+If the sample is contaminated, the likelihood of $u_i$ being two specific populations $k$ and $j$ is given by $P(u_i = k,j|\pi) = \pi_k \pi_j$.  Order matters in this derivations, so $u_i=k,j$ is different than $u_i=j,k$.  The $P(y_i|u_i,\theta,z_i,B)$ in this scenario is also given Eq. \ref{contam_BB}.  Therefore the full conditional distribution of $u_i$ for a contaminated sample is:
+
+\begin{equation} \label{u_simpfc}
+P(u_i = k,j|\pi,z_i=1,y_i,\theta,B) = \frac{\pi_k \pi_j \times \prod_{\ell=1}^{L} p(y_{\ell}|\theta_{k,\ell},\theta_{j,\ell},B,nocontam)}{\sum_{j=1}^P \sum_{k=1}^{P} \pi_k \pi_j \times \prod_{\ell=1}^{L} P(y_{\ell}|\theta_{k,\ell}, \theta_{j,\ell}, B,nocontam)}
+\end{equation}
+
+
