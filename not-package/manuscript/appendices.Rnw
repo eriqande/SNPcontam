@@ -1,7 +1,7 @@
 
 \section{MCMC in the SSP model}
 
-In the SSP, our sample collection includes $N$ samples with $L$ SNP loci.  Only the genotypes of the sampled individuals, $y_{i,\ell}, are 
+In the SSP, our sample collection includes $N$ samples with $L$ SNP loci.  Only the genotypes of the sampled individuals, $y_{i,\ell}$, are 
 known. The contamination rate, $\rho$, the allele frequency of the "1" allele at the $\ell^{th}$ locus, $\theta_{\ell}$, and the indicator variable $z_i$ are unknown paramenters.  
 
 Values for $\rho$, $\theta_{\ell}$, and $z_i$ were updated using Gibbs sampling, which required the derivation of the full conditional distributions of the paramenters. The formula for the full conditional of $z_i$ is given Eq. \ref{z_fc}.
@@ -96,7 +96,7 @@ P(y_{\ell} = 2|contam, \theta_{\ell},B, k \neq j) &=& \frac{(x_1 + 1 + \lambda)(
 P(y_{\ell} = 1|contam, \theta_{\ell},B) &=& 1 - P(y_{\ell} = 0|contam, \theta_{\ell}, B) - P(y_{\ell} = 2|contam, \theta_{\ell},B)
 \end{eqnarray}
 
-The full conditional probablity of $\pi$ was given by Eq. \ref{pi_fc}.  We only used non-contaminated samples to update the value of \pi.  
+The full conditional probablity of $\pi$ was given by Eq. \ref{pi_fc}.  We only used non-contaminated samples to update the value of $\pi$.  
 
 \begin{equation} \label{pi_fc}
 P(\pi|\xi,u) = P(\pi|\xi)P(u|\pi)
