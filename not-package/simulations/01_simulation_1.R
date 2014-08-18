@@ -11,17 +11,13 @@ if(!all(file.exists("simulations", "manuscript", "supplements")))  {
 }
 
 library(SNPcontam)
-library(fullsniplings)
 library(parallel)
 
 source("simulations/simulation_functions.R")
 
 #### Get data set and choose Feather H Spring as an example collection of allele freqs ####
 tmp_data <- swfsc_chinook_baseline
-tmp_data <- tmp_data[tmp_data$Pop == "Feather_H_sp", ]
-data <- tmp_data[,-(1:4)]  # retain only the genotypes
-
-
+data <- tmp_data[tmp_data$Pop == "Feather_H_sp", ]
 
 #### Run the MCMC simulations and put output in a big Rda file
 set.seed(10)  # Set Seed For reproducibility

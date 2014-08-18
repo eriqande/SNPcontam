@@ -68,10 +68,39 @@ test_MCMC <- function(afreqs, N, L, p, l=1, alpha=0.5, beta=0.5, lambda=0.5, int
 
 ## Running the Simulation
 MCMC_sims <- function(sample_data, N, Lvals, rhovals, l=1, alpha=0.5, beta=0.5, lambda=0.5, inters=1000,n){
-  snp_genos <- get_snp_genos(sample_data)
-  snp_indices <- genos_to_indicators(g = snp_genos$mat)
-  geno_counts <- count_genos(snp_indices)
-  afreqs <- alle_freqs(geno_counts)
+  get_allele_freqs <- function(data, locstart=5){
+    locs <- colnames(data)[locstart:ncol(data)]
+    
+    S <- data[, locs]  # grab just the genetic data
+    
+    uniq_alleles <- lapply(seq(1, ncol(S), 2), function(x) levels(factor(c(S[,x], S[, x+1]))))
+    names(uniq_alleles) <- colnames(S)[seq(1, ncol(S), 2)]
+    
+    # drop loci that do not have two alleles
+    Have2 <- sapply(uniq_alleles, function(x) length(x)==2)
+    Have2rep <- rep(Have2, each=2)  # this can be used to extract the loci from M2 and B2 that have two alleles
+    DropTheseLoci <- names(uniq_alleles)[!Have2]
+    if(length(DropTheseLoci)>0) warning(paste("Dropping these loci that have > of < then 2 alleles:", paste(DropTheseLoci, collapse=", ")))
+    
+    S2 <- S[, Have2rep]
+    uniq_alleles2 <- uniq_alleles[Have2]
+    
+    # now, make sure that the levels of S2's alleles are appropriately set
+    for(i in seq(1, ncol(S2), 2)) {
+      S2[, i] <- factor(S2[, i], levels = uniq_alleles2[[colnames(S2)[i]]])
+      S2[, i+1] <- factor(S2[, i+1], levels = uniq_alleles2[[colnames(S2)[i]]])
+    }
+    #get zeros and one allele counts
+    alle_counts <- lapply(seq(1, ncol(S2), 2), function(y) table(c(S2[, y], S2[, y+1])))
+    names(alle_counts) <- colnames(S2)[seq(1, ncol(S2), 2)]
+    
+    # now extract the zeros and ones matrices.  These are matrices that hold the number of 
+    # "0" alleles and the number of "1" alleles in each population, respectively.
+    zeros <- do.call(cbind, args = lapply(alle_counts, function(x) x[1]/sum(x)))
+    ones <-  do.call(cbind, args = lapply(alle_counts, function(x) x[2]/sum(x)))
+    allele_freqs <- rbind(zeros,ones)
+  }
+  afreqs <- get_allele_freqs(sample_data)
   
   
   
