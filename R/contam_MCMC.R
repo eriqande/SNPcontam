@@ -25,6 +25,18 @@
 #' }
 #' @export
 contam_MCMC<-function(data,inters = 1000,alpha=0.5,beta=0.5,lambda=0.5){
+  full_z <- function(genos,theta,rho){
+    like <- likelihood(theta,genos) # use likelihood function to get probability of genotype given contamination and clean
+    #consider taking log and then colSums so loop is avoided
+    ln_clean <- log(like$clean) # take natural log of data
+    ln_contam <- log(like$contam) # same for contaminated data
+    clean <- (exp(colSums(ln_clean,na.rm=TRUE)))*(1 -rho) # probability of non contaminated sample
+    contam <- (exp(colSums(ln_contam,na.rm=TRUE)))*rho # probability of contaminated samples
+    # full conditional probability distribution of z indicator value of 1 (indicating contamination)
+    # normalized by (clean + contam) so that total probability is 1
+    p <- contam/(clean + contam) 
+    return(p) # can just return value without list
+  }
   N <- ncol(data) # Number of individuals
   L <- nrow(data) # Number of loci
   rho <- rep(0,inters+1) # Creates array for rho values
