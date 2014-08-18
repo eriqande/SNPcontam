@@ -34,13 +34,13 @@ contains only ``0'' alleles, $y_{i,\ell}=0$, if both a ``0'' and ``1'' allele ar
 contaminated, and is from a diploid, the probability of $y_{i,\ell}$ is assumed to follow independent 
 sampling of alleles from the population (\ie the expected genotype frequencies conform to the Hardy-
 Weinberg law):
-\begin{eqnarray}
+\begin{eqnarray} \label{HW_clean}
 P(y_{i,\ell} = 0\:|\:z_i = 0) & = & (1-\theta_\ell)^2 \nonumber\\
 P(y_{i,\ell} = 1\:|\:z_i = 0) & = & 2\theta_\ell(1-\theta_\ell) \\
 P(y_{i,\ell} = 2\:|\:z_i = 0) & = & \theta_\ell^2  \nonumber
 \end{eqnarray}
 If the sample is contaminated, we assume that it contains the DNA from two unrelated individuals and both doses of DNA appear in the observed phenotype of the individual.  Hence:
-\begin{eqnarray}
+\begin{eqnarray} \label{HW_contam}
 P(y_{i,\ell} = 0\:|\:z_i = 1) & = & (1-\theta_\ell)^4 \nonumber\\
 P(y_{i,\ell} = 1\:|\:z_i = 0) & = & 1 - \theta_\ell^4 - (1-\theta_\ell)^4 \\
 P(y_{i,\ell} = 2\:|\:z_i = 1) & = & \theta_\ell^4  \nonumber
@@ -82,7 +82,7 @@ Figure~\ref{fig:dag2}
 shows the directed acyclic graph for the MSP model.  We again developed an MCMC algorithm relying on simple Gibbs-sample updates for all the unobserved variables, the details of which appear in Appendix%~\ref{app:ssp}.
 
 %%%% The DAG_2 figure
-\begin{figure}[hb]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=\columnwidth]{./images/DAG_2.pdf}
 \end{center}
@@ -90,8 +90,11 @@ shows the directed acyclic graph for the MSP model.  We again developed an MCMC 
 \label{fig:dag2}
 \end{figure}
 
+\subsection*{Test Simulations}
+We tested our SSP model using \emph{in silico} data generated under the Hardy-Weinberg.  Each simulation had four parameters: $n$, the number of samples; $\rho$, the contamination proportion; $L$, the number of loci in each sample; and $\boldsymbol{\theta}$, the allele frequence at each locus $1$ through $L$. For each simulation, $n=200$, meaning that we created 200 samples. We randomly drew $L$ allele frequencies with replacement from the Feather River Hatchery Spring run Chinook salmon population to create $\boldsymbol{\theta}$ for each simulation (cite paper).  We then created the \emph{in silico} genotypes by sampling the genotype of each locus of each individual using  
+the distribution in Eq. \ref{HW_clean} for non-contaminated individuals.  A number of individuals were "contaminated" according to $\rho$. The genotypes of each locus of the contaminated individuals were sampled from the distribution in Eq. \ref{HW_contam}.  We simulated data with values of $L = (20,60,100,200)$ and $\rho = (0,0.025,0.075,0.2,0.5)$, creating a total of 20 different sets of parameters.  We ran 100 simulations for each set of parameters.
 
-
+We tested our MSP model using actual Chinook salmon genotypes with 95 loci from previously collected baseline data (cite paper). Each simulation had three addition parameters: $\pi$, the mixing proportions for each population; $u$, the population identification of each the individual; and $B$, the baseline data.  For each simulation, $n=200$.  We sampled the genotypes from the original baseline data using 20 different sets of $\pi$, which are mixing proportions observed at different West Coast fisheries at different times of the year.  We created the new baseline for each simulation by removing the randomly sampled genotypes. Non-contaminated individuals' genotypes were the sampled genotypes from the baseline.  We created a number of "contaminated" individuals by combining the genotype of two randomly selected individuals from the baseline. We simulated the data using the same five values for $\rho$ as in the SSP simulation, creating a total of 100 different sets of parameters.  We ran 20 simulations for each set of parameters.
 
 %%%  RHO AND ALLELE FIGURE
 \begin{figure}[tb]
