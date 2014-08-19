@@ -1,4 +1,4 @@
-#' MCMC function for determing contamination probability and allele frequencies
+#' MCMC function for determing contamination probability and allele frequencies of single population sample
 #' 
 #' This function runs the single population Markov Chain Monte Carlo algorithm on a set SNP data to determine which samples
 #' are contaminated, the proprotion of contaminated samples, and the allele frequencies of the SNP loci. The 
