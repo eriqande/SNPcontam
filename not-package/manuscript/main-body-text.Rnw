@@ -2,21 +2,12 @@
 
 \section*{Introduction}
 
-Some free-form thoughts.
+Single nucleotide polymorphisms (SNPs) have emerged as an important genetic marker, and their use is becoming widespread in molecular ecology.  The low cost of SNP genotyping makes it a practical alternative to microsatellite genotyping \citep{Anderson&Garza2006}.  SNP genotyping codes are also independent of the genotyping system, allowing for easy standardization across laboratories \citep{Morinetal2004}.  In addition, SNPs are present in large amounts in many species' genotypes \citep{Morinetal2004}, specific SNP loci under diversifying selection can be divergent between populations \citep{Freamoetal2011, Karlssonetal2011}, and SNP genotyping can be used on short fragments, providing low genotyping failure and error rates in historical or low-quality samples \citep{Morin&McCarthy2007, Smithetal2011}.  Studies have also shown that SNPs are comparable or better than microsatellites in most applications.  According to several studies, both microsatellites and SNPs are effective markers for population assignment and genetic stock identification, although a large number of SNPs may be required to identify fine-scale population differentiation \citep{Narumetal2008, Hessetal2011, Morinetal2078}.  SNPs have also been shown outperform microsatellites in the accuracy of parentage assignments \citep{Hauseretal2011}, and the effectiveness and accuracy of linkage maps for chromosomes \citep{Balletal2010}.
+
+However, identifying contaminated samples using SNP genotyping data is more difficult than with genotyping data from highly polymorphic microsatellites.  With microsatellites, contamination is detected when there are more than two alleles in a diploid sample.  This method is not possible with SNPs given their bi-allelic nature.  A logical method to eliminate contamination is to identify samples with an excess of heterozygous loci, as the presence of DNA from two or more individuals will increase the rate of heterozygousity.  Although considering heterozygousity does not use all the information in the SNP genotyping data, it can be a powerful method for simple tests of single individuals.  However, in the presence of multiple tests, a principled modeling of the situation is preferable.
 
 
 
-The past half decade has seen the emergence of a number of cost-effective  methods for genotyping
-single-nucleotide polymorphisms (SNPs) for molecular ecology studies.  For example, \ldots.
-In the management of commercially important species  like Pacific salmon, SNPs have been used, blah, blah.
-10's of thousands of individuals genotyped every year at a  fraction of the cost of microsatellites (give 
-a ballpark estimate of how much less expensive, at least from our lab).  The application of such technologies 
-is now becoming more commonplace amongst other species.  (WIWA's for example).  
-
-Next generation sequencing technologies, and the allure of genotyping by sequencing on such platforms: this
-may well  become the way everything is done in the future, but the relative simplicity of platforms like the 
-Fluidigm make those very attractive. Also good for low-quantity DNA, large number of individuals, degraded 
-tissues, etc.  It is likely that
 
 \section*{Methods}
 \subsection*{Statistical Models}
