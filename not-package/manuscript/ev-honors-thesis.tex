@@ -1,0 +1,113 @@
+
+\documentclass{brownhonorsthesis}
+
+\input{author-title-etc}  % Put all the author title stuff in there
+
+% ------
+% Fonts and typesetting settings
+%\usepackage[sc]{mathpazo}
+%\usepackage[T1]{fontenc}
+%\linespread{1.05} % Palatino needs more space between lines
+
+%\usepackage{microtype}
+% ------
+% Page layout
+\usepackage[labelfont=bf,labelformat=simple,labelsep=quad]{caption}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsfonts}
+\usepackage{natbib}
+\usepackage{subfigure}
+\usepackage{xspace}
+\usepackage{mathrsfs}
+\usepackage{fancyhdr}
+\usepackage{cuted}
+\usepackage{flushend}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{setspace}
+
+
+%% some handy things for making bold math
+\def\bm#1{\mathpalette\bmstyle{#1}}
+\def\bmstyle#1#2{\mbox{\boldmath$#1#2$}}
+\newcommand{\thh}{^\mathrm{th}}
+
+
+%% Some pretty etc.'s, etc...
+\newcommand{\cf}{{\em cf.}\xspace }
+\newcommand{\eg}{{\em e.g.},\xspace }
+\newcommand{\ie}{{\em i.e.},\xspace }
+\newcommand{\etal}{{\em et al.}\ }
+\newcommand{\etc}{{\em etc.}\@\xspace}
+
+
+
+%% the page dimensions
+\textwidth = 6.5 in
+\textheight = 9 in
+\oddsidemargin = -0.01 in
+\evensidemargin = -0.01 in
+\topmargin = -0.7 in
+\headheight = 0.25 in
+\headsep = 0.25 in
+\parskip = 0.0in
+\parindent = 0.25in
+
+\setlength{\columnsep}{.4in}
+
+
+
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\title{Methods and software for detecting contaminated samples genotyped with SNPs}
+\author{Elena N. Venable}
+\dept{Applied Math}
+
+\reader[(Applied Mathematics)]{Basilis Gidas}
+\reader{ME}
+\dean{Peter M.~Weber}
+
+
+\beforepreface
+\abstract{
+We develop several models for detecting contaminated samples from genotype data, and if we
+have time we will investigate analysis of the ``raw'' data from the popular Fluidigm platform to
+see if it can be used to help guide identification of contaminated samples.
+}
+\abstractpage
+
+
+
+\prefacesection{Vita}
+Boing!
+
+\prefacesection{Acknowledgements}
+My Preface
+
+
+\afterpreface
+\doublespacing
+
+
+\input{main-body-text.Rnw}
+
+
+\bibliographystyle{men}
+{\footnotesize
+\bibliography{snp-contam}}
+\flushcolsend
+
+\onecolumn
+\appendix
+\input{appendices.Rnw}
+
+\end{document}
+
+

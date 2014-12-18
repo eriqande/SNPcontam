@@ -47,7 +47,10 @@ Returns a list of four named components:
 }
 }
 \description{
-Description
+This function runs an MCMC tailored for a situation in which one is sampling from a mixture of individuals
+from different populaitons.  The MCMC function uses the SNP genotype data and baseline data to estimate the
+contamination proportion and the mixing proportions as well as identify contaminated individuals and
+preform population assignment.
 }
 \examples{
 # Creates data for the mixed_MCMC function

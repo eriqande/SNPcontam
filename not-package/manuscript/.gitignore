@@ -7,9 +7,14 @@
 *synctex.gz
 *.fls
 *.dvi
+*.lof
+*.lot
+*.toc
+
 *.fdb_latexmk
 snp-contam-main.pdf
 cache/
 snp-contam-main-concordance.tex
 snp-contam-main.tex
 knitr.sty
+ev-honors-thesis.pdf
